@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/archive.svg</file>
+    <file>icons/bed.png</file>
+    <file>icons/chevrons-down.svg</file>
+    <file>icons/chevrons-up.svg</file>
+    <file>icons/menu.svg</file>
+    <file>icons/minus.svg</file>
+    <file>icons/settings.svg</file>
+    <file>icons/square.svg</file>
+    <file>icons/toggle-left.svg</file>
+    <file>icons/toggle-right.svg</file>
+    <file>icons/tv.svg</file>
+    <file>icons/x.svg</file>
+  </qresource>
+</RCC>
