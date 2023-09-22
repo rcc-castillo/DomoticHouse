@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons/copy.svg</file>
     <file>icons/archive.svg</file>
     <file>icons/bed.png</file>
     <file>icons/chevrons-down.svg</file>
