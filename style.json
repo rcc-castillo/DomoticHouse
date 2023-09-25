@@ -1,28 +1,4 @@
 {
-	"QMainWindow": [
-		{
-			"tittle": "DomoticHouse",
-			"icon": "",
-			"frameless": true,
-			"transluscentBg": true,
-			"sizeGrip": "size_grip",
-			"navigation": [
-				{
-					"minimize": "minimizeBtn",
-					"close": "closeBtn",
-					"restore": [
-						{
-							"buttonName": "maximizeBtn",
-							"normalIcon": ":/icons/icons/square.svg",
-							"maximizedIcon": ":/icons/icons/copy.svg"
-						}
-					],
-					"moveWindow": "headerContainer",
-					"tittleBar": "headerContainer"
-				}
-			]
-		}
-	],
 	"QCustomSlideMenu": [
 		{
 			"name": "leftMenuContainer",
@@ -59,39 +35,6 @@
 				{
 					"animationDuration": 250,
 					"animationEasingCurve": "Linear"
-				}
-			]
-		}
-	],
-	"QCustomQStackedWidget": [
-		{
-			"name": "mainPages",
-			"navigation": [
-				{
-					"navigationButtons": [
-						{
-							"livingroomBtn": "livingroomPage",
-							"officeBtn": "officePage",
-							"bedroomBtn": "bedroomPage",
-							"settingsBtn": "settingsPage"
-						}
-					]
-				}
-			]
-		}
-	],
-	"QPushButtonGroup": [
-		{
-			"Buttons": [
-				"livingroomBtn",
-				"officeBtn",
-				"bedroomBtn",
-				"settingsBtn"
-			],
-			"Style": [
-				{
-					"Active": "background-color: #52a5e0;",
-					"NotActive": "background-color: transparent;"
 				}
 			]
 		}

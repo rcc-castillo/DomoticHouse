@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>677</width>
+    <width>605</width>
     <height>525</height>
    </rect>
   </property>
@@ -89,271 +89,6 @@ QComboBox QAbstractItemView{
     <property name="bottomMargin">
      <number>0</number>
     </property>
-    <item row="0" column="0">
-     <widget class="QCustomSlideMenu" name="leftMenuContainer" native="true">
-      <property name="maximumSize">
-       <size>
-        <width>55</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item alignment="Qt::AlignLeft">
-        <widget class="QWidget" name="leftMenuSubcontainer" native="true">
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>10</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item alignment="Qt::AlignTop">
-           <widget class="QFrame" name="frame">
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <property name="spacing">
-              <number>0</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QPushButton" name="menuBtn">
-               <property name="toolTip">
-                <string>Menu</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>:/icons/icons/menu.svg</normaloff>:/icons/icons/menu.svg</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item alignment="Qt::AlignTop">
-           <widget class="QFrame" name="frame_2">
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <property name="spacing">
-              <number>0</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>10</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>10</number>
-             </property>
-             <item>
-              <widget class="QPushButton" name="livingroomBtn">
-               <property name="font">
-                <font>
-                 <pointsize>12</pointsize>
-                </font>
-               </property>
-               <property name="toolTip">
-                <string>Show Livingroom</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: #52a5e0;</string>
-               </property>
-               <property name="text">
-                <string>Salón</string>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>:/icons/icons/tv.svg</normaloff>:/icons/icons/tv.svg</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="officeBtn">
-               <property name="font">
-                <font>
-                 <pointsize>12</pointsize>
-                </font>
-               </property>
-               <property name="toolTip">
-                <string>Show Office</string>
-               </property>
-               <property name="text">
-                <string>Oficina</string>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>:/icons/icons/archive.svg</normaloff>:/icons/icons/archive.svg</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="bedroomBtn">
-               <property name="font">
-                <font>
-                 <pointsize>12</pointsize>
-                </font>
-               </property>
-               <property name="toolTip">
-                <string>Show Bedroom</string>
-               </property>
-               <property name="text">
-                <string>Dormitorio</string>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>:/icons/icons/bed.png</normaloff>:/icons/icons/bed.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item alignment="Qt::AlignBottom">
-           <widget class="QFrame" name="frame_3">
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <property name="spacing">
-              <number>0</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>10</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>10</number>
-             </property>
-             <item>
-              <widget class="QPushButton" name="settingsBtn">
-               <property name="font">
-                <font>
-                 <pointsize>12</pointsize>
-                </font>
-               </property>
-               <property name="toolTip">
-                <string>Go to Settings</string>
-               </property>
-               <property name="text">
-                <string>Ajustes</string>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>:/icons/icons/settings.svg</normaloff>:/icons/icons/settings.svg</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
     <item row="0" column="1">
      <widget class="QWidget" name="mainBodyContainer" native="true">
       <property name="sizePolicy">
@@ -430,7 +165,7 @@ QComboBox QAbstractItemView{
                 <string/>
                </property>
                <property name="icon">
-                <iconset>
+                <iconset resource="../AppCode/resources.qrc">
                  <normaloff>:/icons/icons/minus.svg</normaloff>:/icons/icons/minus.svg</iconset>
                </property>
                <property name="iconSize">
@@ -459,7 +194,7 @@ QComboBox QAbstractItemView{
                 <string/>
                </property>
                <property name="icon">
-                <iconset>
+                <iconset resource="../AppCode/resources.qrc">
                  <normaloff>:/icons/icons/square.svg</normaloff>:/icons/icons/square.svg</iconset>
                </property>
                <property name="iconSize">
@@ -488,7 +223,7 @@ QComboBox QAbstractItemView{
                 <string/>
                </property>
                <property name="icon">
-                <iconset>
+                <iconset resource="../AppCode/resources.qrc">
                  <normaloff>:/icons/icons/x.svg</normaloff>:/icons/icons/x.svg</iconset>
                </property>
                <property name="iconSize">
@@ -506,7 +241,7 @@ QComboBox QAbstractItemView{
         </widget>
        </item>
        <item>
-        <widget class="QCustomQStackedWidget" name="mainPages">
+        <widget class="QStackedWidget" name="mainPages">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -517,9 +252,9 @@ QComboBox QAbstractItemView{
           <string notr="true"/>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
-         <widget class="QWidget" name="livingroomPage">
+         <widget class="QWidget" name="livingroomPage" native="true">
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <item>
             <spacer name="verticalSpacer_6">
@@ -573,7 +308,7 @@ QComboBox QAbstractItemView{
                    <string>Off</string>
                   </property>
                   <property name="icon">
-                   <iconset>
+                   <iconset resource="../AppCode/resources.qrc">
                     <normaloff>:/icons/icons/toggle-left.svg</normaloff>:/icons/icons/toggle-left.svg</iconset>
                   </property>
                   <property name="iconSize">
@@ -619,7 +354,7 @@ QComboBox QAbstractItemView{
                       <string/>
                      </property>
                      <property name="icon">
-                      <iconset>
+                      <iconset resource="../AppCode/resources.qrc">
                        <normaloff>:/icons/icons/chevrons-down.svg</normaloff>:/icons/icons/chevrons-down.svg</iconset>
                      </property>
                      <property name="iconSize">
@@ -636,7 +371,7 @@ QComboBox QAbstractItemView{
                       <string/>
                      </property>
                      <property name="icon">
-                      <iconset>
+                      <iconset resource="../AppCode/resources.qrc">
                        <normaloff>:/icons/icons/chevrons-up.svg</normaloff>:/icons/icons/chevrons-up.svg</iconset>
                      </property>
                      <property name="iconSize">
@@ -690,7 +425,7 @@ QComboBox QAbstractItemView{
                       <string>Off</string>
                      </property>
                      <property name="icon">
-                      <iconset>
+                      <iconset resource="../AppCode/resources.qrc">
                        <normaloff>:/icons/icons/toggle-left.svg</normaloff>:/icons/icons/toggle-left.svg</iconset>
                      </property>
                      <property name="iconSize">
@@ -795,7 +530,7 @@ QComboBox QAbstractItemView{
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="officePage">
+         <widget class="QWidget" name="officePage" native="true">
           <layout class="QVBoxLayout" name="verticalLayout_10">
            <item>
             <spacer name="verticalSpacer_5">
@@ -849,7 +584,7 @@ QComboBox QAbstractItemView{
                    <string>Off</string>
                   </property>
                   <property name="icon">
-                   <iconset>
+                   <iconset resource="../AppCode/resources.qrc">
                     <normaloff>:/icons/icons/toggle-left.svg</normaloff>:/icons/icons/toggle-left.svg</iconset>
                   </property>
                   <property name="iconSize">
@@ -895,7 +630,7 @@ QComboBox QAbstractItemView{
                       <string/>
                      </property>
                      <property name="icon">
-                      <iconset>
+                      <iconset resource="../AppCode/resources.qrc">
                        <normaloff>:/icons/icons/chevrons-down.svg</normaloff>:/icons/icons/chevrons-down.svg</iconset>
                      </property>
                      <property name="iconSize">
@@ -912,7 +647,7 @@ QComboBox QAbstractItemView{
                       <string/>
                      </property>
                      <property name="icon">
-                      <iconset>
+                      <iconset resource="../AppCode/resources.qrc">
                        <normaloff>:/icons/icons/chevrons-up.svg</normaloff>:/icons/icons/chevrons-up.svg</iconset>
                      </property>
                      <property name="iconSize">
@@ -966,7 +701,7 @@ QComboBox QAbstractItemView{
                       <string>Off</string>
                      </property>
                      <property name="icon">
-                      <iconset>
+                      <iconset resource="../AppCode/resources.qrc">
                        <normaloff>:/icons/icons/toggle-left.svg</normaloff>:/icons/icons/toggle-left.svg</iconset>
                      </property>
                      <property name="iconSize">
@@ -1071,7 +806,7 @@ QComboBox QAbstractItemView{
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="bedroomPage">
+         <widget class="QWidget" name="bedroomPage" native="true">
           <layout class="QVBoxLayout" name="verticalLayout_7">
            <item>
             <widget class="QLabel" name="label_3">
@@ -1085,7 +820,7 @@ QComboBox QAbstractItemView{
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="settingsPage">
+         <widget class="QWidget" name="settingsPage" native="true">
           <layout class="QVBoxLayout" name="verticalLayout_8">
            <item>
             <spacer name="verticalSpacer_2">
@@ -1359,25 +1094,276 @@ QComboBox QAbstractItemView{
       </layout>
      </widget>
     </item>
+    <item row="0" column="0">
+     <widget class="QWidget" name="leftMenuContainer" native="true">
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item alignment="Qt::AlignLeft">
+        <widget class="QWidget" name="leftMenuSubcontainer" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item alignment="Qt::AlignTop">
+           <widget class="QFrame" name="frame">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="menuBtn">
+               <property name="toolTip">
+                <string>Menu</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../AppCode/resources.qrc">
+                 <normaloff>:/icons/icons/menu.svg</normaloff>:/icons/icons/menu.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item alignment="Qt::AlignTop">
+           <widget class="QFrame" name="frame_2">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="livingroomBtn">
+               <property name="font">
+                <font>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+               <property name="toolTip">
+                <string>Show Livingroom</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: #52a5e0;</string>
+               </property>
+               <property name="text">
+                <string>Salón</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../AppCode/resources.qrc">
+                 <normaloff>:/icons/icons/tv.svg</normaloff>:/icons/icons/tv.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="officeBtn">
+               <property name="font">
+                <font>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+               <property name="toolTip">
+                <string>Show Office</string>
+               </property>
+               <property name="text">
+                <string>Oficina</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../AppCode/resources.qrc">
+                 <normaloff>:/icons/icons/archive.svg</normaloff>:/icons/icons/archive.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="bedroomBtn">
+               <property name="font">
+                <font>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+               <property name="toolTip">
+                <string>Show Bedroom</string>
+               </property>
+               <property name="text">
+                <string>Dormitorio</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../AppCode/resources.qrc">
+                 <normaloff>:/icons/icons/bed.png</normaloff>:/icons/icons/bed.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item alignment="Qt::AlignBottom">
+           <widget class="QFrame" name="frame_3">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="settingsBtn">
+               <property name="font">
+                <font>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+               <property name="toolTip">
+                <string>Go to Settings</string>
+               </property>
+               <property name="text">
+                <string>Ajustes</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../AppCode/resources.qrc">
+                 <normaloff>:/icons/icons/settings.svg</normaloff>:/icons/icons/settings.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
    </layout>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QCustomSlideMenu</class>
-   <extends>QWidget</extends>
-   <header location="global">Custom_Widgets.QCustomSlideMenu.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>QCustomQStackedWidget</class>
-   <extends>QStackedWidget</extends>
-   <header location="global">Custom_Widgets.QCustomQStackedWidget.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../AppCode/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

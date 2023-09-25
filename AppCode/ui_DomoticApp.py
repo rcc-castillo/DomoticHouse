@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'DomoticAppHPHOtW.ui'
+## Form generated from reading UI file 'DomoticAppAVsdcH.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -12,16 +12,13 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-from Custom_Widgets.QCustomSlideMenu import QCustomSlideMenu
-from Custom_Widgets.QCustomQStackedWidget import QCustomQStackedWidget
-
 import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(677, 525)
+        MainWindow.resize(605, 525)
         MainWindow.setMinimumSize(QSize(360, 0))
         MainWindow.setMaximumSize(QSize(700, 16777215))
         MainWindow.setStyleSheet(u"*{\n"
@@ -73,114 +70,6 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.leftMenuContainer = QCustomSlideMenu(self.centralwidget)
-        self.leftMenuContainer.setObjectName(u"leftMenuContainer")
-        self.leftMenuContainer.setMaximumSize(QSize(55, 16777215))
-        self.verticalLayout = QVBoxLayout(self.leftMenuContainer)
-        self.verticalLayout.setSpacing(0)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.leftMenuSubcontainer = QWidget(self.leftMenuContainer)
-        self.leftMenuSubcontainer.setObjectName(u"leftMenuSubcontainer")
-        self.verticalLayout_2 = QVBoxLayout(self.leftMenuSubcontainer)
-        self.verticalLayout_2.setSpacing(0)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(10, 0, 0, 0)
-        self.frame = QFrame(self.leftMenuSubcontainer)
-        self.frame.setObjectName(u"frame")
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_2 = QHBoxLayout(self.frame)
-        self.horizontalLayout_2.setSpacing(0)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.menuBtn = QPushButton(self.frame)
-        self.menuBtn.setObjectName(u"menuBtn")
-        icon = QIcon()
-        icon.addFile(u":/icons/icons/menu.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.menuBtn.setIcon(icon)
-        self.menuBtn.setIconSize(QSize(24, 24))
-
-        self.horizontalLayout_2.addWidget(self.menuBtn)
-
-
-        self.verticalLayout_2.addWidget(self.frame, 0, Qt.AlignTop)
-
-        self.frame_2 = QFrame(self.leftMenuSubcontainer)
-        self.frame_2.setObjectName(u"frame_2")
-        self.frame_2.setFrameShape(QFrame.StyledPanel)
-        self.frame_2.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_3 = QVBoxLayout(self.frame_2)
-        self.verticalLayout_3.setSpacing(0)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout_3.setContentsMargins(0, 10, 0, 10)
-        self.livingroomBtn = QPushButton(self.frame_2)
-        self.livingroomBtn.setObjectName(u"livingroomBtn")
-        font = QFont()
-        font.setPointSize(12)
-        self.livingroomBtn.setFont(font)
-        self.livingroomBtn.setStyleSheet(u"background-color: #52a5e0;")
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/icons/tv.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.livingroomBtn.setIcon(icon1)
-        self.livingroomBtn.setIconSize(QSize(24, 24))
-
-        self.verticalLayout_3.addWidget(self.livingroomBtn)
-
-        self.officeBtn = QPushButton(self.frame_2)
-        self.officeBtn.setObjectName(u"officeBtn")
-        self.officeBtn.setFont(font)
-        icon2 = QIcon()
-        icon2.addFile(u":/icons/icons/archive.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.officeBtn.setIcon(icon2)
-        self.officeBtn.setIconSize(QSize(24, 24))
-
-        self.verticalLayout_3.addWidget(self.officeBtn)
-
-        self.bedroomBtn = QPushButton(self.frame_2)
-        self.bedroomBtn.setObjectName(u"bedroomBtn")
-        self.bedroomBtn.setFont(font)
-        icon3 = QIcon()
-        icon3.addFile(u":/icons/icons/bed.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.bedroomBtn.setIcon(icon3)
-        self.bedroomBtn.setIconSize(QSize(24, 24))
-
-        self.verticalLayout_3.addWidget(self.bedroomBtn)
-
-
-        self.verticalLayout_2.addWidget(self.frame_2, 0, Qt.AlignTop)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_2.addItem(self.verticalSpacer)
-
-        self.frame_3 = QFrame(self.leftMenuSubcontainer)
-        self.frame_3.setObjectName(u"frame_3")
-        self.frame_3.setFrameShape(QFrame.StyledPanel)
-        self.frame_3.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_4 = QHBoxLayout(self.frame_3)
-        self.horizontalLayout_4.setSpacing(0)
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.horizontalLayout_4.setContentsMargins(0, 10, 0, 10)
-        self.settingsBtn = QPushButton(self.frame_3)
-        self.settingsBtn.setObjectName(u"settingsBtn")
-        self.settingsBtn.setFont(font)
-        icon4 = QIcon()
-        icon4.addFile(u":/icons/icons/settings.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.settingsBtn.setIcon(icon4)
-        self.settingsBtn.setIconSize(QSize(24, 24))
-
-        self.horizontalLayout_4.addWidget(self.settingsBtn)
-
-
-        self.verticalLayout_2.addWidget(self.frame_3, 0, Qt.AlignBottom)
-
-
-        self.verticalLayout.addWidget(self.leftMenuSubcontainer, 0, Qt.AlignLeft)
-
-
-        self.gridLayout.addWidget(self.leftMenuContainer, 0, 0, 1, 1)
-
         self.mainBodyContainer = QWidget(self.centralwidget)
         self.mainBodyContainer.setObjectName(u"mainBodyContainer")
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -224,9 +113,9 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.minimizeBtn.sizePolicy().hasHeightForWidth())
         self.minimizeBtn.setSizePolicy(sizePolicy1)
         self.minimizeBtn.setMinimumSize(QSize(40, 0))
-        icon5 = QIcon()
-        icon5.addFile(u":/icons/icons/minus.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.minimizeBtn.setIcon(icon5)
+        icon = QIcon()
+        icon.addFile(u":/icons/icons/minus.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.minimizeBtn.setIcon(icon)
         self.minimizeBtn.setIconSize(QSize(16, 16))
 
         self.horizontalLayout_8.addWidget(self.minimizeBtn)
@@ -236,9 +125,9 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.maximizeBtn.sizePolicy().hasHeightForWidth())
         self.maximizeBtn.setSizePolicy(sizePolicy1)
         self.maximizeBtn.setMinimumSize(QSize(40, 0))
-        icon6 = QIcon()
-        icon6.addFile(u":/icons/icons/square.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.maximizeBtn.setIcon(icon6)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/icons/square.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.maximizeBtn.setIcon(icon1)
         self.maximizeBtn.setIconSize(QSize(16, 16))
 
         self.horizontalLayout_8.addWidget(self.maximizeBtn)
@@ -248,9 +137,9 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.closeBtn.sizePolicy().hasHeightForWidth())
         self.closeBtn.setSizePolicy(sizePolicy1)
         self.closeBtn.setMinimumSize(QSize(40, 0))
-        icon7 = QIcon()
-        icon7.addFile(u":/icons/icons/x.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.closeBtn.setIcon(icon7)
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/icons/x.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.closeBtn.setIcon(icon2)
         self.closeBtn.setIconSize(QSize(16, 16))
 
         self.horizontalLayout_8.addWidget(self.closeBtn)
@@ -261,7 +150,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.headerContainer, 0, Qt.AlignTop)
 
-        self.mainPages = QCustomQStackedWidget(self.mainBodyContainer)
+        self.mainPages = QStackedWidget(self.mainBodyContainer)
         self.mainPages.setObjectName(u"mainPages")
         sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy3.setHorizontalStretch(0)
@@ -286,11 +175,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
         self.label_2 = QLabel(self.livingLights)
         self.label_2.setObjectName(u"label_2")
-        font1 = QFont()
-        font1.setPointSize(10)
-        font1.setBold(True)
-        font1.setWeight(75)
-        self.label_2.setFont(font1)
+        font = QFont()
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_2.setFont(font)
 
         self.verticalLayout_11.addWidget(self.label_2, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
@@ -298,12 +187,12 @@ class Ui_MainWindow(object):
         self.livingLightsBtn.setObjectName(u"livingLightsBtn")
         sizePolicy1.setHeightForWidth(self.livingLightsBtn.sizePolicy().hasHeightForWidth())
         self.livingLightsBtn.setSizePolicy(sizePolicy1)
-        font2 = QFont()
-        font2.setPointSize(10)
-        self.livingLightsBtn.setFont(font2)
-        icon8 = QIcon()
-        icon8.addFile(u":/icons/icons/toggle-left.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.livingLightsBtn.setIcon(icon8)
+        font1 = QFont()
+        font1.setPointSize(10)
+        self.livingLightsBtn.setFont(font1)
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/icons/toggle-left.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.livingLightsBtn.setIcon(icon3)
         self.livingLightsBtn.setIconSize(QSize(24, 24))
 
         self.verticalLayout_11.addWidget(self.livingLightsBtn)
@@ -317,7 +206,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_15.setObjectName(u"verticalLayout_15")
         self.label_14 = QLabel(self.livingBlinds)
         self.label_14.setObjectName(u"label_14")
-        self.label_14.setFont(font1)
+        self.label_14.setFont(font)
 
         self.verticalLayout_15.addWidget(self.label_14, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
@@ -329,18 +218,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.livingBlindDownBtn = QPushButton(self.frame_11)
         self.livingBlindDownBtn.setObjectName(u"livingBlindDownBtn")
-        icon9 = QIcon()
-        icon9.addFile(u":/icons/icons/chevrons-down.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.livingBlindDownBtn.setIcon(icon9)
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/icons/chevrons-down.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.livingBlindDownBtn.setIcon(icon4)
         self.livingBlindDownBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_6.addWidget(self.livingBlindDownBtn)
 
         self.livingBlindUpBtn = QPushButton(self.frame_11)
         self.livingBlindUpBtn.setObjectName(u"livingBlindUpBtn")
-        icon10 = QIcon()
-        icon10.addFile(u":/icons/icons/chevrons-up.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.livingBlindUpBtn.setIcon(icon10)
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/icons/chevrons-up.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.livingBlindUpBtn.setIcon(icon5)
         self.livingBlindUpBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_6.addWidget(self.livingBlindUpBtn)
@@ -357,7 +246,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
         self.label_15 = QLabel(self.livingAir)
         self.label_15.setObjectName(u"label_15")
-        self.label_15.setFont(font1)
+        self.label_15.setFont(font)
 
         self.verticalLayout_16.addWidget(self.label_15, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
@@ -369,15 +258,15 @@ class Ui_MainWindow(object):
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
         self.livingAirBtn = QPushButton(self.livingAirOptions)
         self.livingAirBtn.setObjectName(u"livingAirBtn")
-        self.livingAirBtn.setFont(font2)
-        self.livingAirBtn.setIcon(icon8)
+        self.livingAirBtn.setFont(font1)
+        self.livingAirBtn.setIcon(icon3)
         self.livingAirBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_15.addWidget(self.livingAirBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.label_16 = QLabel(self.livingAirOptions)
         self.label_16.setObjectName(u"label_16")
-        self.label_16.setFont(font2)
+        self.label_16.setFont(font1)
 
         self.horizontalLayout_15.addWidget(self.label_16, 0, Qt.AlignRight|Qt.AlignVCenter)
 
@@ -386,7 +275,7 @@ class Ui_MainWindow(object):
         self.livingAirSpeed.addItem("")
         self.livingAirSpeed.addItem("")
         self.livingAirSpeed.setObjectName(u"livingAirSpeed")
-        self.livingAirSpeed.setFont(font2)
+        self.livingAirSpeed.setFont(font1)
         self.livingAirSpeed.setEditable(False)
 
         self.horizontalLayout_15.addWidget(self.livingAirSpeed, 0, Qt.AlignHCenter|Qt.AlignVCenter)
@@ -403,13 +292,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
         self.label_17 = QLabel(self.livingTemperature)
         self.label_17.setObjectName(u"label_17")
-        self.label_17.setFont(font1)
+        self.label_17.setFont(font)
 
         self.horizontalLayout_16.addWidget(self.label_17, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.livingTemperatureLbl = QLabel(self.livingTemperature)
         self.livingTemperatureLbl.setObjectName(u"livingTemperatureLbl")
-        self.livingTemperatureLbl.setFont(font2)
+        self.livingTemperatureLbl.setFont(font1)
 
         self.horizontalLayout_16.addWidget(self.livingTemperatureLbl, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
@@ -441,7 +330,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.label = QLabel(self.officeLights)
         self.label.setObjectName(u"label")
-        self.label.setFont(font1)
+        self.label.setFont(font)
 
         self.verticalLayout_6.addWidget(self.label, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
@@ -449,8 +338,8 @@ class Ui_MainWindow(object):
         self.officeLightsBtn.setObjectName(u"officeLightsBtn")
         sizePolicy1.setHeightForWidth(self.officeLightsBtn.sizePolicy().hasHeightForWidth())
         self.officeLightsBtn.setSizePolicy(sizePolicy1)
-        self.officeLightsBtn.setFont(font2)
-        self.officeLightsBtn.setIcon(icon8)
+        self.officeLightsBtn.setFont(font1)
+        self.officeLightsBtn.setIcon(icon3)
         self.officeLightsBtn.setIconSize(QSize(24, 24))
 
         self.verticalLayout_6.addWidget(self.officeLightsBtn)
@@ -464,7 +353,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_13.setObjectName(u"verticalLayout_13")
         self.label_10 = QLabel(self.officeBlinds)
         self.label_10.setObjectName(u"label_10")
-        self.label_10.setFont(font1)
+        self.label_10.setFont(font)
 
         self.verticalLayout_13.addWidget(self.label_10, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
@@ -476,14 +365,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.officeBlindDownBtn = QPushButton(self.frame_10)
         self.officeBlindDownBtn.setObjectName(u"officeBlindDownBtn")
-        self.officeBlindDownBtn.setIcon(icon9)
+        self.officeBlindDownBtn.setIcon(icon4)
         self.officeBlindDownBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout.addWidget(self.officeBlindDownBtn)
 
         self.officeBlindUpBtn = QPushButton(self.frame_10)
         self.officeBlindUpBtn.setObjectName(u"officeBlindUpBtn")
-        self.officeBlindUpBtn.setIcon(icon10)
+        self.officeBlindUpBtn.setIcon(icon5)
         self.officeBlindUpBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout.addWidget(self.officeBlindUpBtn)
@@ -500,7 +389,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.label_13 = QLabel(self.officeAir)
         self.label_13.setObjectName(u"label_13")
-        self.label_13.setFont(font1)
+        self.label_13.setFont(font)
 
         self.verticalLayout_14.addWidget(self.label_13, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
@@ -512,15 +401,15 @@ class Ui_MainWindow(object):
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
         self.officeAirBtn = QPushButton(self.officeAirOptions)
         self.officeAirBtn.setObjectName(u"officeAirBtn")
-        self.officeAirBtn.setFont(font2)
-        self.officeAirBtn.setIcon(icon8)
+        self.officeAirBtn.setFont(font1)
+        self.officeAirBtn.setIcon(icon3)
         self.officeAirBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_14.addWidget(self.officeAirBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.label_12 = QLabel(self.officeAirOptions)
         self.label_12.setObjectName(u"label_12")
-        self.label_12.setFont(font2)
+        self.label_12.setFont(font1)
 
         self.horizontalLayout_14.addWidget(self.label_12, 0, Qt.AlignRight|Qt.AlignVCenter)
 
@@ -529,7 +418,7 @@ class Ui_MainWindow(object):
         self.officeAirSpeed.addItem("")
         self.officeAirSpeed.addItem("")
         self.officeAirSpeed.setObjectName(u"officeAirSpeed")
-        self.officeAirSpeed.setFont(font2)
+        self.officeAirSpeed.setFont(font1)
         self.officeAirSpeed.setEditable(False)
 
         self.horizontalLayout_14.addWidget(self.officeAirSpeed, 0, Qt.AlignHCenter|Qt.AlignVCenter)
@@ -546,13 +435,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
         self.label_11 = QLabel(self.officeTemperature)
         self.label_11.setObjectName(u"label_11")
-        self.label_11.setFont(font1)
+        self.label_11.setFont(font)
 
         self.horizontalLayout_13.addWidget(self.label_11, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.officeTemperatureLbl = QLabel(self.officeTemperature)
         self.officeTemperatureLbl.setObjectName(u"officeTemperatureLbl")
-        self.officeTemperatureLbl.setFont(font2)
+        self.officeTemperatureLbl.setFont(font1)
 
         self.horizontalLayout_13.addWidget(self.officeTemperatureLbl, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
@@ -595,7 +484,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.label_4 = QLabel(self.ports)
         self.label_4.setObjectName(u"label_4")
-        self.label_4.setFont(font1)
+        self.label_4.setFont(font)
         self.label_4.setTextFormat(Qt.AutoText)
         self.label_4.setScaledContents(False)
 
@@ -605,7 +494,7 @@ class Ui_MainWindow(object):
         self.serial_ports_list.setObjectName(u"serial_ports_list")
         sizePolicy1.setHeightForWidth(self.serial_ports_list.sizePolicy().hasHeightForWidth())
         self.serial_ports_list.setSizePolicy(sizePolicy1)
-        self.serial_ports_list.setFont(font2)
+        self.serial_ports_list.setFont(font1)
 
         self.horizontalLayout_3.addWidget(self.serial_ports_list, 0, Qt.AlignHCenter)
 
@@ -622,7 +511,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.label_5 = QLabel(self.budrates)
         self.label_5.setObjectName(u"label_5")
-        self.label_5.setFont(font1)
+        self.label_5.setFont(font)
 
         self.horizontalLayout_5.addWidget(self.label_5, 0, Qt.AlignHCenter)
 
@@ -635,7 +524,7 @@ class Ui_MainWindow(object):
         self.baudrates_list.addItem("")
         self.baudrates_list.addItem("")
         self.baudrates_list.setObjectName(u"baudrates_list")
-        self.baudrates_list.setFont(font2)
+        self.baudrates_list.setFont(font1)
 
         self.horizontalLayout_5.addWidget(self.baudrates_list, 0, Qt.AlignHCenter)
 
@@ -655,7 +544,7 @@ class Ui_MainWindow(object):
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.updateBtn.sizePolicy().hasHeightForWidth())
         self.updateBtn.setSizePolicy(sizePolicy4)
-        self.updateBtn.setFont(font1)
+        self.updateBtn.setFont(font)
 
         self.verticalLayout_9.addWidget(self.updateBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
@@ -663,7 +552,7 @@ class Ui_MainWindow(object):
         self.connectBtn.setObjectName(u"connectBtn")
         sizePolicy4.setHeightForWidth(self.connectBtn.sizePolicy().hasHeightForWidth())
         self.connectBtn.setSizePolicy(sizePolicy4)
-        self.connectBtn.setFont(font1)
+        self.connectBtn.setFont(font)
 
         self.verticalLayout_9.addWidget(self.connectBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
@@ -671,7 +560,7 @@ class Ui_MainWindow(object):
         self.disconnectBtn.setObjectName(u"disconnectBtn")
         sizePolicy4.setHeightForWidth(self.disconnectBtn.sizePolicy().hasHeightForWidth())
         self.disconnectBtn.setSizePolicy(sizePolicy4)
-        self.disconnectBtn.setFont(font1)
+        self.disconnectBtn.setFont(font)
 
         self.verticalLayout_9.addWidget(self.disconnectBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
@@ -711,11 +600,119 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.mainBodyContainer, 0, 1, 1, 1)
 
+        self.leftMenuContainer = QWidget(self.centralwidget)
+        self.leftMenuContainer.setObjectName(u"leftMenuContainer")
+        self.leftMenuContainer.setMaximumSize(QSize(55, 16777215))
+        self.verticalLayout = QVBoxLayout(self.leftMenuContainer)
+        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.leftMenuSubcontainer = QWidget(self.leftMenuContainer)
+        self.leftMenuSubcontainer.setObjectName(u"leftMenuSubcontainer")
+        self.verticalLayout_2 = QVBoxLayout(self.leftMenuSubcontainer)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(10, 0, 0, 0)
+        self.frame = QFrame(self.leftMenuSubcontainer)
+        self.frame.setObjectName(u"frame")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_2 = QHBoxLayout(self.frame)
+        self.horizontalLayout_2.setSpacing(0)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.menuBtn = QPushButton(self.frame)
+        self.menuBtn.setObjectName(u"menuBtn")
+        icon6 = QIcon()
+        icon6.addFile(u":/icons/icons/menu.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.menuBtn.setIcon(icon6)
+        self.menuBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_2.addWidget(self.menuBtn)
+
+
+        self.verticalLayout_2.addWidget(self.frame, 0, Qt.AlignTop)
+
+        self.frame_2 = QFrame(self.leftMenuSubcontainer)
+        self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setFrameShape(QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_3 = QVBoxLayout(self.frame_2)
+        self.verticalLayout_3.setSpacing(0)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 10, 0, 10)
+        self.livingroomBtn = QPushButton(self.frame_2)
+        self.livingroomBtn.setObjectName(u"livingroomBtn")
+        font2 = QFont()
+        font2.setPointSize(12)
+        self.livingroomBtn.setFont(font2)
+        self.livingroomBtn.setStyleSheet(u"background-color: #52a5e0;")
+        icon7 = QIcon()
+        icon7.addFile(u":/icons/icons/tv.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.livingroomBtn.setIcon(icon7)
+        self.livingroomBtn.setIconSize(QSize(24, 24))
+
+        self.verticalLayout_3.addWidget(self.livingroomBtn)
+
+        self.officeBtn = QPushButton(self.frame_2)
+        self.officeBtn.setObjectName(u"officeBtn")
+        self.officeBtn.setFont(font2)
+        icon8 = QIcon()
+        icon8.addFile(u":/icons/icons/archive.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.officeBtn.setIcon(icon8)
+        self.officeBtn.setIconSize(QSize(24, 24))
+
+        self.verticalLayout_3.addWidget(self.officeBtn)
+
+        self.bedroomBtn = QPushButton(self.frame_2)
+        self.bedroomBtn.setObjectName(u"bedroomBtn")
+        self.bedroomBtn.setFont(font2)
+        icon9 = QIcon()
+        icon9.addFile(u":/icons/icons/bed.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.bedroomBtn.setIcon(icon9)
+        self.bedroomBtn.setIconSize(QSize(24, 24))
+
+        self.verticalLayout_3.addWidget(self.bedroomBtn)
+
+
+        self.verticalLayout_2.addWidget(self.frame_2, 0, Qt.AlignTop)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_2.addItem(self.verticalSpacer)
+
+        self.frame_3 = QFrame(self.leftMenuSubcontainer)
+        self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setFrameShape(QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_4 = QHBoxLayout(self.frame_3)
+        self.horizontalLayout_4.setSpacing(0)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0, 10, 0, 10)
+        self.settingsBtn = QPushButton(self.frame_3)
+        self.settingsBtn.setObjectName(u"settingsBtn")
+        self.settingsBtn.setFont(font2)
+        icon10 = QIcon()
+        icon10.addFile(u":/icons/icons/settings.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.settingsBtn.setIcon(icon10)
+        self.settingsBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_4.addWidget(self.settingsBtn)
+
+
+        self.verticalLayout_2.addWidget(self.frame_3, 0, Qt.AlignBottom)
+
+
+        self.verticalLayout.addWidget(self.leftMenuSubcontainer, 0, Qt.AlignLeft)
+
+
+        self.gridLayout.addWidget(self.leftMenuContainer, 0, 0, 1, 1)
+
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
 
-        self.mainPages.setCurrentIndex(3)
+        self.mainPages.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -723,26 +720,6 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-#if QT_CONFIG(tooltip)
-        self.menuBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Menu", None))
-#endif // QT_CONFIG(tooltip)
-        self.menuBtn.setText("")
-#if QT_CONFIG(tooltip)
-        self.livingroomBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Show Livingroom", None))
-#endif // QT_CONFIG(tooltip)
-        self.livingroomBtn.setText(QCoreApplication.translate("MainWindow", u"Sal\u00f3n", None))
-#if QT_CONFIG(tooltip)
-        self.officeBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Show Office", None))
-#endif // QT_CONFIG(tooltip)
-        self.officeBtn.setText(QCoreApplication.translate("MainWindow", u"Oficina", None))
-#if QT_CONFIG(tooltip)
-        self.bedroomBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Show Bedroom", None))
-#endif // QT_CONFIG(tooltip)
-        self.bedroomBtn.setText(QCoreApplication.translate("MainWindow", u"Dormitorio", None))
-#if QT_CONFIG(tooltip)
-        self.settingsBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Go to Settings", None))
-#endif // QT_CONFIG(tooltip)
-        self.settingsBtn.setText(QCoreApplication.translate("MainWindow", u"Ajustes", None))
         self.minimizeBtn.setText("")
         self.maximizeBtn.setText("")
         self.closeBtn.setText("")
@@ -789,5 +766,25 @@ class Ui_MainWindow(object):
         self.connectBtn.setText(QCoreApplication.translate("MainWindow", u"Conectar ", None))
         self.disconnectBtn.setText(QCoreApplication.translate("MainWindow", u"Desconectar", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Version 1.0", None))
+#if QT_CONFIG(tooltip)
+        self.menuBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Menu", None))
+#endif // QT_CONFIG(tooltip)
+        self.menuBtn.setText("")
+#if QT_CONFIG(tooltip)
+        self.livingroomBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Show Livingroom", None))
+#endif // QT_CONFIG(tooltip)
+        self.livingroomBtn.setText(QCoreApplication.translate("MainWindow", u"Sal\u00f3n", None))
+#if QT_CONFIG(tooltip)
+        self.officeBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Show Office", None))
+#endif // QT_CONFIG(tooltip)
+        self.officeBtn.setText(QCoreApplication.translate("MainWindow", u"Oficina", None))
+#if QT_CONFIG(tooltip)
+        self.bedroomBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Show Bedroom", None))
+#endif // QT_CONFIG(tooltip)
+        self.bedroomBtn.setText(QCoreApplication.translate("MainWindow", u"Dormitorio", None))
+#if QT_CONFIG(tooltip)
+        self.settingsBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Go to Settings", None))
+#endif // QT_CONFIG(tooltip)
+        self.settingsBtn.setText(QCoreApplication.translate("MainWindow", u"Ajustes", None))
     # retranslateUi
 
