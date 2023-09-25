@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'DomoticAppfRjlls.ui'
+## Form generated from reading UI file 'DomoticAppHPHOtW.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
+
+from Custom_Widgets.QCustomSlideMenu import QCustomSlideMenu
+from Custom_Widgets.QCustomQStackedWidget import QCustomQStackedWidget
 
 import resources_rc
 
@@ -18,7 +21,9 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(696, 391)
+        MainWindow.resize(677, 525)
+        MainWindow.setMinimumSize(QSize(360, 0))
+        MainWindow.setMaximumSize(QSize(700, 16777215))
         MainWindow.setStyleSheet(u"*{\n"
 "	border: none;\n"
 "	background-color: transparent;\n"
@@ -43,11 +48,11 @@ class Ui_MainWindow(object):
 "	border-bottom-left-radius: 10px;\n"
 "}\n"
 "\n"
-"#ports, #budrates, #lights, #blinds, #temperature, #airConditioner{\n"
+"#ports, #budrates, #livingLights, #livingBlinds, #livingTemperature, #livingAir, #officeLights, #officeBlinds, #officeTemperature, #officeAir{\n"
 "	background-color: #212e36;\n"
 "	border-radius: 10px;\n"
 "	border-style: solid;\n"
-"	border-width: 4px;\n"
+"	border-width: 2.5px;\n"
 "	border-color: #2a3b47;\n"
 "}\n"
 "#control_buttons QPushButton{\n"
@@ -55,17 +60,22 @@ class Ui_MainWindow(object):
 "	border-radius: 15px;\n"
 "	padding: 5px 20px;\n"
 "}\n"
-"")
+"\n"
+"QComboBox QAbstractItemView{\n"
+"	background-color: #2a3b47;\n"
+" \n"
+"	selection-background-color: #52a5e0;\n"
+"}")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralwidget.setStyleSheet(u"")
-        self.horizontalLayout = QHBoxLayout(self.centralwidget)
-        self.horizontalLayout.setSpacing(0)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.leftMenuContainer = QWidget(self.centralwidget)
+        self.gridLayout = QGridLayout(self.centralwidget)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.leftMenuContainer = QCustomSlideMenu(self.centralwidget)
         self.leftMenuContainer.setObjectName(u"leftMenuContainer")
+        self.leftMenuContainer.setMaximumSize(QSize(55, 16777215))
         self.verticalLayout = QVBoxLayout(self.leftMenuContainer)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -169,7 +179,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.leftMenuSubcontainer, 0, Qt.AlignLeft)
 
 
-        self.horizontalLayout.addWidget(self.leftMenuContainer)
+        self.gridLayout.addWidget(self.leftMenuContainer, 0, 0, 1, 1)
 
         self.mainBodyContainer = QWidget(self.centralwidget)
         self.mainBodyContainer.setObjectName(u"mainBodyContainer")
@@ -251,189 +261,312 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.headerContainer, 0, Qt.AlignTop)
 
-        self.stackedWidget = QStackedWidget(self.mainBodyContainer)
-        self.stackedWidget.setObjectName(u"stackedWidget")
+        self.mainPages = QCustomQStackedWidget(self.mainBodyContainer)
+        self.mainPages.setObjectName(u"mainPages")
         sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.stackedWidget.sizePolicy().hasHeightForWidth())
-        self.stackedWidget.setSizePolicy(sizePolicy3)
-        self.stackedWidget.setStyleSheet(u"")
+        sizePolicy3.setHeightForWidth(self.mainPages.sizePolicy().hasHeightForWidth())
+        self.mainPages.setSizePolicy(sizePolicy3)
+        self.mainPages.setStyleSheet(u"")
         self.livingroomPage = QWidget()
         self.livingroomPage.setObjectName(u"livingroomPage")
         self.verticalLayout_5 = QVBoxLayout(self.livingroomPage)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.lights_blinds = QWidget(self.livingroomPage)
-        self.lights_blinds.setObjectName(u"lights_blinds")
-        self.horizontalLayout_9 = QHBoxLayout(self.lights_blinds)
-        self.horizontalLayout_9.setSpacing(15)
-        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
-        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 7)
-        self.lights = QFrame(self.lights_blinds)
-        self.lights.setObjectName(u"lights")
-        self.lights.setFrameShape(QFrame.StyledPanel)
-        self.lights.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_11 = QVBoxLayout(self.lights)
+        self.verticalSpacer_6 = QSpacerItem(20, 71, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_5.addItem(self.verticalSpacer_6)
+
+        self.livingWidgets = QGridLayout()
+        self.livingWidgets.setObjectName(u"livingWidgets")
+        self.livingWidgets.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.livingLights = QWidget(self.livingroomPage)
+        self.livingLights.setObjectName(u"livingLights")
+        self.verticalLayout_11 = QVBoxLayout(self.livingLights)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.label_7 = QLabel(self.lights)
-        self.label_7.setObjectName(u"label_7")
+        self.label_2 = QLabel(self.livingLights)
+        self.label_2.setObjectName(u"label_2")
         font1 = QFont()
         font1.setPointSize(10)
         font1.setBold(True)
         font1.setWeight(75)
-        self.label_7.setFont(font1)
+        self.label_2.setFont(font1)
 
-        self.verticalLayout_11.addWidget(self.label_7, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.verticalLayout_11.addWidget(self.label_2, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
-        self.pushButton = QPushButton(self.lights)
-        self.pushButton.setObjectName(u"pushButton")
-        sizePolicy1.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy1)
+        self.livingLightsBtn = QPushButton(self.livingLights)
+        self.livingLightsBtn.setObjectName(u"livingLightsBtn")
+        sizePolicy1.setHeightForWidth(self.livingLightsBtn.sizePolicy().hasHeightForWidth())
+        self.livingLightsBtn.setSizePolicy(sizePolicy1)
         font2 = QFont()
         font2.setPointSize(10)
-        self.pushButton.setFont(font2)
+        self.livingLightsBtn.setFont(font2)
         icon8 = QIcon()
         icon8.addFile(u":/icons/icons/toggle-left.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton.setIcon(icon8)
-        self.pushButton.setIconSize(QSize(24, 24))
+        self.livingLightsBtn.setIcon(icon8)
+        self.livingLightsBtn.setIconSize(QSize(24, 24))
 
-        self.verticalLayout_11.addWidget(self.pushButton, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.verticalLayout_11.addWidget(self.livingLightsBtn)
 
 
-        self.horizontalLayout_9.addWidget(self.lights)
+        self.livingWidgets.addWidget(self.livingLights, 0, 0, 1, 1)
 
-        self.blinds = QFrame(self.lights_blinds)
-        self.blinds.setObjectName(u"blinds")
-        self.blinds.setFrameShape(QFrame.StyledPanel)
-        self.blinds.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_10 = QVBoxLayout(self.blinds)
-        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.label_8 = QLabel(self.blinds)
-        self.label_8.setObjectName(u"label_8")
-        self.label_8.setFont(font1)
+        self.livingBlinds = QWidget(self.livingroomPage)
+        self.livingBlinds.setObjectName(u"livingBlinds")
+        self.verticalLayout_15 = QVBoxLayout(self.livingBlinds)
+        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
+        self.label_14 = QLabel(self.livingBlinds)
+        self.label_14.setObjectName(u"label_14")
+        self.label_14.setFont(font1)
 
-        self.verticalLayout_10.addWidget(self.label_8, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.verticalLayout_15.addWidget(self.label_14, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
-        self.frame_4 = QFrame(self.blinds)
-        self.frame_4.setObjectName(u"frame_4")
-        self.frame_4.setFrameShape(QFrame.StyledPanel)
-        self.frame_4.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_10 = QHBoxLayout(self.frame_4)
-        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.livingBlindDownBtn = QPushButton(self.frame_4)
+        self.frame_11 = QFrame(self.livingBlinds)
+        self.frame_11.setObjectName(u"frame_11")
+        self.frame_11.setFrameShape(QFrame.StyledPanel)
+        self.frame_11.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_6 = QHBoxLayout(self.frame_11)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.livingBlindDownBtn = QPushButton(self.frame_11)
         self.livingBlindDownBtn.setObjectName(u"livingBlindDownBtn")
         icon9 = QIcon()
         icon9.addFile(u":/icons/icons/chevrons-down.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.livingBlindDownBtn.setIcon(icon9)
         self.livingBlindDownBtn.setIconSize(QSize(24, 24))
 
-        self.horizontalLayout_10.addWidget(self.livingBlindDownBtn)
+        self.horizontalLayout_6.addWidget(self.livingBlindDownBtn)
 
-        self.livingBlindUpBtn = QPushButton(self.frame_4)
+        self.livingBlindUpBtn = QPushButton(self.frame_11)
         self.livingBlindUpBtn.setObjectName(u"livingBlindUpBtn")
         icon10 = QIcon()
         icon10.addFile(u":/icons/icons/chevrons-up.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.livingBlindUpBtn.setIcon(icon10)
         self.livingBlindUpBtn.setIconSize(QSize(24, 24))
 
-        self.horizontalLayout_10.addWidget(self.livingBlindUpBtn)
+        self.horizontalLayout_6.addWidget(self.livingBlindUpBtn)
 
 
-        self.verticalLayout_10.addWidget(self.frame_4)
+        self.verticalLayout_15.addWidget(self.frame_11)
 
 
-        self.horizontalLayout_9.addWidget(self.blinds)
+        self.livingWidgets.addWidget(self.livingBlinds, 0, 1, 1, 1)
+
+        self.livingAir = QWidget(self.livingroomPage)
+        self.livingAir.setObjectName(u"livingAir")
+        self.verticalLayout_16 = QVBoxLayout(self.livingAir)
+        self.verticalLayout_16.setObjectName(u"verticalLayout_16")
+        self.label_15 = QLabel(self.livingAir)
+        self.label_15.setObjectName(u"label_15")
+        self.label_15.setFont(font1)
+
+        self.verticalLayout_16.addWidget(self.label_15, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.livingAirOptions = QFrame(self.livingAir)
+        self.livingAirOptions.setObjectName(u"livingAirOptions")
+        self.livingAirOptions.setFrameShape(QFrame.StyledPanel)
+        self.livingAirOptions.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_15 = QHBoxLayout(self.livingAirOptions)
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.livingAirBtn = QPushButton(self.livingAirOptions)
+        self.livingAirBtn.setObjectName(u"livingAirBtn")
+        self.livingAirBtn.setFont(font2)
+        self.livingAirBtn.setIcon(icon8)
+        self.livingAirBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_15.addWidget(self.livingAirBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.label_16 = QLabel(self.livingAirOptions)
+        self.label_16.setObjectName(u"label_16")
+        self.label_16.setFont(font2)
+
+        self.horizontalLayout_15.addWidget(self.label_16, 0, Qt.AlignRight|Qt.AlignVCenter)
+
+        self.livingAirSpeed = QComboBox(self.livingAirOptions)
+        self.livingAirSpeed.addItem("")
+        self.livingAirSpeed.addItem("")
+        self.livingAirSpeed.addItem("")
+        self.livingAirSpeed.setObjectName(u"livingAirSpeed")
+        self.livingAirSpeed.setFont(font2)
+        self.livingAirSpeed.setEditable(False)
+
+        self.horizontalLayout_15.addWidget(self.livingAirSpeed, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
-        self.verticalLayout_5.addWidget(self.lights_blinds)
+        self.verticalLayout_16.addWidget(self.livingAirOptions)
 
-        self.temp_airConditioner = QWidget(self.livingroomPage)
-        self.temp_airConditioner.setObjectName(u"temp_airConditioner")
-        self.verticalLayout_9 = QVBoxLayout(self.temp_airConditioner)
-        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.temperature = QFrame(self.temp_airConditioner)
-        self.temperature.setObjectName(u"temperature")
-        sizePolicy1.setHeightForWidth(self.temperature.sizePolicy().hasHeightForWidth())
-        self.temperature.setSizePolicy(sizePolicy1)
-        self.temperature.setFrameShape(QFrame.StyledPanel)
-        self.temperature.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_11 = QHBoxLayout(self.temperature)
-        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
-        self.label = QLabel(self.temperature)
+
+        self.livingWidgets.addWidget(self.livingAir, 2, 0, 1, 2)
+
+        self.livingTemperature = QWidget(self.livingroomPage)
+        self.livingTemperature.setObjectName(u"livingTemperature")
+        self.horizontalLayout_16 = QHBoxLayout(self.livingTemperature)
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.label_17 = QLabel(self.livingTemperature)
+        self.label_17.setObjectName(u"label_17")
+        self.label_17.setFont(font1)
+
+        self.horizontalLayout_16.addWidget(self.label_17, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.livingTemperatureLbl = QLabel(self.livingTemperature)
+        self.livingTemperatureLbl.setObjectName(u"livingTemperatureLbl")
+        self.livingTemperatureLbl.setFont(font2)
+
+        self.horizontalLayout_16.addWidget(self.livingTemperatureLbl, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+
+        self.livingWidgets.addWidget(self.livingTemperature, 1, 0, 1, 2)
+
+
+        self.verticalLayout_5.addLayout(self.livingWidgets)
+
+        self.verticalSpacer_7 = QSpacerItem(20, 70, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_5.addItem(self.verticalSpacer_7)
+
+        self.mainPages.addWidget(self.livingroomPage)
+        self.officePage = QWidget()
+        self.officePage.setObjectName(u"officePage")
+        self.verticalLayout_10 = QVBoxLayout(self.officePage)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_10.addItem(self.verticalSpacer_5)
+
+        self.officeWidgets = QGridLayout()
+        self.officeWidgets.setObjectName(u"officeWidgets")
+        self.officeWidgets.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.officeLights = QWidget(self.officePage)
+        self.officeLights.setObjectName(u"officeLights")
+        self.verticalLayout_6 = QVBoxLayout(self.officeLights)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.label = QLabel(self.officeLights)
         self.label.setObjectName(u"label")
         self.label.setFont(font1)
 
-        self.horizontalLayout_11.addWidget(self.label, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.verticalLayout_6.addWidget(self.label, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
-        self.temperaturerLbl = QLabel(self.temperature)
-        self.temperaturerLbl.setObjectName(u"temperaturerLbl")
-        self.temperaturerLbl.setFont(font2)
+        self.officeLightsBtn = QPushButton(self.officeLights)
+        self.officeLightsBtn.setObjectName(u"officeLightsBtn")
+        sizePolicy1.setHeightForWidth(self.officeLightsBtn.sizePolicy().hasHeightForWidth())
+        self.officeLightsBtn.setSizePolicy(sizePolicy1)
+        self.officeLightsBtn.setFont(font2)
+        self.officeLightsBtn.setIcon(icon8)
+        self.officeLightsBtn.setIconSize(QSize(24, 24))
 
-        self.horizontalLayout_11.addWidget(self.temperaturerLbl, 0, Qt.AlignHCenter|Qt.AlignVCenter)
-
-
-        self.verticalLayout_9.addWidget(self.temperature)
-
-        self.airConditioner = QFrame(self.temp_airConditioner)
-        self.airConditioner.setObjectName(u"airConditioner")
-        self.airConditioner.setFrameShape(QFrame.StyledPanel)
-        self.airConditioner.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_12 = QVBoxLayout(self.airConditioner)
-        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
-        self.label_6 = QLabel(self.airConditioner)
-        self.label_6.setObjectName(u"label_6")
-        self.label_6.setFont(font1)
-
-        self.verticalLayout_12.addWidget(self.label_6, 0, Qt.AlignHCenter|Qt.AlignVCenter)
-
-        self.frame_5 = QFrame(self.airConditioner)
-        self.frame_5.setObjectName(u"frame_5")
-        self.frame_5.setFrameShape(QFrame.StyledPanel)
-        self.frame_5.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_12 = QHBoxLayout(self.frame_5)
-        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
-        self.airConditionerBtn = QPushButton(self.frame_5)
-        self.airConditionerBtn.setObjectName(u"airConditionerBtn")
-        self.airConditionerBtn.setFont(font2)
-        self.airConditionerBtn.setIcon(icon8)
-        self.airConditionerBtn.setIconSize(QSize(24, 24))
-
-        self.horizontalLayout_12.addWidget(self.airConditionerBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
-
-        self.label_9 = QLabel(self.frame_5)
-        self.label_9.setObjectName(u"label_9")
-        self.label_9.setFont(font2)
-
-        self.horizontalLayout_12.addWidget(self.label_9, 0, Qt.AlignRight|Qt.AlignVCenter)
-
-        self.airConditionerSpeed = QComboBox(self.frame_5)
-        self.airConditionerSpeed.setObjectName(u"airConditionerSpeed")
-        self.airConditionerSpeed.setFont(font2)
-        self.airConditionerSpeed.setEditable(False)
-
-        self.horizontalLayout_12.addWidget(self.airConditionerSpeed, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.verticalLayout_6.addWidget(self.officeLightsBtn)
 
 
-        self.verticalLayout_12.addWidget(self.frame_5)
+        self.officeWidgets.addWidget(self.officeLights, 0, 0, 1, 1)
+
+        self.officeBlinds = QWidget(self.officePage)
+        self.officeBlinds.setObjectName(u"officeBlinds")
+        self.verticalLayout_13 = QVBoxLayout(self.officeBlinds)
+        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
+        self.label_10 = QLabel(self.officeBlinds)
+        self.label_10.setObjectName(u"label_10")
+        self.label_10.setFont(font1)
+
+        self.verticalLayout_13.addWidget(self.label_10, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.frame_10 = QFrame(self.officeBlinds)
+        self.frame_10.setObjectName(u"frame_10")
+        self.frame_10.setFrameShape(QFrame.StyledPanel)
+        self.frame_10.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout = QHBoxLayout(self.frame_10)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.officeBlindDownBtn = QPushButton(self.frame_10)
+        self.officeBlindDownBtn.setObjectName(u"officeBlindDownBtn")
+        self.officeBlindDownBtn.setIcon(icon9)
+        self.officeBlindDownBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout.addWidget(self.officeBlindDownBtn)
+
+        self.officeBlindUpBtn = QPushButton(self.frame_10)
+        self.officeBlindUpBtn.setObjectName(u"officeBlindUpBtn")
+        self.officeBlindUpBtn.setIcon(icon10)
+        self.officeBlindUpBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout.addWidget(self.officeBlindUpBtn)
 
 
-        self.verticalLayout_9.addWidget(self.airConditioner)
+        self.verticalLayout_13.addWidget(self.frame_10)
 
 
-        self.verticalLayout_5.addWidget(self.temp_airConditioner)
+        self.officeWidgets.addWidget(self.officeBlinds, 0, 1, 1, 1)
 
-        self.stackedWidget.addWidget(self.livingroomPage)
-        self.officePage = QWidget()
-        self.officePage.setObjectName(u"officePage")
-        self.verticalLayout_6 = QVBoxLayout(self.officePage)
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.label_2 = QLabel(self.officePage)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setAlignment(Qt.AlignCenter)
+        self.officeAir = QWidget(self.officePage)
+        self.officeAir.setObjectName(u"officeAir")
+        self.verticalLayout_14 = QVBoxLayout(self.officeAir)
+        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
+        self.label_13 = QLabel(self.officeAir)
+        self.label_13.setObjectName(u"label_13")
+        self.label_13.setFont(font1)
 
-        self.verticalLayout_6.addWidget(self.label_2)
+        self.verticalLayout_14.addWidget(self.label_13, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
-        self.stackedWidget.addWidget(self.officePage)
+        self.officeAirOptions = QFrame(self.officeAir)
+        self.officeAirOptions.setObjectName(u"officeAirOptions")
+        self.officeAirOptions.setFrameShape(QFrame.StyledPanel)
+        self.officeAirOptions.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_14 = QHBoxLayout(self.officeAirOptions)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.officeAirBtn = QPushButton(self.officeAirOptions)
+        self.officeAirBtn.setObjectName(u"officeAirBtn")
+        self.officeAirBtn.setFont(font2)
+        self.officeAirBtn.setIcon(icon8)
+        self.officeAirBtn.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_14.addWidget(self.officeAirBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.label_12 = QLabel(self.officeAirOptions)
+        self.label_12.setObjectName(u"label_12")
+        self.label_12.setFont(font2)
+
+        self.horizontalLayout_14.addWidget(self.label_12, 0, Qt.AlignRight|Qt.AlignVCenter)
+
+        self.officeAirSpeed = QComboBox(self.officeAirOptions)
+        self.officeAirSpeed.addItem("")
+        self.officeAirSpeed.addItem("")
+        self.officeAirSpeed.addItem("")
+        self.officeAirSpeed.setObjectName(u"officeAirSpeed")
+        self.officeAirSpeed.setFont(font2)
+        self.officeAirSpeed.setEditable(False)
+
+        self.horizontalLayout_14.addWidget(self.officeAirSpeed, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+
+        self.verticalLayout_14.addWidget(self.officeAirOptions)
+
+
+        self.officeWidgets.addWidget(self.officeAir, 2, 0, 1, 2)
+
+        self.officeTemperature = QWidget(self.officePage)
+        self.officeTemperature.setObjectName(u"officeTemperature")
+        self.horizontalLayout_13 = QHBoxLayout(self.officeTemperature)
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.label_11 = QLabel(self.officeTemperature)
+        self.label_11.setObjectName(u"label_11")
+        self.label_11.setFont(font1)
+
+        self.horizontalLayout_13.addWidget(self.label_11, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.officeTemperatureLbl = QLabel(self.officeTemperature)
+        self.officeTemperatureLbl.setObjectName(u"officeTemperatureLbl")
+        self.officeTemperatureLbl.setFont(font2)
+
+        self.horizontalLayout_13.addWidget(self.officeTemperatureLbl, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+
+        self.officeWidgets.addWidget(self.officeTemperature, 1, 0, 1, 2)
+
+
+        self.verticalLayout_10.addLayout(self.officeWidgets)
+
+        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_10.addItem(self.verticalSpacer_4)
+
+        self.mainPages.addWidget(self.officePage)
         self.bedroomPage = QWidget()
         self.bedroomPage.setObjectName(u"bedroomPage")
         self.verticalLayout_7 = QVBoxLayout(self.bedroomPage)
@@ -444,7 +577,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_7.addWidget(self.label_3)
 
-        self.stackedWidget.addWidget(self.bedroomPage)
+        self.mainPages.addWidget(self.bedroomPage)
         self.settingsPage = QWidget()
         self.settingsPage.setObjectName(u"settingsPage")
         self.verticalLayout_8 = QVBoxLayout(self.settingsPage)
@@ -494,6 +627,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.addWidget(self.label_5, 0, Qt.AlignHCenter)
 
         self.baudrates_list = QComboBox(self.budrates)
+        self.baudrates_list.addItem("")
+        self.baudrates_list.addItem("")
+        self.baudrates_list.addItem("")
+        self.baudrates_list.addItem("")
+        self.baudrates_list.addItem("")
+        self.baudrates_list.addItem("")
+        self.baudrates_list.addItem("")
         self.baudrates_list.setObjectName(u"baudrates_list")
         self.baudrates_list.setFont(font2)
 
@@ -506,8 +646,8 @@ class Ui_MainWindow(object):
         self.control_buttons.setObjectName(u"control_buttons")
         self.control_buttons.setFrameShape(QFrame.StyledPanel)
         self.control_buttons.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_6 = QHBoxLayout(self.control_buttons)
-        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.verticalLayout_9 = QVBoxLayout(self.control_buttons)
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
         self.updateBtn = QPushButton(self.control_buttons)
         self.updateBtn.setObjectName(u"updateBtn")
         sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -517,7 +657,7 @@ class Ui_MainWindow(object):
         self.updateBtn.setSizePolicy(sizePolicy4)
         self.updateBtn.setFont(font1)
 
-        self.horizontalLayout_6.addWidget(self.updateBtn)
+        self.verticalLayout_9.addWidget(self.updateBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.connectBtn = QPushButton(self.control_buttons)
         self.connectBtn.setObjectName(u"connectBtn")
@@ -525,7 +665,7 @@ class Ui_MainWindow(object):
         self.connectBtn.setSizePolicy(sizePolicy4)
         self.connectBtn.setFont(font1)
 
-        self.horizontalLayout_6.addWidget(self.connectBtn)
+        self.verticalLayout_9.addWidget(self.connectBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.disconnectBtn = QPushButton(self.control_buttons)
         self.disconnectBtn.setObjectName(u"disconnectBtn")
@@ -533,27 +673,49 @@ class Ui_MainWindow(object):
         self.disconnectBtn.setSizePolicy(sizePolicy4)
         self.disconnectBtn.setFont(font1)
 
-        self.horizontalLayout_6.addWidget(self.disconnectBtn)
+        self.verticalLayout_9.addWidget(self.disconnectBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
-        self.verticalLayout_8.addWidget(self.control_buttons, 0, Qt.AlignVCenter)
+        self.verticalLayout_8.addWidget(self.control_buttons)
 
         self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout_8.addItem(self.verticalSpacer_3)
 
-        self.stackedWidget.addWidget(self.settingsPage)
+        self.mainPages.addWidget(self.settingsPage)
 
-        self.verticalLayout_4.addWidget(self.stackedWidget)
+        self.verticalLayout_4.addWidget(self.mainPages)
+
+        self.widget = QWidget(self.mainBodyContainer)
+        self.widget.setObjectName(u"widget")
+        self.widget.setMaximumSize(QSize(16777215, 38))
+        self.horizontalLayout_9 = QHBoxLayout(self.widget)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalLayout_9.setContentsMargins(-1, -1, 0, 0)
+        self.label_6 = QLabel(self.widget)
+        self.label_6.setObjectName(u"label_6")
+
+        self.horizontalLayout_9.addWidget(self.label_6, 0, Qt.AlignLeft)
+
+        self.size_grip = QFrame(self.widget)
+        self.size_grip.setObjectName(u"size_grip")
+        self.size_grip.setMinimumSize(QSize(25, 25))
+        self.size_grip.setFrameShape(QFrame.StyledPanel)
+        self.size_grip.setFrameShadow(QFrame.Raised)
+
+        self.horizontalLayout_9.addWidget(self.size_grip, 0, Qt.AlignRight)
 
 
-        self.horizontalLayout.addWidget(self.mainBodyContainer)
+        self.verticalLayout_4.addWidget(self.widget)
+
+
+        self.gridLayout.addWidget(self.mainBodyContainer, 0, 1, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.mainPages.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -584,22 +746,48 @@ class Ui_MainWindow(object):
         self.minimizeBtn.setText("")
         self.maximizeBtn.setText("")
         self.closeBtn.setText("")
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Luces", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Off", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Persianas", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Luces", None))
+        self.livingLightsBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
+        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Persianas", None))
         self.livingBlindDownBtn.setText("")
         self.livingBlindUpBtn.setText("")
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Temperatura", None))
-        self.temperaturerLbl.setText(QCoreApplication.translate("MainWindow", u"30\u00baC", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Aire Acondicionado", None))
-        self.airConditionerBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u" Velocidad", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Oficina", None))
+        self.label_15.setText(QCoreApplication.translate("MainWindow", u"Aire Acondicionado", None))
+        self.livingAirBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
+        self.label_16.setText(QCoreApplication.translate("MainWindow", u" Velocidad", None))
+        self.livingAirSpeed.setItemText(0, QCoreApplication.translate("MainWindow", u"Baja", None))
+        self.livingAirSpeed.setItemText(1, QCoreApplication.translate("MainWindow", u"Media", None))
+        self.livingAirSpeed.setItemText(2, QCoreApplication.translate("MainWindow", u"Alta", None))
+
+        self.label_17.setText(QCoreApplication.translate("MainWindow", u"Temperatura", None))
+        self.livingTemperatureLbl.setText(QCoreApplication.translate("MainWindow", u"30\u00baC", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Luces", None))
+        self.officeLightsBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
+        self.label_10.setText(QCoreApplication.translate("MainWindow", u"Persianas", None))
+        self.officeBlindDownBtn.setText("")
+        self.officeBlindUpBtn.setText("")
+        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Aire Acondicionado", None))
+        self.officeAirBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u" Velocidad", None))
+        self.officeAirSpeed.setItemText(0, QCoreApplication.translate("MainWindow", u"Baja", None))
+        self.officeAirSpeed.setItemText(1, QCoreApplication.translate("MainWindow", u"Media", None))
+        self.officeAirSpeed.setItemText(2, QCoreApplication.translate("MainWindow", u"Alta", None))
+
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"Temperatura", None))
+        self.officeTemperatureLbl.setText(QCoreApplication.translate("MainWindow", u"30\u00baC", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Dormitorio", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Serial Port", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Baudrate", None))
-        self.updateBtn.setText(QCoreApplication.translate("MainWindow", u"Actualizar Puertos", None))
+        self.baudrates_list.setItemText(0, QCoreApplication.translate("MainWindow", u"1200", None))
+        self.baudrates_list.setItemText(1, QCoreApplication.translate("MainWindow", u"2400", None))
+        self.baudrates_list.setItemText(2, QCoreApplication.translate("MainWindow", u"4800", None))
+        self.baudrates_list.setItemText(3, QCoreApplication.translate("MainWindow", u"9600", None))
+        self.baudrates_list.setItemText(4, QCoreApplication.translate("MainWindow", u"19200", None))
+        self.baudrates_list.setItemText(5, QCoreApplication.translate("MainWindow", u"38400", None))
+        self.baudrates_list.setItemText(6, QCoreApplication.translate("MainWindow", u"115200", None))
+
+        self.updateBtn.setText(QCoreApplication.translate("MainWindow", u"Actualizar", None))
         self.connectBtn.setText(QCoreApplication.translate("MainWindow", u"Conectar ", None))
         self.disconnectBtn.setText(QCoreApplication.translate("MainWindow", u"Desconectar", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Version 1.0", None))
     # retranslateUi
 
