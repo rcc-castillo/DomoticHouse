@@ -5,6 +5,7 @@ import sys
 import os
 from PySide2.QtWidgets import *
 from PySide2 import QtCore, QtGui
+from PySide2.QtSerialPort import QSerialPort, QSerialPortInfo
 
 ########################################################################
 # IMPORT GUI FILE
@@ -31,6 +32,19 @@ class MainWindow(QMainWindow):
         self.menuCollapsedWidth = 55
         self.menuExpandedWidth = 155
 
+        self.data = {
+            "living": 
+                {"temperature": "0", 
+                 "humidity": "0", 
+                 "lights": "off", 
+                 "blinds": "down",
+                 "air": {"speed": "baja", "state": "off"}},
+            "office": 
+                {"temperature": "0", 
+                 "humidity": "0", 
+                 "lights": "off", 
+                 "blinds": "down",
+                 "air": {"speed": "baja", "state": "off"}}}
 
         #Delete window frame and set size grip to resize window
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -49,17 +63,56 @@ class MainWindow(QMainWindow):
         #Set left menu buttons functions
         self.ui.menuBtn.clicked.connect(self.toggleMenu)
         self.ui.livingroomBtn.clicked.connect(lambda: 
-                                              self.changePage("livingroom"))
+                                            self.changePage("livingroom"))
         self.ui.officeBtn.clicked.connect(lambda: self.changePage("office"))
         self.ui.bedroomBtn.clicked.connect(lambda: self.changePage("bedroom"))
         self.ui.settingsBtn.clicked.connect(lambda: self.changePage("settings"))
 
+
+        #Set serial port functions
+        self.serial = QSerialPort()
+        self.ui.updateBtn.clicked.connect(self.readPorts)
+        self.ui.connectBtn.clicked.connect(self.serialConnect)
+        self.ui.disconnectBtn.clicked.connect(lambda: self.serial.close())
+        self.serial.readyRead.connect(self.serialRead)
+
+        #Set room lights buttons functions and set them checkable
+        self.ui.livingLightsBtn.setCheckable(True)
+        self.ui.officeLightsBtn.setCheckable(True)
+        self.ui.livingLightsBtn.clicked.connect(lambda: self.lights("livingLightsBtn", "living"))
+        self.ui.officeLightsBtn.clicked.connect(lambda: self.lights("officeLightsBtn", "office"))
+
+        #Set room blinds buttons functions
+        self.ui.livingBlindUpBtn.clicked.connect(lambda: self.blinds
+                                                ("living", "up"))
+        self.ui.livingBlindDownBtn.clicked.connect(lambda: self.blinds
+                                                ("living", "down"))
+        self.ui.officeBlindUpBtn.clicked.connect(lambda: self.blinds
+                                                ("office", "up"))
+        self.ui.officeBlindDownBtn.clicked.connect(lambda: self.blinds
+                                                ("office", "down"))
+        
+        #Set room air conditioner buttons functions and set them checkable
+        self.ui.livingAirBtn.setCheckable(True)
+        self.ui.officeAirBtn.setCheckable(True)
+        self.ui.livingAirBtn.clicked.connect(lambda: self.airConditioner
+                                                ("livingAirBtn", "living"))
+        self.ui.officeAirBtn.clicked.connect(lambda: self.airConditioner
+                                                ("officeAirBtn", "office"))
+        
+        #Set air conditioner speed
+        self.ui.livingAirSpeed.currentTextChanged.connect(lambda: 
+                                self.setAirSpeed("livingAirSpeed", "living"))
+        self.ui.officeAirSpeed.currentTextChanged.connect(lambda: 
+                                self.setAirSpeed("officeAirSpeed", "office"))
+        
         
 
         self.show() 
 
-
-    #Functions refred to GUI functions
+    ########################################################################
+    ## Functions refred to GUI functions
+    ########################################################################
     def mousePressEvent(self, event):
         """
         Handle mouse press events for the main application window.
@@ -143,6 +196,104 @@ class MainWindow(QMainWindow):
             self.buttonGroupPages[button][1].setStyleSheet(u"background-color: transparent;")
         self.buttonGroupPages[pageName][1].setStyleSheet(u"background-color: #52a5e0;")
 
+    ########################################################################
+    ## Functions refred to serial port
+    ########################################################################
+    def readPorts(self):
+        """
+        Reads all available serial ports and add them to the ports combobox
+        """
+        self.ui.serial_ports_list.clear()
+        ports = QSerialPortInfo.availablePorts()
+        for port in ports:
+            self.ui.serial_ports_list.addItem(port.portName())
+        self.ui.baudrates_list.setCurrentText("9600")
+
+    def serialConnect(self):
+        """
+        Connects to the serial port selected in the ports combobox
+        """
+        self.serial.waitForReadyRead(200)
+        port = self.ui.serial_ports_list.currentText()
+        baudrate = int(self.ui.baudrates_list.currentText())
+        self.serial.setPortName(port)
+        self.serial.setBaudRate(baudrate)
+        self.serial.open(QSerialPort.ReadWrite)
+
+    def serialRead(self):
+        """
+        Reads the serial port and returns the data
+        """
+        if not self.serial.isOpen() or not self.serial.canReadLine(): return
+        self.data = self.serial.readLine().data().decode().strip()
+
+        self.ui.livingTemperatureLbl.setText(
+            self.data["living"]["temperature"] + "ºC")
+        self.ui.livingHumidityLbl.setText(
+            self.data["living"]["humidity"] + "%")
+        
+        self.ui.officeTemperatureLbl.setText(
+            self.data["office"]["temperature"] + "ºC")
+        self.ui.officeTemperatureLbl.setText(
+            self.data["office"]["humidity"] + "%")
+        
+    def sendData(self):
+        """
+        Sends the data to the serial port
+        """
+        print(self.data)
+        #transform data to json and send it to serial port
+        
+
+    ########################################################################
+    ## Functions refred to rooms 
+    ########################################################################
+    def lights(self, roomLightBtn, room):
+        """
+        Sends the command to the serial port to turn on/off the lights and 
+        changes the button icon and text
+        """
+        if not self.serial.isOpen(): return
+        button = getattr(self.ui, roomLightBtn)
+        if button.isChecked():
+            self.data[room]["lights"] = "on"
+            button.setIcon(QtGui.QIcon(":/icons/icons/toggle-right.svg"))
+            button.setText("On")
+        else:
+            self.data[room]["lights"] = "off"
+            button.setIcon(QtGui.QIcon(":/icons/icons/toggle-left.svg"))
+            button.setText("Off")
+        self.sendData()
+
+    def blinds(self, room, direction):
+        if not self.serial.isOpen(): return
+        if self.data[room]["blinds"] == direction: return
+
+        if self.data[room]["blinds"] == "down" and direction == "up":
+            self.data[room]["blinds"] = direction
+        elif self.data[room]["blinds"] == "up" and direction == "down":
+            self.data[room]["blinds"] = direction
+        self.sendData()
+
+    def airConditioner(self, roomAirBtn, room):
+        #if not self.serial.isOpen(): return
+        button = getattr(self.ui, roomAirBtn)
+        if button.isChecked():
+            self.data[room]["air"]["state"] = "on"
+            button.setIcon(QtGui.QIcon(":/icons/icons/toggle-right.svg"))
+            button.setText("On")
+        else:
+            self.data[room]["air"]["state"] = "off"
+            button.setIcon(QtGui.QIcon(":/icons/icons/toggle-left.svg"))
+            button.setText("Off")
+        self.sendData()
+    
+    def setAirSpeed(self, roomAirOptions, room):
+        if not self.serial.isOpen(): return
+        roomAirOptions = getattr(self.ui, roomAirOptions)
+        self.data[room]["air"]["speed"] = roomAirOptions.currentText()
+        self.sendData()
+        
 
 
 ########################################################################

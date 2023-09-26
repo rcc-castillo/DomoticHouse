@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'DomoticAppAVsdcH.ui'
+## Form generated from reading UI file 'DomoticApptdspGj.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -169,43 +169,16 @@ class Ui_MainWindow(object):
         self.livingWidgets = QGridLayout()
         self.livingWidgets.setObjectName(u"livingWidgets")
         self.livingWidgets.setSizeConstraint(QLayout.SetDefaultConstraint)
-        self.livingLights = QWidget(self.livingroomPage)
-        self.livingLights.setObjectName(u"livingLights")
-        self.verticalLayout_11 = QVBoxLayout(self.livingLights)
-        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.label_2 = QLabel(self.livingLights)
-        self.label_2.setObjectName(u"label_2")
-        font = QFont()
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_2.setFont(font)
-
-        self.verticalLayout_11.addWidget(self.label_2, 0, Qt.AlignHCenter|Qt.AlignVCenter)
-
-        self.livingLightsBtn = QPushButton(self.livingLights)
-        self.livingLightsBtn.setObjectName(u"livingLightsBtn")
-        sizePolicy1.setHeightForWidth(self.livingLightsBtn.sizePolicy().hasHeightForWidth())
-        self.livingLightsBtn.setSizePolicy(sizePolicy1)
-        font1 = QFont()
-        font1.setPointSize(10)
-        self.livingLightsBtn.setFont(font1)
-        icon3 = QIcon()
-        icon3.addFile(u":/icons/icons/toggle-left.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.livingLightsBtn.setIcon(icon3)
-        self.livingLightsBtn.setIconSize(QSize(24, 24))
-
-        self.verticalLayout_11.addWidget(self.livingLightsBtn)
-
-
-        self.livingWidgets.addWidget(self.livingLights, 0, 0, 1, 1)
-
         self.livingBlinds = QWidget(self.livingroomPage)
         self.livingBlinds.setObjectName(u"livingBlinds")
         self.verticalLayout_15 = QVBoxLayout(self.livingBlinds)
         self.verticalLayout_15.setObjectName(u"verticalLayout_15")
         self.label_14 = QLabel(self.livingBlinds)
         self.label_14.setObjectName(u"label_14")
+        font = QFont()
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
         self.label_14.setFont(font)
 
         self.verticalLayout_15.addWidget(self.label_14, 0, Qt.AlignHCenter|Qt.AlignVCenter)
@@ -218,18 +191,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.livingBlindDownBtn = QPushButton(self.frame_11)
         self.livingBlindDownBtn.setObjectName(u"livingBlindDownBtn")
-        icon4 = QIcon()
-        icon4.addFile(u":/icons/icons/chevrons-down.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.livingBlindDownBtn.setIcon(icon4)
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/icons/chevrons-down.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.livingBlindDownBtn.setIcon(icon3)
         self.livingBlindDownBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_6.addWidget(self.livingBlindDownBtn)
 
         self.livingBlindUpBtn = QPushButton(self.frame_11)
         self.livingBlindUpBtn.setObjectName(u"livingBlindUpBtn")
-        icon5 = QIcon()
-        icon5.addFile(u":/icons/icons/chevrons-up.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.livingBlindUpBtn.setIcon(icon5)
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/icons/chevrons-up.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.livingBlindUpBtn.setIcon(icon4)
         self.livingBlindUpBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_6.addWidget(self.livingBlindUpBtn)
@@ -239,6 +212,33 @@ class Ui_MainWindow(object):
 
 
         self.livingWidgets.addWidget(self.livingBlinds, 0, 1, 1, 1)
+
+        self.livingLights = QWidget(self.livingroomPage)
+        self.livingLights.setObjectName(u"livingLights")
+        self.verticalLayout_11 = QVBoxLayout(self.livingLights)
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.label_2 = QLabel(self.livingLights)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setFont(font)
+
+        self.verticalLayout_11.addWidget(self.label_2, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.livingLightsBtn = QPushButton(self.livingLights)
+        self.livingLightsBtn.setObjectName(u"livingLightsBtn")
+        sizePolicy1.setHeightForWidth(self.livingLightsBtn.sizePolicy().hasHeightForWidth())
+        self.livingLightsBtn.setSizePolicy(sizePolicy1)
+        font1 = QFont()
+        font1.setPointSize(10)
+        self.livingLightsBtn.setFont(font1)
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/icons/toggle-left.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.livingLightsBtn.setIcon(icon5)
+        self.livingLightsBtn.setIconSize(QSize(24, 24))
+
+        self.verticalLayout_11.addWidget(self.livingLightsBtn)
+
+
+        self.livingWidgets.addWidget(self.livingLights, 0, 0, 1, 1)
 
         self.livingAir = QWidget(self.livingroomPage)
         self.livingAir.setObjectName(u"livingAir")
@@ -259,7 +259,7 @@ class Ui_MainWindow(object):
         self.livingAirBtn = QPushButton(self.livingAirOptions)
         self.livingAirBtn.setObjectName(u"livingAirBtn")
         self.livingAirBtn.setFont(font1)
-        self.livingAirBtn.setIcon(icon3)
+        self.livingAirBtn.setIcon(icon5)
         self.livingAirBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_15.addWidget(self.livingAirBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
@@ -286,24 +286,54 @@ class Ui_MainWindow(object):
 
         self.livingWidgets.addWidget(self.livingAir, 2, 0, 1, 2)
 
-        self.livingTemperature = QWidget(self.livingroomPage)
-        self.livingTemperature.setObjectName(u"livingTemperature")
-        self.horizontalLayout_16 = QHBoxLayout(self.livingTemperature)
-        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
-        self.label_17 = QLabel(self.livingTemperature)
-        self.label_17.setObjectName(u"label_17")
-        self.label_17.setFont(font)
+        self.livingHumidTemp = QWidget(self.livingroomPage)
+        self.livingHumidTemp.setObjectName(u"livingHumidTemp")
+        self.verticalLayout_12 = QVBoxLayout(self.livingHumidTemp)
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.livingTemp = QFrame(self.livingHumidTemp)
+        self.livingTemp.setObjectName(u"livingTemp")
+        self.livingTemp.setFrameShape(QFrame.StyledPanel)
+        self.livingTemp.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_11 = QHBoxLayout(self.livingTemp)
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.label_18 = QLabel(self.livingTemp)
+        self.label_18.setObjectName(u"label_18")
+        self.label_18.setFont(font)
 
-        self.horizontalLayout_16.addWidget(self.label_17, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.horizontalLayout_11.addWidget(self.label_18)
 
-        self.livingTemperatureLbl = QLabel(self.livingTemperature)
+        self.livingTemperatureLbl = QLabel(self.livingTemp)
         self.livingTemperatureLbl.setObjectName(u"livingTemperatureLbl")
         self.livingTemperatureLbl.setFont(font1)
 
-        self.horizontalLayout_16.addWidget(self.livingTemperatureLbl, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.horizontalLayout_11.addWidget(self.livingTemperatureLbl)
 
 
-        self.livingWidgets.addWidget(self.livingTemperature, 1, 0, 1, 2)
+        self.verticalLayout_12.addWidget(self.livingTemp)
+
+        self.livingHumid = QFrame(self.livingHumidTemp)
+        self.livingHumid.setObjectName(u"livingHumid")
+        self.livingHumid.setFrameShape(QFrame.StyledPanel)
+        self.livingHumid.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_10 = QHBoxLayout(self.livingHumid)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.label_17 = QLabel(self.livingHumid)
+        self.label_17.setObjectName(u"label_17")
+        self.label_17.setFont(font)
+
+        self.horizontalLayout_10.addWidget(self.label_17)
+
+        self.livingHumidityLbl = QLabel(self.livingHumid)
+        self.livingHumidityLbl.setObjectName(u"livingHumidityLbl")
+        self.livingHumidityLbl.setFont(font1)
+
+        self.horizontalLayout_10.addWidget(self.livingHumidityLbl)
+
+
+        self.verticalLayout_12.addWidget(self.livingHumid)
+
+
+        self.livingWidgets.addWidget(self.livingHumidTemp, 1, 0, 1, 2)
 
 
         self.verticalLayout_5.addLayout(self.livingWidgets)
@@ -339,7 +369,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.officeLightsBtn.sizePolicy().hasHeightForWidth())
         self.officeLightsBtn.setSizePolicy(sizePolicy1)
         self.officeLightsBtn.setFont(font1)
-        self.officeLightsBtn.setIcon(icon3)
+        self.officeLightsBtn.setIcon(icon5)
         self.officeLightsBtn.setIconSize(QSize(24, 24))
 
         self.verticalLayout_6.addWidget(self.officeLightsBtn)
@@ -365,14 +395,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.officeBlindDownBtn = QPushButton(self.frame_10)
         self.officeBlindDownBtn.setObjectName(u"officeBlindDownBtn")
-        self.officeBlindDownBtn.setIcon(icon4)
+        self.officeBlindDownBtn.setIcon(icon3)
         self.officeBlindDownBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout.addWidget(self.officeBlindDownBtn)
 
         self.officeBlindUpBtn = QPushButton(self.frame_10)
         self.officeBlindUpBtn.setObjectName(u"officeBlindUpBtn")
-        self.officeBlindUpBtn.setIcon(icon5)
+        self.officeBlindUpBtn.setIcon(icon4)
         self.officeBlindUpBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout.addWidget(self.officeBlindUpBtn)
@@ -402,7 +432,7 @@ class Ui_MainWindow(object):
         self.officeAirBtn = QPushButton(self.officeAirOptions)
         self.officeAirBtn.setObjectName(u"officeAirBtn")
         self.officeAirBtn.setFont(font1)
-        self.officeAirBtn.setIcon(icon3)
+        self.officeAirBtn.setIcon(icon5)
         self.officeAirBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_14.addWidget(self.officeAirBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
@@ -429,24 +459,54 @@ class Ui_MainWindow(object):
 
         self.officeWidgets.addWidget(self.officeAir, 2, 0, 1, 2)
 
-        self.officeTemperature = QWidget(self.officePage)
-        self.officeTemperature.setObjectName(u"officeTemperature")
-        self.horizontalLayout_13 = QHBoxLayout(self.officeTemperature)
+        self.HumidTemp = QWidget(self.officePage)
+        self.HumidTemp.setObjectName(u"HumidTemp")
+        self.verticalLayout_17 = QVBoxLayout(self.HumidTemp)
+        self.verticalLayout_17.setObjectName(u"verticalLayout_17")
+        self.officeTemp = QFrame(self.HumidTemp)
+        self.officeTemp.setObjectName(u"officeTemp")
+        self.officeTemp.setFrameShape(QFrame.StyledPanel)
+        self.officeTemp.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_13 = QHBoxLayout(self.officeTemp)
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.label_11 = QLabel(self.officeTemperature)
-        self.label_11.setObjectName(u"label_11")
-        self.label_11.setFont(font)
+        self.label_20 = QLabel(self.officeTemp)
+        self.label_20.setObjectName(u"label_20")
+        self.label_20.setFont(font)
 
-        self.horizontalLayout_13.addWidget(self.label_11, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.horizontalLayout_13.addWidget(self.label_20)
 
-        self.officeTemperatureLbl = QLabel(self.officeTemperature)
+        self.officeTemperatureLbl = QLabel(self.officeTemp)
         self.officeTemperatureLbl.setObjectName(u"officeTemperatureLbl")
         self.officeTemperatureLbl.setFont(font1)
 
-        self.horizontalLayout_13.addWidget(self.officeTemperatureLbl, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.horizontalLayout_13.addWidget(self.officeTemperatureLbl)
 
 
-        self.officeWidgets.addWidget(self.officeTemperature, 1, 0, 1, 2)
+        self.verticalLayout_17.addWidget(self.officeTemp)
+
+        self.officeHumid = QFrame(self.HumidTemp)
+        self.officeHumid.setObjectName(u"officeHumid")
+        self.officeHumid.setFrameShape(QFrame.StyledPanel)
+        self.officeHumid.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_12 = QHBoxLayout(self.officeHumid)
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        self.label_19 = QLabel(self.officeHumid)
+        self.label_19.setObjectName(u"label_19")
+        self.label_19.setFont(font)
+
+        self.horizontalLayout_12.addWidget(self.label_19)
+
+        self.officeHumidityLbl = QLabel(self.officeHumid)
+        self.officeHumidityLbl.setObjectName(u"officeHumidityLbl")
+        self.officeHumidityLbl.setFont(font1)
+
+        self.horizontalLayout_12.addWidget(self.officeHumidityLbl)
+
+
+        self.verticalLayout_17.addWidget(self.officeHumid)
+
+
+        self.officeWidgets.addWidget(self.HumidTemp, 1, 0, 1, 2)
 
 
         self.verticalLayout_10.addLayout(self.officeWidgets)
@@ -723,11 +783,11 @@ class Ui_MainWindow(object):
         self.minimizeBtn.setText("")
         self.maximizeBtn.setText("")
         self.closeBtn.setText("")
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Luces", None))
-        self.livingLightsBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Persianas", None))
         self.livingBlindDownBtn.setText("")
         self.livingBlindUpBtn.setText("")
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Luces", None))
+        self.livingLightsBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Aire Acondicionado", None))
         self.livingAirBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u" Velocidad", None))
@@ -735,8 +795,10 @@ class Ui_MainWindow(object):
         self.livingAirSpeed.setItemText(1, QCoreApplication.translate("MainWindow", u"Media", None))
         self.livingAirSpeed.setItemText(2, QCoreApplication.translate("MainWindow", u"Alta", None))
 
-        self.label_17.setText(QCoreApplication.translate("MainWindow", u"Temperatura", None))
+        self.label_18.setText(QCoreApplication.translate("MainWindow", u"Temperatura", None))
         self.livingTemperatureLbl.setText(QCoreApplication.translate("MainWindow", u"30\u00baC", None))
+        self.label_17.setText(QCoreApplication.translate("MainWindow", u"Humedad", None))
+        self.livingHumidityLbl.setText(QCoreApplication.translate("MainWindow", u"50%", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Luces", None))
         self.officeLightsBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"Persianas", None))
@@ -749,8 +811,10 @@ class Ui_MainWindow(object):
         self.officeAirSpeed.setItemText(1, QCoreApplication.translate("MainWindow", u"Media", None))
         self.officeAirSpeed.setItemText(2, QCoreApplication.translate("MainWindow", u"Alta", None))
 
-        self.label_11.setText(QCoreApplication.translate("MainWindow", u"Temperatura", None))
+        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Temperatura", None))
         self.officeTemperatureLbl.setText(QCoreApplication.translate("MainWindow", u"30\u00baC", None))
+        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Humedad", None))
+        self.officeHumidityLbl.setText(QCoreApplication.translate("MainWindow", u"50%", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Dormitorio", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Serial Port", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Baudrate", None))
