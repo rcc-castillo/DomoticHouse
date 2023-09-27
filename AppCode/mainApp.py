@@ -286,7 +286,7 @@ class MainWindow(QMainWindow):
             button.setText("Off")
         self.sendData()
     
-    def setAirSpeed(self, roomAirOptions, room):
+    def setAirSpeed(self, roomAirOptions, room): 
         #if not self.serial.isOpen(): return
         roomAirOptions = getattr(self.ui, roomAirOptions)
         self.data[room]["air"]["speed"] = roomAirOptions.currentText()
