@@ -106,8 +106,6 @@ class MainWindow(QMainWindow):
         self.ui.officeAirSpeed.currentTextChanged.connect(lambda: 
                                 self.setAirSpeed("officeAirSpeed", "office"))
         
-        
-
         self.show() 
 
     ########################################################################
@@ -253,7 +251,7 @@ class MainWindow(QMainWindow):
         Sends the command to the serial port to turn on/off the lights and 
         changes the button icon and text
         """
-        if not self.serial.isOpen(): return
+        #if not self.serial.isOpen(): return
         button = getattr(self.ui, roomLightBtn)
         if button.isChecked():
             self.data[room]["lights"] = "on"
@@ -266,7 +264,7 @@ class MainWindow(QMainWindow):
         self.sendData()
 
     def blinds(self, room, direction):
-        if not self.serial.isOpen(): return
+        #if not self.serial.isOpen(): return
         if self.data[room]["blinds"] == direction: return
 
         if self.data[room]["blinds"] == "down" and direction == "up":
@@ -289,13 +287,11 @@ class MainWindow(QMainWindow):
         self.sendData()
     
     def setAirSpeed(self, roomAirOptions, room):
-        if not self.serial.isOpen(): return
+        #if not self.serial.isOpen(): return
         roomAirOptions = getattr(self.ui, roomAirOptions)
         self.data[room]["air"]["speed"] = roomAirOptions.currentText()
         self.sendData()
         
-
-
 ########################################################################
 ## EXECUTE APP
 ########################################################################
