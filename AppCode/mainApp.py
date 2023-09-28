@@ -1,8 +1,7 @@
 ########################################################################
 ## IMPORTS
 ########################################################################
-import sys
-import os
+import sys, json
 from PySide2.QtWidgets import *
 from PySide2 import QtCore, QtGui
 from PySide2.QtSerialPort import QSerialPort, QSerialPortInfo
@@ -45,20 +44,9 @@ class MainWindow(QMainWindow):
                  "lights": "off", 
                  "blinds": "down",
                  "air": {"speed": "baja", "state": "off"}}}
-
-        #Delete window frame and set size grip to resize window
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        QSizeGrip(getattr(self.ui, "size_grip"))
-
-        #Set window title bar buttons
-        self.ui.minimizeBtn.clicked.connect(lambda: self.showMinimized())
-        self.ui.closeBtn.clicked.connect(lambda: self.close())
-        self.ui.maximizeBtn.clicked.connect(lambda: 
-                                            self.restore_or_maximize_window())
         
-        #Set window title bar functions to move window and toggle window size
-        self.ui.headerContainer.mouseMoveEvent = self.moveWindow
-        self.ui.headerContainer.mouseDoubleClickEvent = self.toggleWindowSize
+        self.setWindowTitle("Domotic App")
+        self.setWindowIcon(QtGui.QIcon(":/icons/icons/window-icon.ico"))
 
         #Set left menu buttons functions
         self.ui.menuBtn.clicked.connect(self.toggleMenu)
@@ -70,10 +58,11 @@ class MainWindow(QMainWindow):
 
 
         #Set serial port functions
+        self.ui.disconnectBtn.hide()
         self.serial = QSerialPort()
         self.ui.updateBtn.clicked.connect(self.readPorts)
         self.ui.connectBtn.clicked.connect(self.serialConnect)
-        self.ui.disconnectBtn.clicked.connect(lambda: self.serial.close())
+        self.ui.disconnectBtn.clicked.connect(lambda: self.serialDisconnect())
         self.serial.readyRead.connect(self.serialRead)
 
         #Set room lights buttons functions and set them checkable
@@ -111,48 +100,6 @@ class MainWindow(QMainWindow):
     ########################################################################
     ## Functions refred to GUI functions
     ########################################################################
-    def mousePressEvent(self, event):
-        """
-        Handle mouse press events for the main application window.
-
-        :param event: The mouse press event.
-        """
-        self.clickPosition = event.globalPos()
-        cursor = QtGui.QCursor()
-        xPos = cursor.pos().x()
-        yPos = cursor.pos().y()
-        if hasattr(self, "floatingWidgets"):
-            for x in self.floatingWidgets:
-                if hasattr(x, "autoHide") and x.autoHide:
-                    x.collapseMenu()
-
-    def moveWindow(self, e):
-            """
-            Moves the window when the left mouse button is clicked and dragged.
-
-            Args:
-                e (QMouseEvent): The mouse event that triggered the method.
-            """
-            if not self.isMaximized():
-                if e.buttons() == Qt.LeftButton:
-                    if self.clickPosition is not None:
-                        self.move(self.pos() + e.globalPos() - self.clickPosition)
-                        self.clickPosition = e.globalPos()
-                        e.accept()
-            else:
-                self.showNormal()
-    
-    def toggleWindowSize(self, e):
-            """
-            Toggles the size of the window between maximized and normal.
-
-            :param e: The event that triggered the method.
-            """
-            if self.isMaximized():
-                self.showNormal()
-            else:
-                self.showMaximized()
-
     def toggleMenu(self):
         """
         Toggles the visibility of the left menu container by animating its
@@ -169,18 +116,6 @@ class MainWindow(QMainWindow):
         self.animation.setStartValue(self.ui.leftMenuContainer.width())
         self.animation.setEndValue(width)
         self.animation.start()
-    
-    def restore_or_maximize_window(self):
-            """
-            Restores or maximizes the window depending on its current state.
-            """
-            if self.isMaximized():
-                self.showNormal()
-                self.ui.maximizeBtn.setIcon(QtGui.QIcon(":/icons/icons/square.svg"))
-                   
-            else:
-                self.showMaximized()
-                self.ui.maximizeBtn.setIcon(QtGui.QIcon(":/icons/icons/copy.svg"))
 
     def changePage(self, pageName):
         """
@@ -208,15 +143,29 @@ class MainWindow(QMainWindow):
         self.ui.baudrates_list.setCurrentText("9600")
 
     def serialConnect(self):
+            """
+            Connects to the serial port selected in the ports combobox.
+            Sets the port name and baudrate, opens the serial port for reading and writing.
+            Hides the connect button and shows the disconnect button if the serial port is successfully opened.
+            """
+            self.serial.waitForReadyRead(200)
+            port = self.ui.serial_ports_list.currentText()
+            baudrate = int(self.ui.baudrates_list.currentText())
+            self.serial.setPortName(port)
+            self.serial.setBaudRate(baudrate)
+            self.serial.open(QIODevice.ReadWrite)
+            if self.serial.isOpen():
+                self.ui.connectBtn.hide()
+                self.ui.disconnectBtn.show()
+
+    def serialDisconnect(self):
         """
-        Connects to the serial port selected in the ports combobox
+        Disconnects from the serial port and updates the UI accordingly.
         """
-        self.serial.waitForReadyRead(200)
-        port = self.ui.serial_ports_list.currentText()
-        baudrate = int(self.ui.baudrates_list.currentText())
-        self.serial.setPortName(port)
-        self.serial.setBaudRate(baudrate)
-        self.serial.open(QSerialPort.ReadWrite)
+        self.serial.close()
+        if not self.serial.isOpen():
+            self.ui.connectBtn.show()
+            self.ui.disconnectBtn.hide()
 
     def serialRead(self):
         """
@@ -240,7 +189,11 @@ class MainWindow(QMainWindow):
         Sends the data to the serial port
         """
         print(self.data)
-        #transform data to json and send it to serial port
+        json_data = json.dumps(self.data)
+
+        # Abre el puerto serie si está disponible
+        if not self.serial.isOpen(): return
+        self.serial.write(json_data.encode())
         
 
     ########################################################################
@@ -251,7 +204,7 @@ class MainWindow(QMainWindow):
         Sends the command to the serial port to turn on/off the lights and 
         changes the button icon and text
         """
-        #if not self.serial.isOpen(): return
+        if not self.serial.isOpen(): return
         button = getattr(self.ui, roomLightBtn)
         if button.isChecked():
             self.data[room]["lights"] = "on"
@@ -264,7 +217,7 @@ class MainWindow(QMainWindow):
         self.sendData()
 
     def blinds(self, room, direction):
-        #if not self.serial.isOpen(): return
+        if not self.serial.isOpen(): return
         if self.data[room]["blinds"] == direction: return
 
         if self.data[room]["blinds"] == "down" and direction == "up":
@@ -274,7 +227,7 @@ class MainWindow(QMainWindow):
         self.sendData()
 
     def airConditioner(self, roomAirBtn, room):
-        #if not self.serial.isOpen(): return
+        if not self.serial.isOpen(): return
         button = getattr(self.ui, roomAirBtn)
         if button.isChecked():
             self.data[room]["air"]["state"] = "on"
@@ -287,7 +240,7 @@ class MainWindow(QMainWindow):
         self.sendData()
     
     def setAirSpeed(self, roomAirOptions, room): 
-        #if not self.serial.isOpen(): return
+        if not self.serial.isOpen(): return
         roomAirOptions = getattr(self.ui, roomAirOptions)
         self.data[room]["air"]["speed"] = roomAirOptions.currentText()
         self.sendData()

@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>605</width>
-    <height>525</height>
+    <width>700</width>
+    <height>531</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>360</width>
+    <width>365</width>
     <height>0</height>
    </size>
   </property>
@@ -50,7 +50,7 @@
 	border-bottom-left-radius: 10px;
 }
 
-#ports, #budrates, #livingLights, #livingBlinds, #livingTemperature, #livingAir, #officeLights, #officeBlinds, #officeTemperature, #officeAir{
+#ports, #budrates, #livingLights, #livingBlinds, #livingHumidTemp, #livingAir, #officeLights, #officeBlinds, #officeHumidTemp, #officeAir{
 	background-color: #212e36;
 	border-radius: 10px;
 	border-style: solid;
@@ -65,7 +65,6 @@
 
 QComboBox QAbstractItemView{
 	background-color: #2a3b47;
- 
 	selection-background-color: #52a5e0;
 }</string>
   </property>
@@ -122,119 +121,35 @@ QComboBox QAbstractItemView{
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
-           <widget class="QFrame" name="logo">
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QFrame" name="botones_ventana">
+          <item alignment="Qt::AlignLeft">
+           <widget class="QLabel" name="logo">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+            <property name="minimumSize">
+             <size>
+              <width>270</width>
+              <height>50</height>
+             </size>
             </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
+            <property name="maximumSize">
+             <size>
+              <width>270</width>
+              <height>50</height>
+             </size>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_8">
-             <item>
-              <widget class="QPushButton" name="minimizeBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>40</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../AppCode/resources.qrc">
-                 <normaloff>:/icons/icons/minus.svg</normaloff>:/icons/icons/minus.svg</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>16</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="maximizeBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>40</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../AppCode/resources.qrc">
-                 <normaloff>:/icons/icons/square.svg</normaloff>:/icons/icons/square.svg</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>16</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="closeBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>40</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../AppCode/resources.qrc">
-                 <normaloff>:/icons/icons/x.svg</normaloff>:/icons/icons/x.svg</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>16</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="../AppCode/resources.qrc">:/icons/icons/app-icon.svg</pixmap>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
          </layout>
@@ -252,9 +167,9 @@ QComboBox QAbstractItemView{
           <string notr="true"/>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
-         <widget class="QWidget" name="livingroomPage" native="true">
+         <widget class="QWidget" name="livingroomPage">
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <item>
             <spacer name="verticalSpacer_6">
@@ -302,6 +217,9 @@ QComboBox QAbstractItemView{
                   <layout class="QHBoxLayout" name="horizontalLayout_6">
                    <item>
                     <widget class="QPushButton" name="livingBlindDownBtn">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
                      <property name="text">
                       <string/>
                      </property>
@@ -319,6 +237,9 @@ QComboBox QAbstractItemView{
                    </item>
                    <item>
                     <widget class="QPushButton" name="livingBlindUpBtn">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
                      <property name="text">
                       <string/>
                      </property>
@@ -370,6 +291,9 @@ QComboBox QAbstractItemView{
                     <pointsize>10</pointsize>
                    </font>
                   </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
                   <property name="text">
                    <string>Off</string>
                   </property>
@@ -420,6 +344,9 @@ QComboBox QAbstractItemView{
                       <font>
                        <pointsize>10</pointsize>
                       </font>
+                     </property>
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
                      </property>
                      <property name="text">
                       <string>Off</string>
@@ -493,7 +420,7 @@ QComboBox QAbstractItemView{
                    <enum>QFrame::Raised</enum>
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_11">
-                   <item>
+                   <item alignment="Qt::AlignHCenter">
                     <widget class="QLabel" name="label_18">
                      <property name="font">
                       <font>
@@ -507,7 +434,7 @@ QComboBox QAbstractItemView{
                      </property>
                     </widget>
                    </item>
-                   <item>
+                   <item alignment="Qt::AlignHCenter">
                     <widget class="QLabel" name="livingTemperatureLbl">
                      <property name="font">
                       <font>
@@ -531,7 +458,7 @@ QComboBox QAbstractItemView{
                    <enum>QFrame::Raised</enum>
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_10">
-                   <item>
+                   <item alignment="Qt::AlignHCenter">
                     <widget class="QLabel" name="label_17">
                      <property name="font">
                       <font>
@@ -545,7 +472,7 @@ QComboBox QAbstractItemView{
                      </property>
                     </widget>
                    </item>
-                   <item>
+                   <item alignment="Qt::AlignHCenter">
                     <widget class="QLabel" name="livingHumidityLbl">
                      <property name="font">
                       <font>
@@ -580,7 +507,7 @@ QComboBox QAbstractItemView{
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="officePage" native="true">
+         <widget class="QWidget" name="officePage">
           <layout class="QVBoxLayout" name="verticalLayout_10">
            <item>
             <spacer name="verticalSpacer_5">
@@ -630,6 +557,9 @@ QComboBox QAbstractItemView{
                     <pointsize>10</pointsize>
                    </font>
                   </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
                   <property name="text">
                    <string>Off</string>
                   </property>
@@ -676,6 +606,9 @@ QComboBox QAbstractItemView{
                   <layout class="QHBoxLayout" name="horizontalLayout">
                    <item>
                     <widget class="QPushButton" name="officeBlindDownBtn">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
                      <property name="text">
                       <string/>
                      </property>
@@ -693,6 +626,9 @@ QComboBox QAbstractItemView{
                    </item>
                    <item>
                     <widget class="QPushButton" name="officeBlindUpBtn">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
                      <property name="text">
                       <string/>
                      </property>
@@ -746,6 +682,9 @@ QComboBox QAbstractItemView{
                       <font>
                        <pointsize>10</pointsize>
                       </font>
+                     </property>
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
                      </property>
                      <property name="text">
                       <string>Off</string>
@@ -808,7 +747,7 @@ QComboBox QAbstractItemView{
               </widget>
              </item>
              <item row="1" column="0" colspan="2">
-              <widget class="QWidget" name="HumidTemp" native="true">
+              <widget class="QWidget" name="officeHumidTemp" native="true">
                <layout class="QVBoxLayout" name="verticalLayout_17">
                 <item>
                  <widget class="QFrame" name="officeTemp">
@@ -819,7 +758,7 @@ QComboBox QAbstractItemView{
                    <enum>QFrame::Raised</enum>
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_13">
-                   <item>
+                   <item alignment="Qt::AlignHCenter">
                     <widget class="QLabel" name="label_20">
                      <property name="font">
                       <font>
@@ -833,7 +772,7 @@ QComboBox QAbstractItemView{
                      </property>
                     </widget>
                    </item>
-                   <item>
+                   <item alignment="Qt::AlignHCenter">
                     <widget class="QLabel" name="officeTemperatureLbl">
                      <property name="font">
                       <font>
@@ -857,7 +796,7 @@ QComboBox QAbstractItemView{
                    <enum>QFrame::Raised</enum>
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_12">
-                   <item>
+                   <item alignment="Qt::AlignHCenter">
                     <widget class="QLabel" name="label_19">
                      <property name="font">
                       <font>
@@ -871,7 +810,7 @@ QComboBox QAbstractItemView{
                      </property>
                     </widget>
                    </item>
-                   <item>
+                   <item alignment="Qt::AlignHCenter">
                     <widget class="QLabel" name="officeHumidityLbl">
                      <property name="font">
                       <font>
@@ -906,7 +845,7 @@ QComboBox QAbstractItemView{
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="bedroomPage" native="true">
+         <widget class="QWidget" name="bedroomPage">
           <layout class="QVBoxLayout" name="verticalLayout_7">
            <item>
             <widget class="QLabel" name="label_3">
@@ -920,7 +859,7 @@ QComboBox QAbstractItemView{
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="settingsPage" native="true">
+         <widget class="QWidget" name="settingsPage">
           <layout class="QVBoxLayout" name="verticalLayout_8">
            <item>
             <spacer name="verticalSpacer_2">
@@ -1085,6 +1024,9 @@ QComboBox QAbstractItemView{
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="text">
                  <string>Actualizar</string>
                 </property>
@@ -1105,6 +1047,9 @@ QComboBox QAbstractItemView{
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="text">
                  <string>Conectar </string>
                 </property>
@@ -1124,6 +1069,9 @@ QComboBox QAbstractItemView{
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="text">
                  <string>Desconectar</string>
@@ -1151,7 +1099,7 @@ QComboBox QAbstractItemView{
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="widget" native="true">
+        <widget class="QWidget" name="footerContainer" native="true">
          <property name="maximumSize">
           <size>
            <width>16777215</width>
@@ -1169,22 +1117,6 @@ QComboBox QAbstractItemView{
            <widget class="QLabel" name="label_6">
             <property name="text">
              <string>Version 1.0</string>
-            </property>
-           </widget>
-          </item>
-          <item alignment="Qt::AlignRight">
-           <widget class="QFrame" name="size_grip">
-            <property name="minimumSize">
-             <size>
-              <width>25</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
             </property>
            </widget>
           </item>
@@ -1262,6 +1194,9 @@ QComboBox QAbstractItemView{
              </property>
              <item>
               <widget class="QPushButton" name="menuBtn">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="toolTip">
                 <string>Menu</string>
                </property>
@@ -1314,6 +1249,9 @@ QComboBox QAbstractItemView{
                  <pointsize>12</pointsize>
                 </font>
                </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="toolTip">
                 <string>Show Livingroom</string>
                </property>
@@ -1342,6 +1280,9 @@ QComboBox QAbstractItemView{
                  <pointsize>12</pointsize>
                 </font>
                </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="toolTip">
                 <string>Show Office</string>
                </property>
@@ -1366,6 +1307,9 @@ QComboBox QAbstractItemView{
                 <font>
                  <pointsize>12</pointsize>
                 </font>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
                </property>
                <property name="toolTip">
                 <string>Show Bedroom</string>
@@ -1431,6 +1375,9 @@ QComboBox QAbstractItemView{
                 <font>
                  <pointsize>12</pointsize>
                 </font>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
                </property>
                <property name="toolTip">
                 <string>Go to Settings</string>
