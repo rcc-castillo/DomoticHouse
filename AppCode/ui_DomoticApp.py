@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'DomoticAppTbuTWS.ui'
+## Form generated from reading UI file 'DomoticAppyBTjMe.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -18,7 +18,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(700, 531)
+        MainWindow.resize(700, 540)
         MainWindow.setMinimumSize(QSize(365, 0))
         MainWindow.setMaximumSize(QSize(700, 16777215))
         MainWindow.setStyleSheet(u"*{\n"
@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
 "	border-width: 2.5px;\n"
 "	border-color: #2a3b47;\n"
 "}\n"
-"#control_buttons QPushButton{\n"
+"#settingsPage QPushButton{\n"
 "	background-color: #52a5e0;\n"
 "	border-radius: 15px;\n"
 "	padding: 5px 20px;\n"
@@ -499,7 +499,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_8.addItem(self.verticalSpacer_2)
 
-        self.ports = QFrame(self.settingsPage)
+        self.serialPortConection = QFrame(self.settingsPage)
+        self.serialPortConection.setObjectName(u"serialPortConection")
+        self.serialPortConection.setFrameShape(QFrame.StyledPanel)
+        self.serialPortConection.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_18 = QVBoxLayout(self.serialPortConection)
+        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
+        self.ports = QFrame(self.serialPortConection)
         self.ports.setObjectName(u"ports")
         self.ports.setStyleSheet(u"")
         self.ports.setFrameShape(QFrame.StyledPanel)
@@ -523,9 +529,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.serial_ports_list, 0, Qt.AlignHCenter)
 
 
-        self.verticalLayout_8.addWidget(self.ports, 0, Qt.AlignVCenter)
+        self.verticalLayout_18.addWidget(self.ports)
 
-        self.budrates = QFrame(self.settingsPage)
+        self.budrates = QFrame(self.serialPortConection)
         self.budrates.setObjectName(u"budrates")
         sizePolicy3.setHeightForWidth(self.budrates.sizePolicy().hasHeightForWidth())
         self.budrates.setSizePolicy(sizePolicy3)
@@ -553,9 +559,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.addWidget(self.baudrates_list, 0, Qt.AlignHCenter)
 
 
-        self.verticalLayout_8.addWidget(self.budrates, 0, Qt.AlignVCenter)
+        self.verticalLayout_18.addWidget(self.budrates)
 
-        self.control_buttons = QFrame(self.settingsPage)
+        self.control_buttons = QFrame(self.serialPortConection)
         self.control_buttons.setObjectName(u"control_buttons")
         self.control_buttons.setFrameShape(QFrame.StyledPanel)
         self.control_buttons.setFrameShadow(QFrame.Raised)
@@ -589,7 +595,18 @@ class Ui_MainWindow(object):
         self.verticalLayout_9.addWidget(self.disconnectBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
-        self.verticalLayout_8.addWidget(self.control_buttons)
+        self.verticalLayout_18.addWidget(self.control_buttons)
+
+
+        self.verticalLayout_8.addWidget(self.serialPortConection)
+
+        self.setConectionMethod = QPushButton(self.settingsPage)
+        self.setConectionMethod.setObjectName(u"setConectionMethod")
+        sizePolicy2.setHeightForWidth(self.setConectionMethod.sizePolicy().hasHeightForWidth())
+        self.setConectionMethod.setSizePolicy(sizePolicy2)
+        self.setConectionMethod.setFont(font)
+
+        self.verticalLayout_8.addWidget(self.setConectionMethod, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -733,7 +750,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainPages.setCurrentIndex(1)
+        self.mainPages.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -788,6 +805,7 @@ class Ui_MainWindow(object):
         self.updateBtn.setText(QCoreApplication.translate("MainWindow", u"Actualizar", None))
         self.connectBtn.setText(QCoreApplication.translate("MainWindow", u"Conectar ", None))
         self.disconnectBtn.setText(QCoreApplication.translate("MainWindow", u"Desconectar", None))
+        self.setConectionMethod.setText(QCoreApplication.translate("MainWindow", u"Cambiar a Wifi", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Version 1.0", None))
 #if QT_CONFIG(tooltip)
         self.menuBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Menu", None))

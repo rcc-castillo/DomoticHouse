@@ -1,36 +1,137 @@
 #include <ArduinoJson.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#include <map>
 
-void setup() {
-  Serial.begin(9600);
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, HIGH);
+ESP8266WebServer server(80);
+
+// WiFi connection credentials
+const char *ssid = "Rodrigo's Galaxy S21 FE 5G";
+const char *password = "telesala";
+
+// Define una estructura para los datos de temperatura y humedad
+struct TempHumidData
+{
+    float temperature;
+    float humidity;
+    int pin;
+};
+
+// Define una estructura para los datos de la habitación
+struct RoomData
+{
+    TempHumidData tempHumid;
+    int lightPin;
+    int blindsPin;
+    int airPin;
+};
+
+std::map<String, RoomData> roomMap;
+
+void setup()
+{
+    // Configura los datos para la habitación de estar
+    RoomData livingRoom = {{0.0, 0.0, 0}, LED_BUILTIN, 0, 0};
+    roomMap["living"] = livingRoom;
+
+    // Inicializa la comunicación serial
+    Serial.begin(9600);
+
+    // Configura el pin de la luz de la habitación de estar como salida
+    pinMode(livingRoom.lightPin, OUTPUT);
+    digitalWrite(livingRoom.lightPin, HIGH);
+
+    // Conexión WiFi
+    WiFi.begin(ssid, password);
+
+    // Espera hasta que la conexión WiFi se establezca
+    while (WiFi.status() != WL_CONNECTED)
+    {
+        Serial.print(".");
+        delay(500);
+    }
+
+    // Muestra la dirección IP asignada
+    Serial.println("\nNodemcu(esp8266) is connected to the ssid :");
+    Serial.println(WiFi.localIP());
+
+    // Inicializa el servidor
+    server.on("/", []()
+            { server.send(200, "text/plain", "Conection established"); });
+    server.onNotFound([]()
+            { server.send(404, "text/plain", "404: Not found"); });
+    server.on("/applyData", handleRooms);
+    server.begin();
 }
 
-void loop() {
-  if (Serial.available()) {
-    // Lee los datos JSON del puerto serie
-    String jsonStr = Serial.readStringUntil('\n');
+bool readJsonFromSource(String &source, JsonObject &data)
+{
+    // Create a JSON buffer and parse the data into it
+    const size_t bufferSize = 600;
+    StaticJsonDocument<bufferSize> jsonDoc;
+    char jsonStr[bufferSize];
 
-    // Crea un objeto JSON para analizar los datos
-    StaticJsonDocument<1000> jsonDoc;
+    source.toCharArray(jsonStr, bufferSize);
+
     DeserializationError error = deserializeJson(jsonDoc, jsonStr);
 
-    // Verifica si hubo un error al analizar los datos JSON
-    if (error) {
-      Serial.print("Error al analizar JSON: ");
-      Serial.println(error.c_str());
-      return;
+    // Verify there is no error parsing JSON
+    if (!error)
+    {
+        data = jsonDoc.as<JsonObject>();
+        return true;
     }
-
-    // Verifica el estado de las luces en el salón
-    String salonLights = jsonDoc["living"]["lights"].as<String>();
-    Serial.print(salonLights);
-
-    // Controla el LED incorporado en base al estado de las luces en el salón
-    if (salonLights == "on") {
-      digitalWrite(LED_BUILTIN, LOW); // Enciende el LED incorporado
-    } else {
-      digitalWrite(LED_BUILTIN, HIGH); // Apaga el LED incorporado
+    else
+    {
+        Serial.print("Error al analizar JSON: ");
+        Serial.println(error.c_str());
+        return false;
     }
-  }
+}
+
+void handleRooms()
+{
+    // Leer datos desde el puerto serie
+    JsonObject data;
+    String source = server.arg("plain");
+
+    if (readJsonFromSource(source, data))
+    {
+        // Procesar los datos recibidos del puerto serie
+        handleLights("living", data);
+    }
+}
+
+
+void handleLights(String room, JsonObject &data)
+{
+    // Control living room lights based on the JSON data
+    if (data[room]["lights"].as<String>() == "on")
+    {
+        digitalWrite(roomMap[room].lightPin, LOW);
+    }
+    else
+    {
+        digitalWrite(roomMap[room].lightPin, HIGH);
+    }
+}
+
+void loop()
+{
+    if (Serial.available() > 0)
+    {
+        // Leer datos desde el puerto serie
+        JsonObject data;
+        String source = Serial.readStringUntil('\n');
+        if (readJsonFromSource(source, data))
+        {
+            // Procesar los datos recibidos del puerto serie
+            handleLights("living", data);
+        }
+    }
+    else
+    {
+        // No hay datos en el puerto serie, intenta desde el servidor web
+        server.handleClient();
+    }
 }
