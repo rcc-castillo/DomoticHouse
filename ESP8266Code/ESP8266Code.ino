@@ -4,6 +4,11 @@
 #include <map>
 
 ESP8266WebServer server(80);
+IPAddress local_IP(192, 168, 52, 249);
+// Set your Gateway IP address
+IPAddress gateway(192, 168, 52, 1);
+
+IPAddress subnet(255, 255, 0, 0);
 
 // WiFi connection credentials
 const char *ssid = "Rodrigo's Galaxy S21 FE 5G";
@@ -42,17 +47,22 @@ void setup()
     digitalWrite(livingRoom.lightPin, HIGH);
 
     // Conexión WiFi
+
+      // Configures static IP address
+    if (!WiFi.config(local_IP, gateway, subnet)) {
+        Serial.println("STA Failed to configure");
+    }
     WiFi.begin(ssid, password);
 
     // Espera hasta que la conexión WiFi se establezca
     while (WiFi.status() != WL_CONNECTED)
     {
-        Serial.print(".");
+        Serial.println("...");
         delay(500);
     }
 
     // Muestra la dirección IP asignada
-    Serial.println("\nNodemcu(esp8266) is connected to the ssid :");
+    Serial.println("Nodemcu(esp8266) is connected to the ssid :");
     Serial.println(WiFi.localIP());
 
     // Inicializa el servidor
@@ -114,10 +124,12 @@ void handleLights(String room, JsonObject &data)
     {
         digitalWrite(roomMap[room].lightPin, HIGH);
     }
+    //TODO: send response to client in other side
+    server.send(200, "text/plain", data[room]["lights"].as<String>());
 }
 
 void loop()
-{
+{   
     if (Serial.available() > 0)
     {
         // Leer datos desde el puerto serie

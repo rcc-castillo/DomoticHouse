@@ -1,7 +1,7 @@
 ########################################################################
 ## IMPORTS
 ########################################################################
-import sys, json
+import sys, json, requests
 from PySide2.QtWidgets import *
 from PySide2 import QtCore, QtGui
 from PySide2.QtSerialPort import QSerialPort, QSerialPortInfo
@@ -20,6 +20,9 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        
+        self.setWindowTitle("Domotic App")
+        self.setWindowIcon(QtGui.QIcon(":/icons/icons/window-icon.ico"))
 
         #Utils variables for window functions
         self.clickPosition = None
@@ -40,8 +43,7 @@ class MainWindow(QMainWindow):
                  "air": {"speed": "baja", "state": "off"}}
             }
         
-        self.setWindowTitle("Domotic App")
-        self.setWindowIcon(QtGui.QIcon(":/icons/icons/window-icon.ico"))
+        self.changePage("settings")
 
         self.ui.setConectionMethod.clicked.connect(self.changeConnectionMethod)
 
@@ -125,6 +127,7 @@ class MainWindow(QMainWindow):
             self.uisingWifi = False
         else:
             self.ui.serialPortConection.hide()
+            self.serialDisconnect()
             self.ui.setConectionMethod.setText("Cambiar a Serial")
             self.uisingWifi = True
 
@@ -139,7 +142,7 @@ class MainWindow(QMainWindow):
         ports = QSerialPortInfo.availablePorts()
         for port in ports:
             self.ui.serial_ports_list.addItem(port.portName())
-        self.ui.baudrates_list.setCurrentText("115200")
+        self.ui.baudrates_list.setCurrentText("9600")
 
     def serialConnect(self):
             """
@@ -147,7 +150,6 @@ class MainWindow(QMainWindow):
             Sets the port name and baudrate, opens the serial port for reading and writing.
             Hides the connect button and shows the disconnect button if the serial port is successfully opened.
             """
-            self.serial.waitForReadyRead(500)
             port = self.ui.serial_ports_list.currentText()
             baudrate = int(self.ui.baudrates_list.currentText())
             self.serial.setPortName(port)
@@ -193,9 +195,14 @@ class MainWindow(QMainWindow):
 
         # Abre el puerto serie si está disponible
         if self.serial.isOpen():
-            self.serial.write(json_data.encode())
+            print("Enviando datos serial")
+            #self.serial.write(json_data.encode())
         elif self.uisingWifi:
-            # Enviar por wifi
+            url_json = 'http://192.168.52.249/applyData'
+            headers = {'Content-Type': 'application/json; charset=UTF-8'}
+            response = requests.post(url_json, headers=headers, data=json_data)
+            #print(response.status_code)
+            #print(response.text)
             pass
         else:
             print("No hay conexión")
