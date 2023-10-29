@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>700</width>
-    <height>540</height>
+    <height>562</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -928,6 +928,9 @@ QComboBox QAbstractItemView{
                      <pointsize>10</pointsize>
                     </font>
                    </property>
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
                   </widget>
                  </item>
                 </layout>
@@ -968,6 +971,9 @@ QComboBox QAbstractItemView{
                     <font>
                      <pointsize>10</pointsize>
                     </font>
+                   </property>
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
                    </property>
                    <item>
                     <property name="text">
@@ -1107,6 +1113,9 @@ QComboBox QAbstractItemView{
                <weight>75</weight>
                <bold>true</bold>
               </font>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="text">
               <string>Cambiar a Wifi</string>

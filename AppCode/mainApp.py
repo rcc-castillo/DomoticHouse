@@ -7,8 +7,9 @@ from PySide2 import QtCore, QtGui
 from PySide2.QtSerialPort import QSerialPort, QSerialPortInfo
 
 ########################################################################
-# IMPORT GUI FILE
+# IMPORT GUI FILE AND ROOM CLASS
 from ui_DomoticApp import *
+from Room import *
 ########################################################################
 
 ########################################################################
@@ -20,12 +21,8 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        
-        self.setWindowTitle("Domotic App")
-        self.setWindowIcon(QtGui.QIcon(":/icons/icons/window-icon.ico"))
 
         #Utils variables for window functions
-        self.clickPosition = None
         self.buttonGroupPages = { 
             "livingroom" : [self.ui.livingroomPage, self.ui.livingroomBtn], 
             "office" : [self.ui.officePage, self.ui.officeBtn], 
@@ -33,20 +30,27 @@ class MainWindow(QMainWindow):
             "settings" : [self.ui.settingsPage, self.ui.settingsBtn]}
         self.menuCollapsedWidth = 55
         self.menuExpandedWidth = 155
-
         self.uisingWifi = False
-
-        self.data = {
-            "living": 
-                {"lights": "off", 
-                 "blinds": "down",
-                 "air": {"speed": "baja", "state": "off"}}
-            }
         
+        #Create rooms
+        livingRoom = Room(name="living", 
+                          lights={"status": "off", 
+                                  "btn": self.ui.livingLightsBtn}, 
+                          blinds="down", 
+                          air={"status": "off", 
+                                "btn": self.ui.livingAirBtn,
+                                "speedStatus": "baja",
+                                "speedSelector": self.ui.livingAirSpeed},
+                          window=self)
+        
+        #Set window initial properties
+        self.setWindowTitle("Domotic App")
+        self.setWindowIcon(QtGui.QIcon(":/icons/icons/window-icon.ico"))
         self.changePage("settings")
 
+        #Set connection method button function
         self.ui.setConectionMethod.clicked.connect(self.changeConnectionMethod)
-
+        
         #Set left menu buttons functions
         self.ui.menuBtn.clicked.connect(self.toggleMenu)
         self.ui.livingroomBtn.clicked.connect(lambda: 
@@ -55,7 +59,6 @@ class MainWindow(QMainWindow):
         self.ui.bedroomBtn.clicked.connect(lambda: self.changePage("bedroom"))
         self.ui.settingsBtn.clicked.connect(lambda: self.changePage("settings"))
 
-
         #Set serial port functions
         self.ui.disconnectBtn.hide()
         self.serial = QSerialPort()
@@ -63,25 +66,26 @@ class MainWindow(QMainWindow):
         self.ui.connectBtn.clicked.connect(self.serialConnect)
         self.ui.disconnectBtn.clicked.connect(lambda: self.serialDisconnect())
         self.serial.readyRead.connect(self.serialRead)
-
+        
         #Set room lights buttons functions and set them checkable
         self.ui.livingLightsBtn.setCheckable(True)
-        self.ui.livingLightsBtn.clicked.connect(lambda: self.lights("livingLightsBtn", "living"))
+        self.ui.livingLightsBtn.clicked.connect(
+            lambda: livingRoom.handleLights())
 
         #Set room blinds buttons functions
-        self.ui.livingBlindUpBtn.clicked.connect(lambda: self.blinds
-                                                ("living", "up"))
-        self.ui.livingBlindDownBtn.clicked.connect(lambda: self.blinds
-                                                ("living", "down"))
+        self.ui.livingBlindUpBtn.clicked.connect(
+            lambda: livingRoom.handleBlinds("up"))
+        self.ui.livingBlindDownBtn.clicked.connect(
+            lambda: livingRoom.handleBlinds("down"))
         
         #Set room air conditioner buttons functions and set them checkable
         self.ui.livingAirBtn.setCheckable(True)
-        self.ui.livingAirBtn.clicked.connect(lambda: self.airConditioner
-                                                ("livingAirBtn", "living"))
+        self.ui.livingAirBtn.clicked.connect(
+            lambda: livingRoom.handleAir())
         
         #Set air conditioner speed
-        self.ui.livingAirSpeed.currentTextChanged.connect(lambda: 
-                                self.setAirSpeed("livingAirSpeed", "living"))
+        self.ui.livingAirSpeed.currentTextChanged.connect(
+            lambda: livingRoom.handleAirSpeed())
         
         self.show() 
 
@@ -186,21 +190,21 @@ class MainWindow(QMainWindow):
         self.ui.officeTemperatureLbl.setText(
             self.data["office"]["humidity"] + "%")"""
         
-    def sendData(self):
+    def sendData(self, data):
         """
         Sends the data to the serial port
         """
-        print(self.data)
-        json_data = json.dumps(self.data)
+        print("desde main: ", data)
+        json_data = json.dumps(data)
 
         # Abre el puerto serie si está disponible
         if self.serial.isOpen():
-            print("Enviando datos serial")
-            #self.serial.write(json_data.encode())
+            self.serial.write(json_data.encode())
         elif self.uisingWifi:
             url_json = 'http://192.168.52.249/applyData'
             headers = {'Content-Type': 'application/json; charset=UTF-8'}
             response = requests.post(url_json, headers=headers, data=json_data)
+            #FIXME: No se puede enviar el json por wifi
             #print(response.status_code)
             #print(response.text)
             pass
@@ -211,57 +215,9 @@ class MainWindow(QMainWindow):
         """
         Reads the data from the wifi
         """
+        #TODO: Leer datos de la wifi
         pass
 
-    ########################################################################
-    ## Functions refred to rooms 
-    ########################################################################
-    def lights(self, roomLightBtn, room):
-        """
-        Sends the command to the serial port to turn on/off the lights and 
-        changes the button icon and text
-        """
-        if not self.serial.isOpen() and not self.uisingWifi: return
-        button = getattr(self.ui, roomLightBtn)
-        if button.isChecked():
-            self.data[room]["lights"] = "on"
-            button.setIcon(QtGui.QIcon(":/icons/icons/toggle-right.svg"))
-            button.setText("On")
-        else:
-            self.data[room]["lights"] = "off"
-            button.setIcon(QtGui.QIcon(":/icons/icons/toggle-left.svg"))
-            button.setText("Off")
-        self.sendData()
-
-    def blinds(self, room, direction):
-        if not self.serial.isOpen() and not self.uisingWifi: return
-        if self.data[room]["blinds"] == direction: return
-
-        if self.data[room]["blinds"] == "down" and direction == "up":
-            self.data[room]["blinds"] = direction
-        elif self.data[room]["blinds"] == "up" and direction == "down":
-            self.data[room]["blinds"] = direction
-        self.sendData()
-
-    def airConditioner(self, roomAirBtn, room):
-        if not self.serial.isOpen() and not self.uisingWifi: return
-        button = getattr(self.ui, roomAirBtn)
-        if button.isChecked():
-            self.data[room]["air"]["state"] = "on"
-            button.setIcon(QtGui.QIcon(":/icons/icons/toggle-right.svg"))
-            button.setText("On")
-        else:
-            self.data[room]["air"]["state"] = "off"
-            button.setIcon(QtGui.QIcon(":/icons/icons/toggle-left.svg"))
-            button.setText("Off")
-        self.sendData()
-    
-    def setAirSpeed(self, roomAirOptions, room): 
-        if not self.serial.isOpen() and not self.uisingWifi: return
-        roomAirOptions = getattr(self.ui, roomAirOptions)
-        self.data[room]["air"]["speed"] = roomAirOptions.currentText()
-        self.sendData()
-        
 ########################################################################
 ## EXECUTE APP
 ########################################################################

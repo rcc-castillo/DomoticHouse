@@ -114,7 +114,8 @@ void handleRooms()
 
 
 void handleLights(String room, JsonObject &data)
-{
+{   
+    Serial.println("manejo luces");
     // Control living room lights based on the JSON data
     if (data[room]["lights"].as<String>() == "on")
     {
@@ -137,6 +138,7 @@ void loop()
         String source = Serial.readStringUntil('\n');
         if (readJsonFromSource(source, data))
         {
+            Serial.println("LLega la data");
             // Procesar los datos recibidos del puerto serie
             handleLights("living", data);
         }
