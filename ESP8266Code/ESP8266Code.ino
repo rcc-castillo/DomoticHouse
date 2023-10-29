@@ -7,7 +7,7 @@
 ESP8266WebServer server(80);
 IPAddress local_IP(192, 168, 99, 249);
 // Set your Gateway IP address
-IPAddress gateway(192, 168, 52, 1);
+IPAddress gateway(192, 168, 99, 1);
 
 IPAddress subnet(255, 255, 0, 0);
 
@@ -97,6 +97,7 @@ void handleLights(String room, JsonObject &data)
 {   
     Serial.println("manejo luces");
     // Control living room lights based on the JSON data
+    Serial.println("data: " + data[room]["lights"].as<String>());
     if (data[room]["lights"].as<String>() == "on") {
         roomMap[room].setLightStatus(LOW);
     }

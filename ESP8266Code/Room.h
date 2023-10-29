@@ -3,15 +3,10 @@
 
 #include <Arduino.h>
 
-struct LightData {
-    bool status;
-    int pin;
-};
-
 class Room {
 private:
     String _name;
-    LightData _light;
+    int _lightPin;
     void initializeLight();
 
 public:

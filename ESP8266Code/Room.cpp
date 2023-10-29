@@ -5,8 +5,8 @@ Room::Room() {
 
 Room::Room(String name, int lightPin) {
     _name = name;
-    _light.pin = lightPin;
-    _light.status = false; // Inicializamos el estado de la luz en apagado
+    _lightPin = lightPin;
+    initializeLight();
 }
 
 String Room::getName() {
@@ -14,14 +14,15 @@ String Room::getName() {
 }
 
 int Room::getLightPin() {
-    return _light.pin;
+    return _lightPin;
 }
 
 void Room::setLightStatus(uint8_t status) {
-    digitalWrite(_light.pin, status);
+    Serial.println("Cambiando estado de luz a " + String(status));
+    digitalWrite(_lightPin, status);
 }
 
 void Room::initializeLight() {
-    pinMode(_light.pin, OUTPUT);  // Configurar el pin del LED como salida
-    digitalWrite(_light.pin, HIGH);  // Apagar el LED al inicio
+    pinMode(_lightPin, OUTPUT);  // Configurar el pin del LED como salida
+    digitalWrite(_lightPin, HIGH);  // Apagar el LED al inicio
 }
