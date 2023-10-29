@@ -201,13 +201,11 @@ class MainWindow(QMainWindow):
         if self.serial.isOpen():
             self.serial.write(json_data.encode())
         elif self.uisingWifi:
-            url_json = 'http://192.168.52.249/applyData'
+            url_json = 'http://192.168.99.249/applyData'
             headers = {'Content-Type': 'application/json; charset=UTF-8'}
             response = requests.post(url_json, headers=headers, data=json_data)
-            #FIXME: No se puede enviar el json por wifi
-            #print(response.status_code)
-            #print(response.text)
-            pass
+            print(response.status_code)
+            print(response.text)
         else:
             print("No hay conexión")
     

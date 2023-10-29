@@ -2,9 +2,10 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <map>
+#include "Room.h"
 
 ESP8266WebServer server(80);
-IPAddress local_IP(192, 168, 52, 249);
+IPAddress local_IP(192, 168, 99, 249);
 // Set your Gateway IP address
 IPAddress gateway(192, 168, 52, 1);
 
@@ -14,41 +15,20 @@ IPAddress subnet(255, 255, 0, 0);
 const char *ssid = "Rodrigo's Galaxy S21 FE 5G";
 const char *password = "telesala";
 
-// Define una estructura para los datos de temperatura y humedad
-struct TempHumidData
-{
-    float temperature;
-    float humidity;
-    int pin;
-};
-
-// Define una estructura para los datos de la habitación
-struct RoomData
-{
-    TempHumidData tempHumid;
-    int lightPin;
-    int blindsPin;
-    int airPin;
-};
-
-std::map<String, RoomData> roomMap;
+std::map<String, Room> roomMap;
 
 void setup()
 {
-    // Configura los datos para la habitación de estar
-    RoomData livingRoom = {{0.0, 0.0, 0}, LED_BUILTIN, 0, 0};
+    // Configura los datos para el salon
+    Room livingRoom = Room("living", LED_BUILTIN);
     roomMap["living"] = livingRoom;
 
     // Inicializa la comunicación serial
     Serial.begin(9600);
 
-    // Configura el pin de la luz de la habitación de estar como salida
-    pinMode(livingRoom.lightPin, OUTPUT);
-    digitalWrite(livingRoom.lightPin, HIGH);
-
     // Conexión WiFi
 
-      // Configures static IP address
+    // Configures static IP address
     if (!WiFi.config(local_IP, gateway, subnet)) {
         Serial.println("STA Failed to configure");
     }
@@ -117,13 +97,12 @@ void handleLights(String room, JsonObject &data)
 {   
     Serial.println("manejo luces");
     // Control living room lights based on the JSON data
-    if (data[room]["lights"].as<String>() == "on")
-    {
-        digitalWrite(roomMap[room].lightPin, LOW);
+    if (data[room]["lights"].as<String>() == "on") {
+        roomMap[room].setLightStatus(LOW);
     }
     else
     {
-        digitalWrite(roomMap[room].lightPin, HIGH);
+        roomMap[room].setLightStatus(HIGH);
     }
     //TODO: send response to client in other side
     server.send(200, "text/plain", data[room]["lights"].as<String>());
