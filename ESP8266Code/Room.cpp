@@ -1,9 +1,6 @@
 #include "Room.h"
 
 Room::Room() {
-    _name = "";
-    _lightPin = 0;
-    _lightStatus = false;
 }
 
 Room::Room(String name, int lightPin) {

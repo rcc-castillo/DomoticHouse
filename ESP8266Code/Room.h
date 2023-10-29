@@ -15,6 +15,7 @@ private:
     void initializeLight();
 
 public:
+    Room();
     Room(String name, int lightPin);
     String getName();
     int getLightPin();
