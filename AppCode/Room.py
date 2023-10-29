@@ -55,6 +55,6 @@ class Room():
                 {"lights": self.lights["status"], 
                  "blinds": self.blinds,
                  "air": {"state": self.air["status"],
-                         "speed": self.air["speedStatus"]}}
+                         "speed": self.air["speedStatus"].lower()}}
             }
     

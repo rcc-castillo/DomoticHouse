@@ -121,6 +121,9 @@ class MainWindow(QMainWindow):
             self.buttonGroupPages[button][1].setStyleSheet(u"background-color: transparent;")
         self.buttonGroupPages[pageName][1].setStyleSheet(u"background-color: #52a5e0;")
 
+    ########################################################################
+    ## Functions refred to comunications
+    ########################################################################
     def changeConnectionMethod(self):
         """
         Changes the connection method between wifi and serial port.
@@ -135,9 +138,6 @@ class MainWindow(QMainWindow):
             self.ui.setConectionMethod.setText("Cambiar a Serial")
             self.uisingWifi = True
 
-    ########################################################################
-    ## Functions refred to comunications
-    ########################################################################
     def readPorts(self):
         """
         Reads all available serial ports and add them to the ports combobox

@@ -20,7 +20,7 @@ std::map<String, Room> roomMap;
 void setup()
 {
     // Configura los datos para el salon
-    Room livingRoom = Room("living", LED_BUILTIN);
+    Room livingRoom = Room("living", LED_BUILTIN, 14, 13, 12);
     roomMap["living"] = livingRoom;
 
     // Inicializa la comunicación serial
@@ -50,7 +50,7 @@ void setup()
             { server.send(200, "text/plain", "Conection established"); });
     server.onNotFound([]()
             { server.send(404, "text/plain", "404: Not found"); });
-    server.on("/applyData", handleRooms);
+    server.on("/room", handleData);
     server.begin();
 }
 
@@ -79,34 +79,19 @@ bool readJsonFromSource(String &source, JsonObject &data)
     }
 }
 
-void handleRooms()
+void handleData()
 {
     // Leer datos desde el puerto serie
     JsonObject data;
     String source = server.arg("plain");
-
-    if (readJsonFromSource(source, data))
-    {
-        // Procesar los datos recibidos del puerto serie
-        handleLights("living", data);
-    }
+    handleRoom(source);
 }
 
-
-void handleLights(String room, JsonObject &data)
-{   
-    Serial.println("manejo luces");
-    // Control living room lights based on the JSON data
-    Serial.println("data: " + data[room]["lights"].as<String>());
-    if (data[room]["lights"].as<String>() == "on") {
-        roomMap[room].setLightStatus(LOW);
+void handleRoom(String &source) {
+    JsonObject data;
+    if (readJsonFromSource(source, data)) {
+        //handleLights("living", data);
     }
-    else
-    {
-        roomMap[room].setLightStatus(HIGH);
-    }
-    //TODO: send response to client in other side
-    server.send(200, "text/plain", data[room]["lights"].as<String>());
 }
 
 void loop()
@@ -116,12 +101,7 @@ void loop()
         // Leer datos desde el puerto serie
         JsonObject data;
         String source = Serial.readStringUntil('\n');
-        if (readJsonFromSource(source, data))
-        {
-            Serial.println("LLega la data");
-            // Procesar los datos recibidos del puerto serie
-            handleLights("living", data);
-        }
+        handleRoom(source);
     }
     else
     {
