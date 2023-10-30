@@ -201,7 +201,7 @@ class MainWindow(QMainWindow):
         if self.serial.isOpen():
             self.serial.write(json_data.encode())
         elif self.uisingWifi:
-            url_json = 'http://192.168.99.249/applyData'
+            url_json = 'http://192.168.208.249/room'
             headers = {'Content-Type': 'application/json; charset=UTF-8'}
             response = requests.post(url_json, headers=headers, data=json_data)
             print(response.status_code)

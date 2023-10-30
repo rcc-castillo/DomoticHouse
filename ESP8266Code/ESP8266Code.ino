@@ -5,9 +5,9 @@
 #include "Room.h"
 
 ESP8266WebServer server(80);
-IPAddress local_IP(192, 168, 99, 249);
+IPAddress local_IP(192, 168, 208, 249);
 // Set your Gateway IP address
-IPAddress gateway(192, 168, 99, 1);
+IPAddress gateway(192, 168, 208, 1);
 
 IPAddress subnet(255, 255, 0, 0);
 
@@ -29,9 +29,10 @@ void setup()
     // Conexión WiFi
 
     // Configures static IP address
-    if (!WiFi.config(local_IP, gateway, subnet)) {
+    /**/
+    if (!WiFi.config(local_IP, gateway, subnet)) 
         Serial.println("STA Failed to configure");
-    }
+
     WiFi.begin(ssid, password);
 
     // Espera hasta que la conexión WiFi se establezca
@@ -90,7 +91,39 @@ void handleData()
 void handleRoom(String &source) {
     JsonObject data;
     if (readJsonFromSource(source, data)) {
-        //handleLights("living", data);
+        String roomName = data.begin()->key().c_str();
+        Room room = roomMap[roomName];
+        String roomElement = data[roomName].as<JsonObject>().begin()->key().c_str();
+
+        Serial.println("Room: " + roomName + " | Elemento: " + roomElement);
+        String text = "";
+        if (roomElement == "lights") {
+            String status = data[roomName][roomElement].as<String>();
+            room.setLightStatus(status);
+            text = "Luces " + status;
+        }
+        else if (roomElement == "blinds") {
+            String status = data[roomName][roomElement].as<String>();
+            room.setBlindsStatus(status);
+            text = "Persianas " + status;
+        }
+        else if (roomElement == "airState") {
+            String status = data[roomName][roomElement].as<String>();
+            room.setAirStatus(status);
+            text = "Aire acondicionado " + status;
+            
+        }
+        else if (roomElement == "airSpeed") {
+            String speed = data[roomName][roomElement].as<String>();
+            room.setAirSpeed(speed);
+            text = "Velocidad del aire acondicionado " + speed;
+        }
+        Serial.println(text);
+        
+        server.send(200, "text/plain", text);
+    }
+    else {
+        server.send(400, "text/plain", "Error al analizar JSON");
     }
 }
 

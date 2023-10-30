@@ -18,7 +18,7 @@ class Room():
             self.lights["status"] = "off"
             self.lights["btn"].setIcon(QtGui.QIcon(":/icons/icons/toggle-left.svg"))
             self.lights["btn"].setText("Off")
-        self.window.sendData(self.getData())
+        self.window.sendData({self.name: {"lights": self.lights["status"]}})
     
     def handleBlinds(self, direction):
         if not self.window.serial.isOpen() and not self.window.uisingWifi:
@@ -28,7 +28,7 @@ class Room():
             self.blinds = direction
         elif self.blinds == "up" and direction == "down":
             self.blinds = direction
-        self.window.sendData(self.getData())
+        self.window.sendData({self.name: {"blinds": self.blinds}})
     
     def handleAir(self):
         if not self.window.serial.isOpen() and not self.window.uisingWifi:
@@ -41,13 +41,13 @@ class Room():
             self.air["status"] = "off"
             self.air["btn"].setIcon(QtGui.QIcon(":/icons/icons/toggle-left.svg"))
             self.air["btn"].setText("Off")
-        self.window.sendData(self.getData())
+        self.window.sendData({self.name: {"airState": self.air["status"]}})
 
     def handleAirSpeed(self):
         if not self.window.serial.isOpen() and not self.window.uisingWifi:
             return
-        self.air["speedStatus"] = self.air["speedOptions"].currentText()
-        self.window.sendData(self.getData())
+        self.air["speedStatus"] = self.air["speedSelector"].currentText()
+        self.window.sendData({self.name: {"airSpeed": self.air["speedStatus"]}})
 
     def getData(self):
         return {
