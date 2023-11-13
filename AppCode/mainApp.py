@@ -12,6 +12,8 @@ from ui_DomoticApp import *
 from Room import *
 ########################################################################
 
+SERVER_URL = 'http://192.168.118.249/'
+
 ########################################################################
 ## MAIN WINDOW CLASS
 ########################################################################
@@ -32,22 +34,21 @@ class MainWindow(QMainWindow):
         self.menuExpandedWidth = 155
         self.uisingWifi = False
         
-        #Create rooms
-        livingRoom = Room(name="living", 
-                          lights={"status": "off", 
-                                  "btn": self.ui.livingLightsBtn}, 
-                          blinds="down", 
-                          air={"status": "off", 
-                                "btn": self.ui.livingAirBtn,
-                                "speedStatus": "baja",
-                                "speedSelector": self.ui.livingAirSpeed},
-                          window=self)
-        
-        #Set window initial properties
+        #Init UI and Serial
+        self.configureUI()
+        self.initSerial()
+
+        #Init rooms
+        self.initRooms()
+        self.initLivingRoom()
+
+        self.show() 
+
+    def configureUI(self):
         self.setWindowTitle("Domotic App")
         self.setWindowIcon(QtGui.QIcon(":/icons/icons/window-icon.ico"))
         self.changePage("settings")
-
+        
         #Set connection method button function
         self.ui.setConectionMethod.clicked.connect(self.changeConnectionMethod)
         
@@ -58,37 +59,44 @@ class MainWindow(QMainWindow):
         self.ui.officeBtn.clicked.connect(lambda: self.changePage("office"))
         self.ui.bedroomBtn.clicked.connect(lambda: self.changePage("bedroom"))
         self.ui.settingsBtn.clicked.connect(lambda: self.changePage("settings"))
+        self.ui.livingLightsBtn.setCheckable(True)
+        self.ui.livingAirBtn.setCheckable(True)
 
-        #Set serial port functions
+    def initRooms(self):
+        self.livingRoom = Room(name="livingroom", 
+            lights={"status": "off", "btn": self.ui.livingLightsBtn}, 
+            blinds="down", 
+            air={"status": "off", "btn": self.ui.livingAirBtn, 
+                "speedStatus": "baja", "speedSelector": self.ui.livingAirSpeed},
+            window=self)
+        
+    def initSerial(self):
         self.ui.disconnectBtn.hide()
         self.serial = QSerialPort()
         self.ui.updateBtn.clicked.connect(self.readPorts)
         self.ui.connectBtn.clicked.connect(self.serialConnect)
         self.ui.disconnectBtn.clicked.connect(lambda: self.serialDisconnect())
         self.serial.readyRead.connect(self.serialRead)
-        
+    
+    def initLivingRoom(self):
         #Set room lights buttons functions and set them checkable
-        self.ui.livingLightsBtn.setCheckable(True)
         self.ui.livingLightsBtn.clicked.connect(
-            lambda: livingRoom.handleLights())
+            lambda: self.livingRoom.handleLights())
 
         #Set room blinds buttons functions
         self.ui.livingBlindUpBtn.clicked.connect(
-            lambda: livingRoom.handleBlinds("up"))
+            lambda: self.livingRoom.handleBlinds("up"))
         self.ui.livingBlindDownBtn.clicked.connect(
-            lambda: livingRoom.handleBlinds("down"))
+            lambda: self.livingRoom.handleBlinds("down"))
         
         #Set room air conditioner buttons functions and set them checkable
-        self.ui.livingAirBtn.setCheckable(True)
         self.ui.livingAirBtn.clicked.connect(
-            lambda: livingRoom.handleAir())
+            lambda: self.livingRoom.handleAir())
         
         #Set air conditioner speed
         self.ui.livingAirSpeed.currentTextChanged.connect(
-            lambda: livingRoom.handleAirSpeed())
+            lambda: self.livingRoom.handleAirSpeed())
         
-        self.show() 
-
     ########################################################################
     ## Functions refred to GUI functions
     ########################################################################
@@ -194,16 +202,20 @@ class MainWindow(QMainWindow):
         """
         Sends the data to the serial port
         """
-        print("desde main: ", data)
+        print("Datos enviados: ", data)
+        roomName = list(data.keys())[0]
         json_data = json.dumps(data)
 
         # Abre el puerto serie si está disponible
         if self.serial.isOpen():
             self.serial.write(json_data.encode())
+
+        # Envía los datos por wifi si está conectado
         elif self.uisingWifi:
-            url_json = 'http://192.168.208.249/room'
+            url = SERVER_URL + roomName
+            print(url)
             headers = {'Content-Type': 'application/json; charset=UTF-8'}
-            response = requests.post(url_json, headers=headers, data=json_data)
+            response = requests.post(url, headers=headers, data=json_data)
             print(response.status_code)
             print(response.text)
         else:
