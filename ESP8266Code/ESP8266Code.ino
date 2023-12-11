@@ -17,8 +17,8 @@ std::map<String, Room> roomMap;
 
 void setupRooms() {
     // Configura los datos para el salon
-    roomMap["livingroom"] = Room("livingRoom", LED_BUILTIN, 14, 13, 12);
-    roomMap["garden"] = Room("garden", LED_BUILTIN, 4, 0, 2);
+    roomMap["livingroom"] = Room("livingRoom", LED_BUILTIN, 14, 13, 12, 5);
+    roomMap["garden"] = Room("garden", LED_BUILTIN);
 }
 
 void setupWifi() {
@@ -89,8 +89,32 @@ void handleRoomData(JsonObject &data, String roomName) {
         room.setAirSpeed(status);
         text = "Velocidad del aire acondicionado " + status;
     }
-    Serial.println(text);
-    
+    else if (roomElement == "irrigationState") {
+        room.setIrrigationStatus(status);
+        text = "Riego " + status;
+    }
+    else if (roomElement == "irrigationStartTime") {
+        int delimiterPos = status.indexOf(':');
+        int hours = status.substring(0, delimiterPos).toInt();
+        int minutes = status.substring(delimiterPos + 1).toInt();
+        room.setIrrigationStartTime(hours, minutes);
+        text = "Hora de inicio de riego " + status;
+    }
+    else if (roomElement == "irrigationEndTime") {
+        int delimiterPos = status.indexOf(':');
+        int hours = status.substring(0, delimiterPos).toInt();
+        int minutes = status.substring(delimiterPos + 1).toInt();
+        room.setIrrigationStartTime(hours, minutes);
+        text = "Hora de fin de riego " + status;
+    }
+    else {
+        text = "Elemento no encontrado: " + roomElement;
+        Serial.println(roomName + ": " + text);
+        server.send(404, "text/plain", roomName + ": " + text);
+        return;
+    }
+
+    if (Serial) Serial.println(text);
     server.send(200, "text/plain", roomName + ": " + text);
 }
 
@@ -101,8 +125,9 @@ void handleRoom(String &source) {
         String roomName = data.begin()->key().c_str();
         if (roomMap.count(roomName) == 0) {
             Serial.println("Room not found: " + roomName);
+            server.send(404, "text/plain", "Room not found: " + roomName);
             return;
-    }
+        }
         handleRoomData(data, roomName);
     }
     else {
@@ -110,21 +135,29 @@ void handleRoom(String &source) {
     }
 }
 
-void sendData(){
+void sendData() {
     StaticJsonDocument<200> jsonDocument;
-    jsonDocument["temperature"] = 25.4;
-    jsonDocument["humidity"] = 60.2;
+    for (auto &room : roomMap) {
+        if (!room.second.hasTemperatureSensor()) continue;
+        float temperature = room.second.getTemperature();
+        float humidity = room.second.getHumidity();
+        String roomName = room.second.getName();
+        JsonObject nestedObject = jsonDocument.createNestedObject(roomName);
+        nestedObject["temperature"] = temperature;
+        nestedObject["humidity"] = humidity;
+    }
     String jsonResponse;
     serializeJson(jsonDocument, jsonResponse);
     server.send(200, "application/json", jsonResponse);
-
-    // Si hay una conexión de puerto serie abierta, envía los datos por ahí también
-    if (Serial) {
-        Serial.println(jsonResponse);
-    }
+    if (Serial) Serial.println(jsonResponse);
 }
+
 void loop() { 
-    // TODO: LLamar a room.irrigate()
+    // Recorre el roomMap obteniendo la referencia al par <key, value>, Second se refiere al value
+    for (auto &room : roomMap) {
+        room.second.irrigate();
+    }
+
     // Leer datos desde el puerto serie
     if (Serial.available() > 0) {
         String source = Serial.readStringUntil('\n');

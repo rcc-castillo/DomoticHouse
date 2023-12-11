@@ -61,20 +61,20 @@ class Room():
             self.irrigation["status"] = "off"
             self.irrigation["btn"].setIcon(QtGui.QIcon(":/icons/icons/toggle-left.svg"))
             self.irrigation["btn"].setText("Off")
-        self.window.sendData({self.name: {"irrigation": self.irrigation["status"]}})
+        self.window.sendData({self.name: {"irrigationState": self.irrigation["status"]}})
 
     def handleIrrigationStartTime(self):
         if not self.window.serial.isOpen() and not self.window.uisingWifi:
             return
         time = self.irrigation["startTimeSelector"].time()
-        self.irrigation["startTime"] = (time.hour(), time.minute())
+        self.irrigation["startTime"] = time.toString("HH:mm")
         self.window.sendData({self.name: {"irrigationStartTime": self.irrigation["startTime"]}})
     
     def handleIrrigationEndTime(self):
         if not self.window.serial.isOpen() and not self.window.uisingWifi:
             return
         time = self.irrigation["endTimeSelector"].time()
-        self.irrigation["endTime"] = (time.hour(), time.minute())
+        self.irrigation["endTime"] = time.toString("HH:mm")
         self.window.sendData({self.name: {"irrigationEndTime": self.irrigation["endTime"]}})
 
     def getData(self):

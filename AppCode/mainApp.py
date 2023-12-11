@@ -74,8 +74,8 @@ class MainWindow(QMainWindow):
         
         self.garden = Room(name="garden",
             irrigation={"status": "off", "btn": self.ui.irrigationBtn, 
-                "endTime": (0,0), "endTimeSelector": self.ui.irrigationEndTime, 
-                "startTime": (0,0), "startTimeSelector": self.ui.irrigationStartTime},
+                "endTime": "00:00", "endTimeSelector": self.ui.irrigationEndTime, 
+                "startTime": "00:00", "startTimeSelector": self.ui.irrigationStartTime},
             window=self)
         
     def initSerial(self):
