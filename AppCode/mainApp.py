@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
         self.buttonGroupPages = { 
             "livingroom" : [self.ui.livingroomPage, self.ui.livingroomBtn], 
             "office" : [self.ui.officePage, self.ui.officeBtn], 
-            "bedroom" : [self.ui.bedroomPage, self.ui.bedroomBtn], 
+            "garden" : [self.ui.gardenPage, self.ui.gardenBtn], 
             "settings" : [self.ui.settingsPage, self.ui.settingsBtn]}
         self.menuCollapsedWidth = 55
         self.menuExpandedWidth = 155
@@ -41,6 +41,7 @@ class MainWindow(QMainWindow):
         #Init rooms
         self.initRooms()
         self.initLivingRoom()
+        self.initGarden()
 
         self.show() 
 
@@ -57,10 +58,11 @@ class MainWindow(QMainWindow):
         self.ui.livingroomBtn.clicked.connect(lambda: 
                                             self.changePage("livingroom"))
         self.ui.officeBtn.clicked.connect(lambda: self.changePage("office"))
-        self.ui.bedroomBtn.clicked.connect(lambda: self.changePage("bedroom"))
+        self.ui.gardenBtn.clicked.connect(lambda: self.changePage("garden"))
         self.ui.settingsBtn.clicked.connect(lambda: self.changePage("settings"))
         self.ui.livingLightsBtn.setCheckable(True)
         self.ui.livingAirBtn.setCheckable(True)
+        self.ui.irrigationBtn.setCheckable(True)
 
     def initRooms(self):
         self.livingRoom = Room(name="livingroom", 
@@ -68,6 +70,12 @@ class MainWindow(QMainWindow):
             blinds="down", 
             air={"status": "off", "btn": self.ui.livingAirBtn, 
                 "speedStatus": "baja", "speedSelector": self.ui.livingAirSpeed},
+            window=self)
+        
+        self.garden = Room(name="garden",
+            irrigation={"status": "off", "btn": self.ui.irrigationBtn, 
+                "endTime": (0,0), "endTimeSelector": self.ui.irrigationEndTime, 
+                "startTime": (0,0), "startTimeSelector": self.ui.irrigationStartTime},
             window=self)
         
     def initSerial(self):
@@ -79,7 +87,7 @@ class MainWindow(QMainWindow):
         self.serial.readyRead.connect(self.serialRead)
     
     def initLivingRoom(self):
-        #Set room lights buttons functions and set them checkable
+        #Set room lights buttons functions
         self.ui.livingLightsBtn.clicked.connect(
             lambda: self.livingRoom.handleLights())
 
@@ -89,13 +97,25 @@ class MainWindow(QMainWindow):
         self.ui.livingBlindDownBtn.clicked.connect(
             lambda: self.livingRoom.handleBlinds("down"))
         
-        #Set room air conditioner buttons functions and set them checkable
+        #Set room air conditioner buttons functions
         self.ui.livingAirBtn.clicked.connect(
             lambda: self.livingRoom.handleAir())
         
         #Set air conditioner speed
         self.ui.livingAirSpeed.currentTextChanged.connect(
             lambda: self.livingRoom.handleAirSpeed())
+    
+    def initGarden(self):
+        self.ui.irrigationBtn.clicked.connect(
+            lambda: self.garden.handleIrrigation())
+        
+        # Irrigation start time
+        self.ui.irrigationStartTime.editingFinished.connect(
+            lambda: self.garden.handleIrrigationStartTime())
+        
+                # Irrigation start time
+        self.ui.irrigationEndTime.editingFinished.connect(
+            lambda: self.garden.handleIrrigationEndTime())
         
     ########################################################################
     ## Functions refred to GUI functions
@@ -185,7 +205,8 @@ class MainWindow(QMainWindow):
         Reads the serial port and returns the data
         """
         if not self.serial.isOpen() or not self.serial.canReadLine(): return
-        print(self.serial.readLine().data().decode().strip())
+        line = self.serial.readLine().data().decode().strip()
+        print(line)
         #humidTemp = json.loads(humidTemp)
 
         """self.ui.livingTemperatureLbl.setText(
@@ -225,8 +246,16 @@ class MainWindow(QMainWindow):
         """
         Reads the data from the wifi
         """
-        #TODO: Leer datos de la wifi
-        pass
+        url = SERVER_URL + "getTemperatureAndHumidity"
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            temperature = data["temperature"]
+            humidity = data["humidity"]
+            # Aquí puedes hacer lo que quieras con la temperatura y la humedad
+            print(f"Temperature: {temperature}, Humidity: {humidity}")
+        else:
+            print(f"Failed to get data from server. Status code: {response.status_code}")
 
 ########################################################################
 ## EXECUTE APP

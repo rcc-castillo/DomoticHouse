@@ -4,6 +4,7 @@
 #include <map>
 #include "Room.h"
 #include "ReadJson.h"
+#include "WifiCredentials.h"
 
 ESP8266WebServer server(80);
 IPAddress local_IP(192, 168, 118, 249);
@@ -12,15 +13,12 @@ IPAddress gateway(192, 168, 118, 1);
 
 IPAddress subnet(255, 255, 0, 0);
 
-// WiFi connection credentials
-const char *ssid = "Rodrigo's Galaxy S21 FE 5G";
-const char *password = "telesala";
-
 std::map<String, Room> roomMap;
 
 void setupRooms() {
     // Configura los datos para el salon
     roomMap["livingroom"] = Room("livingRoom", LED_BUILTIN, 14, 13, 12);
+    roomMap["garden"] = Room("garden", LED_BUILTIN, 4, 0, 2);
 }
 
 void setupWifi() {
@@ -50,6 +48,7 @@ void setupServer() {
         String source = server.arg("plain");
         handleRoom(source); 
     });
+    server.on("/data", sendData);
     server.begin();
 }
 
@@ -111,7 +110,21 @@ void handleRoom(String &source) {
     }
 }
 
-void loop() {   
+void sendData(){
+    StaticJsonDocument<200> jsonDocument;
+    jsonDocument["temperature"] = 25.4;
+    jsonDocument["humidity"] = 60.2;
+    String jsonResponse;
+    serializeJson(jsonDocument, jsonResponse);
+    server.send(200, "application/json", jsonResponse);
+
+    // Si hay una conexión de puerto serie abierta, envía los datos por ahí también
+    if (Serial) {
+        Serial.println(jsonResponse);
+    }
+}
+void loop() { 
+    // TODO: LLamar a room.irrigate()
     // Leer datos desde el puerto serie
     if (Serial.available() > 0) {
         String source = Serial.readStringUntil('\n');

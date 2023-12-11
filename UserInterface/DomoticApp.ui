@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>562</height>
+    <width>610</width>
+    <height>472</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -50,7 +50,7 @@
 	border-bottom-left-radius: 10px;
 }
 
-#ports, #budrates, #livingLights, #livingBlinds, #livingHumidTemp, #livingAir, #officeLights, #officeBlinds, #officeHumidTemp, #officeAir{
+#ports, #budrates, #livingLights, #livingBlinds, #livingHumidTemp, #livingAir, #officeLights, #officeBlinds, #officeHumidTemp, #officeAir, #gardenIrrigation{
 	background-color: #212e36;
 	border-radius: 10px;
 	border-style: solid;
@@ -167,7 +167,7 @@ QComboBox QAbstractItemView{
           <string notr="true"/>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="livingroomPage">
           <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -845,17 +845,187 @@ QComboBox QAbstractItemView{
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="bedroomPage">
-          <layout class="QVBoxLayout" name="verticalLayout_7">
+         <widget class="QWidget" name="gardenPage">
+          <layout class="QVBoxLayout" name="verticalLayout_22">
            <item>
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>Dormitorio</string>
+            <spacer name="verticalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
              </property>
-            </widget>
+            </spacer>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gardenWidgets">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetDefaultConstraint</enum>
+             </property>
+             <item row="0" column="0">
+              <widget class="QWidget" name="gardenIrrigation" native="true">
+               <layout class="QVBoxLayout" name="verticalLayout_7">
+                <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+                 <widget class="QLabel" name="label_3">
+                  <property name="font">
+                   <font>
+                    <pointsize>10</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Riego Automático</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="irrigationOptions">
+                  <property name="frameShape">
+                   <enum>QFrame::StyledPanel</enum>
+                  </property>
+                  <property name="frameShadow">
+                   <enum>QFrame::Raised</enum>
+                  </property>
+                  <layout class="QHBoxLayout" name="horizontalLayout_8">
+                   <item>
+                    <widget class="QPushButton" name="irrigationBtn">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="text">
+                      <string>Off</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../AppCode/resources.qrc">
+                       <normaloff>:/icons/icons/toggle-left.svg</normaloff>:/icons/icons/toggle-left.svg</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>24</width>
+                       <height>24</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QFrame" name="irrigationSelectors">
+                     <property name="frameShape">
+                      <enum>QFrame::StyledPanel</enum>
+                     </property>
+                     <property name="frameShadow">
+                      <enum>QFrame::Raised</enum>
+                     </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_19">
+                      <item>
+                       <widget class="QFrame" name="frame_5">
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                        <layout class="QHBoxLayout" name="horizontalLayout_17">
+                         <item>
+                          <widget class="QLabel" name="label_8">
+                           <property name="font">
+                            <font>
+                             <pointsize>10</pointsize>
+                            </font>
+                           </property>
+                           <property name="text">
+                            <string>Hora de inicio: </string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QTimeEdit" name="irrigationStartTime">
+                           <property name="font">
+                            <font>
+                             <pointsize>10</pointsize>
+                            </font>
+                           </property>
+                           <property name="displayFormat">
+                            <string>HH:mm</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QFrame" name="frame_6">
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                        <layout class="QHBoxLayout" name="horizontalLayout_18">
+                         <item>
+                          <widget class="QLabel" name="label_9">
+                           <property name="font">
+                            <font>
+                             <pointsize>10</pointsize>
+                            </font>
+                           </property>
+                           <property name="text">
+                            <string>Hora de apagado: </string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QTimeEdit" name="irrigationEndTime">
+                           <property name="font">
+                            <font>
+                             <pointsize>10</pointsize>
+                            </font>
+                           </property>
+                           <property name="displayFormat">
+                            <string>HH:mm</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>
@@ -1343,7 +1513,7 @@ QComboBox QAbstractItemView{
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="bedroomBtn">
+              <widget class="QPushButton" name="gardenBtn">
                <property name="font">
                 <font>
                  <pointsize>12</pointsize>
@@ -1353,14 +1523,14 @@ QComboBox QAbstractItemView{
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
                <property name="toolTip">
-                <string>Show Bedroom</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show Jardín&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
-                <string>Dormitorio</string>
+                <string>Jardín</string>
                </property>
                <property name="icon">
                 <iconset resource="../AppCode/resources.qrc">
-                 <normaloff>:/icons/icons/bed.png</normaloff>:/icons/icons/bed.png</iconset>
+                 <normaloff>:/icons/icons/garden.png</normaloff>:/icons/icons/garden.png</iconset>
                </property>
                <property name="iconSize">
                 <size>

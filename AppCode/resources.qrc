@@ -1,9 +1,9 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons/garden.png</file>
     <file>icons/app-icon.svg</file>
     <file>icons/chevron-left.svg</file>
     <file>icons/archive.svg</file>
-    <file>icons/bed.png</file>
     <file>icons/window-icon.ico</file>
     <file>icons/chevrons-down.svg</file>
     <file>icons/chevrons-up.svg</file>

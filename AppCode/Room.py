@@ -1,10 +1,11 @@
 from PySide2 import QtGui
 class Room():
-    def __init__(self, name, lights, blinds, air, window):
+    def __init__(self, name, window, lights=None, blinds=None, air=None, irrigation=None):
         self.name = name
         self.lights = lights
         self.blinds = blinds
         self.air = air
+        self.irrigation = irrigation
         self.window = window
 
     def handleLights(self):
@@ -48,6 +49,33 @@ class Room():
             return
         self.air["speedStatus"] = self.air["speedSelector"].currentText()
         self.window.sendData({self.name: {"airSpeed": self.air["speedStatus"]}})
+    
+    def handleIrrigation(self):
+        if not self.window.serial.isOpen() and not self.window.uisingWifi:
+            return
+        if self.irrigation["btn"].isChecked():
+            self.irrigation["status"] = "on"
+            self.irrigation["btn"].setIcon(QtGui.QIcon(":/icons/icons/toggle-right.svg"))
+            self.irrigation["btn"].setText("On")
+        else:
+            self.irrigation["status"] = "off"
+            self.irrigation["btn"].setIcon(QtGui.QIcon(":/icons/icons/toggle-left.svg"))
+            self.irrigation["btn"].setText("Off")
+        self.window.sendData({self.name: {"irrigation": self.irrigation["status"]}})
+
+    def handleIrrigationStartTime(self):
+        if not self.window.serial.isOpen() and not self.window.uisingWifi:
+            return
+        time = self.irrigation["startTimeSelector"].time()
+        self.irrigation["startTime"] = (time.hour(), time.minute())
+        self.window.sendData({self.name: {"irrigationStartTime": self.irrigation["startTime"]}})
+    
+    def handleIrrigationEndTime(self):
+        if not self.window.serial.isOpen() and not self.window.uisingWifi:
+            return
+        time = self.irrigation["endTimeSelector"].time()
+        self.irrigation["endTime"] = (time.hour(), time.minute())
+        self.window.sendData({self.name: {"irrigationEndTime": self.irrigation["endTime"]}})
 
     def getData(self):
         return {
