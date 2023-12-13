@@ -24,8 +24,10 @@ private:
     int _blindsPin;
     Servo _blindsServo;
     // Aire acondicionado
-    int _airEnablePin; // Pin para controlar encendido y apagado del motor
+    int _airEnable1Pin; // Pin para controlar encendido y apagado del motor
+    int _airEnable2Pin; // Pin para controlar encendido y apagado del motor
     int _airSpeedPin;  // Pin para controlar la velocidad del motor
+    int _airSpeed;
 
     // Riego
     int _irrigationPin;
@@ -44,10 +46,11 @@ private:
     void initializeTemperatureSensor();
 
 public:
-    Room(String name, int lightPin, int blindsPin, int airEnablePin, int airSpeedPin, int temperaturePin);
+    Room();
+    Room(String name, int lightPin, int blindsPin, int airEnable1Pin, int airEnable2Pin, int airSpeedPin, int temperaturePin);
     Room(String name, int irrigationPin);
     String getName();
-    
+
     bool hasLight();
     bool hasBlinds();
     bool hasAir();
@@ -61,7 +64,7 @@ public:
     void setIrrigationStatus(String status);
     void setIrrigationStartTime(int hour, int minute);
     void setIrrigationEndTime(int hour, int minute);
-    void irrigate();
+    void irrigate(int hour, int minute);
     float getTemperature(); 
     float getHumidity();
 };

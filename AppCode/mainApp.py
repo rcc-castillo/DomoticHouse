@@ -12,7 +12,7 @@ from ui_DomoticApp import *
 from Room import *
 ########################################################################
 
-SERVER_URL = 'http://192.168.118.249/'
+SERVER_URL = 'http://192.168.252.249/'
 
 ########################################################################
 ## MAIN WINDOW CLASS
@@ -23,6 +23,7 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.timer = QtCore.QTimer()
 
         #Utils variables for window functions
         self.buttonGroupPages = { 
@@ -34,9 +35,11 @@ class MainWindow(QMainWindow):
         self.menuExpandedWidth = 155
         self.uisingWifi = False
         
-        #Init UI and Serial
+        #Init UI, Serial and wifiRead
         self.configureUI()
         self.initSerial()
+        # self.timer.start(1000)º
+        # self.timer.timeout.connect(self.wifiRead)
 
         #Init rooms
         self.initRooms()
@@ -70,6 +73,7 @@ class MainWindow(QMainWindow):
             blinds="down", 
             air={"status": "off", "btn": self.ui.livingAirBtn, 
                 "speedStatus": "baja", "speedSelector": self.ui.livingAirSpeed},
+            humidTemp = {"humidity": 0, "temperature": 0, "humidityLabel": self.ui.livingHumidityLbl, "temperatureLabel": self.ui.livingTemperatureLbl},
             window=self)
         
         self.garden = Room(name="garden",
@@ -207,24 +211,19 @@ class MainWindow(QMainWindow):
         if not self.serial.isOpen() or not self.serial.canReadLine(): return
         line = self.serial.readLine().data().decode().strip()
         print(line)
-        #humidTemp = json.loads(humidTemp)
+        # if line.startswith('{') and line.endswith('}'):
+        #     data = json.loads(line)
+        # else:
+        #     print(line)
+        # TODO: recorrer el diccionario y actualizar los valores de la interfaz
 
-        """self.ui.livingTemperatureLbl.setText(
-            self.data["living"]["temperature"] + "ºC")
-        self.ui.livingHumidityLbl.setText(
-            self.data["living"]["humidity"] + "%")
-        
-        self.ui.officeTemperatureLbl.setText(
-            self.data["office"]["temperature"] + "ºC")
-        self.ui.officeTemperatureLbl.setText(
-            self.data["office"]["humidity"] + "%")"""
+            
         
     def sendData(self, data):
         """
         Sends the data to the serial port
         """
         print("Datos enviados: ", data)
-        roomName = list(data.keys())[0]
         json_data = json.dumps(data)
 
         # Abre el puerto serie si está disponible
@@ -233,8 +232,7 @@ class MainWindow(QMainWindow):
 
         # Envía los datos por wifi si está conectado
         elif self.uisingWifi:
-            url = SERVER_URL + roomName
-            print(url)
+            url = SERVER_URL + "sendData"
             headers = {'Content-Type': 'application/json; charset=UTF-8'}
             response = requests.post(url, headers=headers, data=json_data)
             print(response.status_code)
@@ -246,16 +244,26 @@ class MainWindow(QMainWindow):
         """
         Reads the data from the wifi
         """
-        url = SERVER_URL + "getTemperatureAndHumidity"
+        if not self.uisingWifi: return
+        url = SERVER_URL + "getData"
+        print(url)
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
-            temperature = data["temperature"]
-            humidity = data["humidity"]
-            # Aquí puedes hacer lo que quieras con la temperatura y la humedad
-            print(f"Temperature: {temperature}, Humidity: {humidity}")
+            print(data)
+            # TODO: recorrer el diccionario y actualizar los valores de la interfaz
         else:
             print(f"Failed to get data from server. Status code: {response.status_code}")
+    
+    def updateUI(self, data):
+        """
+        Updates the UI with the data from the wifi or serial port
+        """
+        for room in data:
+            temperature = data[room]["temperature"]
+            humidity = data[room]["humidity"]
+            room.handleHumidTemp(temperature, humidity)
+
 
 ########################################################################
 ## EXECUTE APP

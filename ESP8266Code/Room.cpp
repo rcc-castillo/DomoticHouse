@@ -1,6 +1,8 @@
 #include "Room.h"
 
-Room::Room(String name, int lightPin, int blindsPin, int airEnablePin, int airSpeedPin, int temperaturePin) {
+Room::Room() {}
+
+Room::Room(String name, int lightPin, int blindsPin, int airEnable1Pin, int airEnable2Pin, int airSpeedPin, int temperaturePin) {
     /**
      * @brief Constructor for the Room class when has light, blinds and airConditioner.
      *
@@ -18,8 +20,10 @@ Room::Room(String name, int lightPin, int blindsPin, int airEnablePin, int airSp
     _hasTemperatureSensor = true;
     _lightPin = lightPin;
     _blindsPin = blindsPin;
-    _airEnablePin = airEnablePin;
+    _airEnable1Pin = airEnable1Pin;
+    _airEnable2Pin = airEnable2Pin;
     _airSpeedPin = airSpeedPin;
+    _airSpeed = 105;
     _temperaturePin = temperaturePin;
     _dht = new DHT(_temperaturePin, DHT11);
 
@@ -38,6 +42,7 @@ Room::Room(String name, int irrigationPin) {
     _name = name;
     _hasIrrigation = true;
     _irrigationPin = irrigationPin;
+    _irrigationStatus = false;
     _dht = nullptr;
     initializeIrrigation();
 }
@@ -69,43 +74,54 @@ bool Room::hasTemperatureSensor() {
 
 void Room::initializeLight() {
     pinMode(_lightPin, OUTPUT);    // Configurar el pin del LED como salida
-    digitalWrite(_lightPin, HIGH); // Apagar el LED al inicio
+    digitalWrite(_lightPin, LOW); // Apagar el LED al inicio
 }
 
 void Room::setLightStatus(String status) {
     if (!hasLight()) return;
-    if (status == "on") digitalWrite(_lightPin, LOW);
-    else if (status == "off") digitalWrite(_lightPin, HIGH);
+    if (status == "on") digitalWrite(_lightPin, HIGH);
+    else if (status == "off") digitalWrite(_lightPin, LOW);
 }
 
 void Room::initializeBlinds() {
-    _blindsServo.attach(_blindsPin);
+    _blindsServo.attach(_blindsPin, 500, 2500);
     _blindsServo.write(0);
 }
 
 void Room::setBlindsStatus(String status) {
     if (!hasBlinds()) return;
-    if (status == "up") _blindsServo.write(180);
+    if (status == "up") {
+        _blindsServo.write(179);
+
+    }
     else if (status == "down") _blindsServo.write(0);
 }
 
 void Room::initializeAir() {
-    pinMode(_airEnablePin, OUTPUT);
+    pinMode(_airEnable1Pin, OUTPUT);
+    pinMode(_airEnable2Pin, OUTPUT);
     pinMode(_airSpeedPin, OUTPUT);
+    analogWrite(_airSpeedPin, _airSpeed);
     setAirStatus("off");
 }
 
 void Room::setAirStatus(String status) {
     if (!hasAir()) return;
-    if (status == "on") digitalWrite(_airEnablePin, LOW);
-    else if (status == "off") digitalWrite(_airEnablePin, HIGH);
+    if (status == "on") {
+        digitalWrite(_airEnable1Pin, HIGH);
+        digitalWrite(_airEnable2Pin, LOW);
+    }
+    else if (status == "off") 
+        digitalWrite(_airEnable1Pin, LOW);
+        digitalWrite(_airEnable2Pin, LOW);
 }
 
 void Room::setAirSpeed(String speed) {
     if (!hasAir()) return;
-    if (speed == "baja") digitalWrite(_airSpeedPin, 85);
-    else if (speed == "media") digitalWrite(_airSpeedPin, 170);
-    else if (speed == "alta") digitalWrite(_airSpeedPin, 255);
+    if (speed == "baja") _airSpeed = 105;
+    else if (speed == "media") _airSpeed = 170;
+    else if (speed == "alta") _airSpeed = 255;
+    analogWrite(_airSpeedPin, _airSpeed);
 }
 
 void Room::initializeIrrigation() {
@@ -129,59 +145,35 @@ void Room::setIrrigationEndTime(int hour, int minute) {
     _irrigationEndTime = std::make_tuple(hour, minute);
 }
 
-void Room::irrigate() {
+void Room::irrigate(int currentHour, int currentMinute) {
     if (!hasIrrigation()) return;
-    if (_irrigationStatus)
-    {
+    if (_irrigationStatus) {
         int startHour = std::get<0>(_irrigationStartTime);
         int startMinute = std::get<1>(_irrigationStartTime);
         int endHour = std::get<0>(_irrigationEndTime);
         int endMinute = std::get<1>(_irrigationEndTime);
+        
+        bool isWithinTimeRange = (currentHour > startHour || (currentHour == startHour && currentMinute >= startMinute)) &&
+                (currentHour < endHour || (currentHour == endHour && currentMinute < endMinute));
 
-        time_t currentTime;
-        struct tm *localTime;
-
-        time(&currentTime);                  // Get the current time
-        localTime = localtime(&currentTime); // Convert the current time to the local time
-
-        int currentHour = localTime->tm_hour;
-        int currentMin = localTime->tm_min;
-        Serial.println(currentHour);
-        Serial.println(currentMin);
-
-        // The irrigation should be on from startHour to midnight and from midnight to endHour
-        if (endHour < startHour || (endHour == startHour && endMinute < startMinute))
-        {
-            if ((currentHour > startHour || (currentHour == startHour && currentMin >= startMinute)) ||
-                (currentHour < endHour || (currentHour == endHour && currentMin <= endMinute)))
-            {
-                digitalWrite(_irrigationPin, HIGH);
-            }
-            else
-            {
-                digitalWrite(_irrigationPin, LOW);
-            }
+        // TODO: Test todas las posibilidades
+        if (endHour > startHour || (endHour == startHour && endMinute > startMinute)) {
+            digitalWrite(_irrigationPin, isWithinTimeRange ? HIGH : LOW);
         }
 
-        // The irrigation should be on from startHour to endHour
-        else
-        {
-            if (currentHour >= startHour && currentHour <= endHour && currentMin >= startMinute && currentMin <= endMinute)
-            {
-                digitalWrite(_irrigationPin, HIGH);
-            }
-            else
-            {
-                digitalWrite(_irrigationPin, LOW);
-            }
+        else if (endHour < startHour || (endHour == startHour && endMinute < startMinute)) {   
+            digitalWrite(_irrigationPin, isWithinTimeRange ? LOW : HIGH);
+        }
+        else if (endHour == startHour && endMinute == startMinute) {
+            digitalWrite(_irrigationPin, LOW);
         }
     }
-    else
-    {
+    else {
         digitalWrite(_irrigationPin, LOW);
     }
 }
 
+// TODO: Comprobar si funciona el sensor de temperatura
 void Room::initializeTemperatureSensor() {
     _dht->begin();
 }

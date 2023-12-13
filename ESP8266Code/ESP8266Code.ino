@@ -1,12 +1,18 @@
 #include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
+#include <WiFiUdp.h>
+#include <NTPClient.h>
 #include <map>
 #include "Room.h"
 #include "ReadJson.h"
 #include "WifiCredentials.h"
 
 ESP8266WebServer server(80);
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 5000);
+
+
 IPAddress local_IP(192, 168, 118, 249);
 // Set your Gateway IP address
 IPAddress gateway(192, 168, 118, 1);
@@ -17,14 +23,14 @@ std::map<String, Room> roomMap;
 
 void setupRooms() {
     // Configura los datos para el salon
-    roomMap["livingroom"] = Room("livingRoom", LED_BUILTIN, 14, 13, 12, 5);
-    roomMap["garden"] = Room("garden", LED_BUILTIN);
+    roomMap["livingroom"] = Room("livingRoom", 16, 12, 5, 4, 0, 13);
+    roomMap["garden"] = Room("garden", 14);
 }
 
 void setupWifi() {
     // Configures static IP address 
-    if (!WiFi.config(local_IP, gateway, subnet))
-        Serial.println("STA Failed to configure");
+    // if (!WiFi.config(local_IP, gateway, subnet))
+    //     Serial.println("STA Failed to configure");
 
     WiFi.begin(ssid, password);
 
@@ -44,11 +50,12 @@ void setupServer() {
         { server.send(200, "text/plain", "Conection established"); });
     server.onNotFound([]()
         { server.send(404, "text/plain", "404: Not found"); });
-    server.on("/livingroom", []() {
+    server.on("/sendData", []() {
         String source = server.arg("plain");
-        handleRoom(source); 
+        handleRoom(source);
     });
-    server.on("/data", sendData);
+    server.on("/getData", []()
+        { server.send(200, "text/plain", getHumidityAndTemperature()); });
     server.begin();
 }
 
@@ -64,6 +71,9 @@ void setup() {
 
     // Inicializa el servidor web
     setupServer();
+
+    // Inicializa el cliente NTP
+    timeClient.begin();
 }
 
 void handleRoomData(JsonObject &data, String roomName) {
@@ -104,7 +114,7 @@ void handleRoomData(JsonObject &data, String roomName) {
         int delimiterPos = status.indexOf(':');
         int hours = status.substring(0, delimiterPos).toInt();
         int minutes = status.substring(delimiterPos + 1).toInt();
-        room.setIrrigationStartTime(hours, minutes);
+        room.setIrrigationEndTime(hours, minutes);
         text = "Hora de fin de riego " + status;
     }
     else {
@@ -120,7 +130,6 @@ void handleRoomData(JsonObject &data, String roomName) {
 
 void handleRoom(String &source) {
     JsonObject data;
-    Serial.println("llegamos aqui");
     if (readJsonFromSource(source, data)) {
         String roomName = data.begin()->key().c_str();
         if (roomMap.count(roomName) == 0) {
@@ -135,7 +144,7 @@ void handleRoom(String &source) {
     }
 }
 
-void sendData() {
+String getHumidityAndTemperature() {
     StaticJsonDocument<200> jsonDocument;
     for (auto &room : roomMap) {
         if (!room.second.hasTemperatureSensor()) continue;
@@ -148,14 +157,19 @@ void sendData() {
     }
     String jsonResponse;
     serializeJson(jsonDocument, jsonResponse);
-    server.send(200, "application/json", jsonResponse);
-    if (Serial) Serial.println(jsonResponse);
+    return jsonResponse;
+}
+
+void sendData() {
+    if (Serial) Serial.println(getHumidityAndTemperature());
 }
 
 void loop() { 
+    // Actualiza la hora
+    timeClient.update();
     // Recorre el roomMap obteniendo la referencia al par <key, value>, Second se refiere al value
     for (auto &room : roomMap) {
-        room.second.irrigate();
+        room.second.irrigate(timeClient.getHours(), timeClient.getMinutes());
     }
 
     // Leer datos desde el puerto serie
@@ -167,4 +181,5 @@ void loop() {
     else {
         server.handleClient();
     }
+    sendData();
 }

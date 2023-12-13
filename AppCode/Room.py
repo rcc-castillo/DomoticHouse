@@ -1,11 +1,12 @@
 from PySide2 import QtGui
 class Room():
-    def __init__(self, name, window, lights=None, blinds=None, air=None, irrigation=None):
+    def __init__(self, name, window, lights=None, blinds=None, air=None, humidTemp=None,irrigation=None):
         self.name = name
         self.lights = lights
         self.blinds = blinds
         self.air = air
         self.irrigation = irrigation
+        self.humidTemp = humidTemp
         self.window = window
 
     def handleLights(self):
@@ -48,7 +49,7 @@ class Room():
         if not self.window.serial.isOpen() and not self.window.uisingWifi:
             return
         self.air["speedStatus"] = self.air["speedSelector"].currentText()
-        self.window.sendData({self.name: {"airSpeed": self.air["speedStatus"]}})
+        self.window.sendData({self.name: {"airSpeed": self.air["speedStatus"].lower()}})
     
     def handleIrrigation(self):
         if not self.window.serial.isOpen() and not self.window.uisingWifi:
@@ -76,6 +77,12 @@ class Room():
         time = self.irrigation["endTimeSelector"].time()
         self.irrigation["endTime"] = time.toString("HH:mm")
         self.window.sendData({self.name: {"irrigationEndTime": self.irrigation["endTime"]}})
+
+    def handleHumidTemp(self, temperature, humidity):
+        self.humidTemp["temperature"] = temperature
+        self.humidTemp["humidity"] = humidity
+        self.humidTemp["temperatureLabel"].setText(str(temperature) + "°C")
+        self.humidTemp["humidityLabel"].setText(str(humidity) + "%")
 
     def getData(self):
         return {
