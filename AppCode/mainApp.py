@@ -27,19 +27,29 @@ class MainWindow(QMainWindow):
 
         #Utils variables for window functions
         self.buttonGroupPages = { 
-            "livingroom" : [self.ui.livingroomPage, self.ui.livingroomBtn], 
-            "office" : [self.ui.officePage, self.ui.officeBtn], 
+            "livingroom" : [self.ui.livingroomPage, self.ui.livingroomBtn],
             "garden" : [self.ui.gardenPage, self.ui.gardenBtn], 
             "settings" : [self.ui.settingsPage, self.ui.settingsBtn]}
         self.menuCollapsedWidth = 55
         self.menuExpandedWidth = 155
         self.uisingWifi = False
+
+        self.roomUIElements = {
+            "livingRoom": {
+                "lights": {"btn": self.ui.livingLightsBtn},
+                "air": {"btn": self.ui.livingAirBtn, "speedSelector": self.ui.livingAirSpeed},
+                "humidTemp": {"humidityLabel": self.ui.livingHumidityLbl, "temperatureLabel": self.ui.livingTemperatureLbl}
+            },
+            "garden": {
+                "irrigation": {"btn": self.ui.irrigationBtn, "startTimeSelector": self.ui.irrigationStartTime, "endTimeSelector": self.ui.irrigationEndTime}
+            }
+        }
         
         #Init UI, Serial and wifiRead
         self.configureUI()
         self.initSerial()
-        # self.timer.start(1000)º
-        # self.timer.timeout.connect(self.wifiRead)
+        self.timer.start(1000)
+        self.timer.timeout.connect(self.wifiRead)
 
         #Init rooms
         self.initRooms()
@@ -60,7 +70,6 @@ class MainWindow(QMainWindow):
         self.ui.menuBtn.clicked.connect(self.toggleMenu)
         self.ui.livingroomBtn.clicked.connect(lambda: 
                                             self.changePage("livingroom"))
-        self.ui.officeBtn.clicked.connect(lambda: self.changePage("office"))
         self.ui.gardenBtn.clicked.connect(lambda: self.changePage("garden"))
         self.ui.settingsBtn.clicked.connect(lambda: self.changePage("settings"))
         self.ui.livingLightsBtn.setCheckable(True)
@@ -68,19 +77,27 @@ class MainWindow(QMainWindow):
         self.ui.irrigationBtn.setCheckable(True)
 
     def initRooms(self):
-        self.livingRoom = Room(name="livingroom", 
-            lights={"status": "off", "btn": self.ui.livingLightsBtn}, 
-            blinds="down", 
-            air={"status": "off", "btn": self.ui.livingAirBtn, 
-                "speedStatus": "baja", "speedSelector": self.ui.livingAirSpeed},
-            humidTemp = {"humidity": 0, "temperature": 0, "humidityLabel": self.ui.livingHumidityLbl, "temperatureLabel": self.ui.livingTemperatureLbl},
-            window=self)
-        
-        self.garden = Room(name="garden",
-            irrigation={"status": "off", "btn": self.ui.irrigationBtn, 
-                "endTime": "00:00", "endTimeSelector": self.ui.irrigationEndTime, 
-                "startTime": "00:00", "startTimeSelector": self.ui.irrigationStartTime},
-            window=self)
+        url = SERVER_URL + "getRooms"
+        response = requests.get(url)
+        if response.status_code != 200: 
+            return f"Failed to get rooms from server. Status code: {response.status_code}"
+        data = json.loads(response.text)
+        self.merge_dicts(data, self.roomUIElements)
+
+        self.rooms = {}
+        for roomName, roomData in data.items():
+            lights = roomData.get("lights")
+            blinds = roomData.get("blinds")
+            air = roomData.get("air")
+            irrigation = roomData.get("irrigation")
+            humidTemp = roomData.get("humidTemp")
+
+            if irrigation is not None:
+                print(irrigation)
+                irrigation["startTime"] = QTime.fromString(irrigation["startTime"], 'hh:mm')
+                irrigation["endTime"] = QTime.fromString(irrigation["endTime"], 'hh:mm')
+
+            self.rooms[roomName] = Room(name=roomName, lights=lights, blinds=blinds, air=air, irrigation=irrigation, humidTemp=humidTemp, window=self)
         
     def initSerial(self):
         self.ui.disconnectBtn.hide()
@@ -91,6 +108,7 @@ class MainWindow(QMainWindow):
         self.serial.readyRead.connect(self.serialRead)
     
     def initLivingRoom(self):
+        self.livingRoom = self.rooms["livingRoom"]
         #Set room lights buttons functions
         self.ui.livingLightsBtn.clicked.connect(
             lambda: self.livingRoom.handleLights())
@@ -110,6 +128,7 @@ class MainWindow(QMainWindow):
             lambda: self.livingRoom.handleAirSpeed())
     
     def initGarden(self):
+        self.garden = self.rooms["garden"]
         self.ui.irrigationBtn.clicked.connect(
             lambda: self.garden.handleIrrigation())
         
@@ -211,13 +230,11 @@ class MainWindow(QMainWindow):
         if not self.serial.isOpen() or not self.serial.canReadLine(): return
         line = self.serial.readLine().data().decode().strip()
         print(line)
-        # if line.startswith('{') and line.endswith('}'):
-        #     data = json.loads(line)
-        # else:
-        #     print(line)
-        # TODO: recorrer el diccionario y actualizar los valores de la interfaz
-
-            
+        if line.startswith('{') and line.endswith('}'):
+            data = json.loads(line)
+            self.updateUI(data)
+        else:
+            print(line)       
         
     def sendData(self, data):
         """
@@ -226,32 +243,33 @@ class MainWindow(QMainWindow):
         print("Datos enviados: ", data)
         json_data = json.dumps(data)
 
-        # Abre el puerto serie si está disponible
         if self.serial.isOpen():
             self.serial.write(json_data.encode())
-
-        # Envía los datos por wifi si está conectado
         elif self.uisingWifi:
-            url = SERVER_URL + "sendData"
-            headers = {'Content-Type': 'application/json; charset=UTF-8'}
-            response = requests.post(url, headers=headers, data=json_data)
-            print(response.status_code)
-            print(response.text)
+            self.wifiSend(json_data)
         else:
             print("No hay conexión")
-    
+
+    def wifiSend(self, data):
+        """
+        Sends the data to the wifi
+        """
+        url = SERVER_URL + "sendData"
+        headers = {'Content-Type': 'application/json; charset=UTF-8'}
+        response = requests.post(url, headers=headers, data=data)
+        print(response.status_code)
+        print(response.text)
+
     def wifiRead(self):
         """
         Reads the data from the wifi
         """
         if not self.uisingWifi: return
         url = SERVER_URL + "getData"
-        print(url)
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
-            print(data)
-            # TODO: recorrer el diccionario y actualizar los valores de la interfaz
+            self.updateUI(data)
         else:
             print(f"Failed to get data from server. Status code: {response.status_code}")
     
@@ -260,10 +278,17 @@ class MainWindow(QMainWindow):
         Updates the UI with the data from the wifi or serial port
         """
         for room in data:
+            self.rooms[room]
             temperature = data[room]["temperature"]
             humidity = data[room]["humidity"]
-            room.handleHumidTemp(temperature, humidity)
+            self.rooms[room].handleHumidTemp(temperature, humidity)
 
+    def merge_dicts(self, d1, d2):
+        for key in d2:
+            if key in d1 and isinstance(d1[key], dict) and isinstance(d2[key], dict):
+                self.merge_dicts(d1[key], d2[key])
+            else:
+                d1[key] = d2[key]
 
 ########################################################################
 ## EXECUTE APP

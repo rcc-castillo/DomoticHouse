@@ -23,7 +23,7 @@ std::map<String, Room> roomMap;
 
 void setupRooms() {
     // Configura los datos para el salon
-    roomMap["livingroom"] = Room("livingRoom", 16, 12, 5, 4, 0, 13);
+    roomMap["livingRoom"] = Room("livingRoom", 16, 12, 5, 4, 0, 13);
     roomMap["garden"] = Room("garden", 14);
 }
 
@@ -56,6 +56,9 @@ void setupServer() {
     });
     server.on("/getData", []()
         { server.send(200, "text/plain", getHumidityAndTemperature()); });
+    
+    server.on("/getRooms", []()
+        { server.send(200, "text/plain", getRooms()); });
     server.begin();
 }
 
@@ -144,13 +147,48 @@ void handleRoom(String &source) {
     }
 }
 
+String getRooms() {
+    DynamicJsonDocument roomsJson(800);
+    for (auto &roomPair : roomMap) {
+        Room &room = roomPair.second;
+        JsonObject roomObject = roomsJson.createNestedObject(room.getName());
+
+        if (room.hasLight()) {
+            roomObject.createNestedObject("lights")["status"] = room.getLightStatus();
+        }
+        if (room.hasBlinds()) {
+            roomObject["blinds"] = room.getBlindsStatus();
+        }
+        if (room.hasAir()) {
+            JsonObject airObject = roomObject.createNestedObject("air");
+            airObject["status"] = room.getAirStatus();
+            airObject["speedStatus"] = room.getAirSpeedStatus();
+        }
+        if (room.hasIrrigation()) {
+            JsonObject irrigationObject = roomObject.createNestedObject("irrigation");
+            irrigationObject["status"] = room.getIrrigationStatus();
+            irrigationObject["startTime"] = room.getIrrigationStartTime();
+            irrigationObject["endTime"] = room.getIrrigationEndTime();
+        }
+        if (room.hasTemperatureSensor()) {
+            JsonObject temperatureObject = roomObject.createNestedObject("humidTemp");
+            temperatureObject["temperature"] = room.getTemperature();
+            temperatureObject["humidity"] = room.getHumidity();
+        }
+    }
+    String jsonResponse;
+    serializeJson(roomsJson, jsonResponse);
+    return jsonResponse;
+}
+
 String getHumidityAndTemperature() {
     StaticJsonDocument<200> jsonDocument;
-    for (auto &room : roomMap) {
-        if (!room.second.hasTemperatureSensor()) continue;
-        float temperature = room.second.getTemperature();
-        float humidity = room.second.getHumidity();
-        String roomName = room.second.getName();
+    for (auto &roomPair : roomMap) {
+        Room &room = roomPair.second;
+        if (!room.hasTemperatureSensor()) continue;
+        float temperature = room.getTemperature();
+        float humidity = room.getHumidity();
+        String roomName = room.getName();
         JsonObject nestedObject = jsonDocument.createNestedObject(roomName);
         nestedObject["temperature"] = temperature;
         nestedObject["humidity"] = humidity;
@@ -168,8 +206,9 @@ void loop() {
     // Actualiza la hora
     timeClient.update();
     // Recorre el roomMap obteniendo la referencia al par <key, value>, Second se refiere al value
-    for (auto &room : roomMap) {
-        room.second.irrigate(timeClient.getHours(), timeClient.getMinutes());
+    for (auto &roomPair : roomMap) {
+        Room &room = roomPair.second;
+        room.irrigate(timeClient.getHours(), timeClient.getMinutes());
     }
 
     // Leer datos desde el puerto serie

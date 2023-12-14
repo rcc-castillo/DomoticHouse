@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'DomoticAppFqcNyL.ui'
+## Form generated from reading UI file 'DomoticAppmsUoMp.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -303,183 +303,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addItem(self.verticalSpacer_7)
 
         self.mainPages.addWidget(self.livingroomPage)
-        self.officePage = QWidget()
-        self.officePage.setObjectName(u"officePage")
-        self.verticalLayout_10 = QVBoxLayout(self.officePage)
-        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_10.addItem(self.verticalSpacer_5)
-
-        self.officeWidgets = QGridLayout()
-        self.officeWidgets.setObjectName(u"officeWidgets")
-        self.officeWidgets.setSizeConstraint(QLayout.SetDefaultConstraint)
-        self.officeLights = QWidget(self.officePage)
-        self.officeLights.setObjectName(u"officeLights")
-        self.verticalLayout_6 = QVBoxLayout(self.officeLights)
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.label = QLabel(self.officeLights)
-        self.label.setObjectName(u"label")
-        self.label.setFont(font)
-
-        self.verticalLayout_6.addWidget(self.label, 0, Qt.AlignHCenter|Qt.AlignVCenter)
-
-        self.officeLightsBtn = QPushButton(self.officeLights)
-        self.officeLightsBtn.setObjectName(u"officeLightsBtn")
-        sizePolicy1.setHeightForWidth(self.officeLightsBtn.sizePolicy().hasHeightForWidth())
-        self.officeLightsBtn.setSizePolicy(sizePolicy1)
-        self.officeLightsBtn.setFont(font1)
-        self.officeLightsBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.officeLightsBtn.setIcon(icon2)
-        self.officeLightsBtn.setIconSize(QSize(24, 24))
-
-        self.verticalLayout_6.addWidget(self.officeLightsBtn)
-
-
-        self.officeWidgets.addWidget(self.officeLights, 0, 0, 1, 1)
-
-        self.officeBlinds = QWidget(self.officePage)
-        self.officeBlinds.setObjectName(u"officeBlinds")
-        self.verticalLayout_13 = QVBoxLayout(self.officeBlinds)
-        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
-        self.label_10 = QLabel(self.officeBlinds)
-        self.label_10.setObjectName(u"label_10")
-        self.label_10.setFont(font)
-
-        self.verticalLayout_13.addWidget(self.label_10, 0, Qt.AlignHCenter|Qt.AlignVCenter)
-
-        self.frame_10 = QFrame(self.officeBlinds)
-        self.frame_10.setObjectName(u"frame_10")
-        self.frame_10.setFrameShape(QFrame.StyledPanel)
-        self.frame_10.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout = QHBoxLayout(self.frame_10)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.officeBlindDownBtn = QPushButton(self.frame_10)
-        self.officeBlindDownBtn.setObjectName(u"officeBlindDownBtn")
-        self.officeBlindDownBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.officeBlindDownBtn.setIcon(icon)
-        self.officeBlindDownBtn.setIconSize(QSize(24, 24))
-
-        self.horizontalLayout.addWidget(self.officeBlindDownBtn)
-
-        self.officeBlindUpBtn = QPushButton(self.frame_10)
-        self.officeBlindUpBtn.setObjectName(u"officeBlindUpBtn")
-        self.officeBlindUpBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.officeBlindUpBtn.setIcon(icon1)
-        self.officeBlindUpBtn.setIconSize(QSize(24, 24))
-
-        self.horizontalLayout.addWidget(self.officeBlindUpBtn)
-
-
-        self.verticalLayout_13.addWidget(self.frame_10)
-
-
-        self.officeWidgets.addWidget(self.officeBlinds, 0, 1, 1, 1)
-
-        self.officeAir = QWidget(self.officePage)
-        self.officeAir.setObjectName(u"officeAir")
-        self.verticalLayout_14 = QVBoxLayout(self.officeAir)
-        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
-        self.label_13 = QLabel(self.officeAir)
-        self.label_13.setObjectName(u"label_13")
-        self.label_13.setFont(font)
-
-        self.verticalLayout_14.addWidget(self.label_13, 0, Qt.AlignHCenter|Qt.AlignVCenter)
-
-        self.officeAirOptions = QFrame(self.officeAir)
-        self.officeAirOptions.setObjectName(u"officeAirOptions")
-        self.officeAirOptions.setFrameShape(QFrame.StyledPanel)
-        self.officeAirOptions.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_14 = QHBoxLayout(self.officeAirOptions)
-        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
-        self.officeAirBtn = QPushButton(self.officeAirOptions)
-        self.officeAirBtn.setObjectName(u"officeAirBtn")
-        self.officeAirBtn.setFont(font1)
-        self.officeAirBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.officeAirBtn.setIcon(icon2)
-        self.officeAirBtn.setIconSize(QSize(24, 24))
-
-        self.horizontalLayout_14.addWidget(self.officeAirBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
-
-        self.label_12 = QLabel(self.officeAirOptions)
-        self.label_12.setObjectName(u"label_12")
-        self.label_12.setFont(font1)
-
-        self.horizontalLayout_14.addWidget(self.label_12, 0, Qt.AlignRight|Qt.AlignVCenter)
-
-        self.officeAirSpeed = QComboBox(self.officeAirOptions)
-        self.officeAirSpeed.addItem("")
-        self.officeAirSpeed.addItem("")
-        self.officeAirSpeed.addItem("")
-        self.officeAirSpeed.setObjectName(u"officeAirSpeed")
-        self.officeAirSpeed.setFont(font1)
-        self.officeAirSpeed.setEditable(False)
-
-        self.horizontalLayout_14.addWidget(self.officeAirSpeed, 0, Qt.AlignHCenter|Qt.AlignVCenter)
-
-
-        self.verticalLayout_14.addWidget(self.officeAirOptions)
-
-
-        self.officeWidgets.addWidget(self.officeAir, 2, 0, 1, 2)
-
-        self.officeHumidTemp = QWidget(self.officePage)
-        self.officeHumidTemp.setObjectName(u"officeHumidTemp")
-        self.verticalLayout_17 = QVBoxLayout(self.officeHumidTemp)
-        self.verticalLayout_17.setObjectName(u"verticalLayout_17")
-        self.officeTemp = QFrame(self.officeHumidTemp)
-        self.officeTemp.setObjectName(u"officeTemp")
-        self.officeTemp.setFrameShape(QFrame.StyledPanel)
-        self.officeTemp.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_13 = QHBoxLayout(self.officeTemp)
-        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.label_20 = QLabel(self.officeTemp)
-        self.label_20.setObjectName(u"label_20")
-        self.label_20.setFont(font)
-
-        self.horizontalLayout_13.addWidget(self.label_20, 0, Qt.AlignHCenter)
-
-        self.officeTemperatureLbl = QLabel(self.officeTemp)
-        self.officeTemperatureLbl.setObjectName(u"officeTemperatureLbl")
-        self.officeTemperatureLbl.setFont(font1)
-
-        self.horizontalLayout_13.addWidget(self.officeTemperatureLbl, 0, Qt.AlignHCenter)
-
-
-        self.verticalLayout_17.addWidget(self.officeTemp)
-
-        self.officeHumid = QFrame(self.officeHumidTemp)
-        self.officeHumid.setObjectName(u"officeHumid")
-        self.officeHumid.setFrameShape(QFrame.StyledPanel)
-        self.officeHumid.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_12 = QHBoxLayout(self.officeHumid)
-        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
-        self.label_19 = QLabel(self.officeHumid)
-        self.label_19.setObjectName(u"label_19")
-        self.label_19.setFont(font)
-
-        self.horizontalLayout_12.addWidget(self.label_19, 0, Qt.AlignHCenter)
-
-        self.officeHumidityLbl = QLabel(self.officeHumid)
-        self.officeHumidityLbl.setObjectName(u"officeHumidityLbl")
-        self.officeHumidityLbl.setFont(font1)
-
-        self.horizontalLayout_12.addWidget(self.officeHumidityLbl, 0, Qt.AlignHCenter)
-
-
-        self.verticalLayout_17.addWidget(self.officeHumid)
-
-
-        self.officeWidgets.addWidget(self.officeHumidTemp, 1, 0, 1, 2)
-
-
-        self.verticalLayout_10.addLayout(self.officeWidgets)
-
-        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_10.addItem(self.verticalSpacer_4)
-
-        self.mainPages.addWidget(self.officePage)
         self.gardenPage = QWidget()
         self.gardenPage.setObjectName(u"gardenPage")
         self.verticalLayout_22 = QVBoxLayout(self.gardenPage)
@@ -784,24 +607,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.livingroomBtn)
 
-        self.officeBtn = QPushButton(self.frame_2)
-        self.officeBtn.setObjectName(u"officeBtn")
-        self.officeBtn.setFont(font2)
-        self.officeBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon5 = QIcon()
-        icon5.addFile(u":/icons/icons/archive.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.officeBtn.setIcon(icon5)
-        self.officeBtn.setIconSize(QSize(24, 24))
-
-        self.verticalLayout_3.addWidget(self.officeBtn)
-
         self.gardenBtn = QPushButton(self.frame_2)
         self.gardenBtn.setObjectName(u"gardenBtn")
         self.gardenBtn.setFont(font2)
         self.gardenBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon6 = QIcon()
-        icon6.addFile(u":/icons/icons/garden.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.gardenBtn.setIcon(icon6)
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/icons/garden.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.gardenBtn.setIcon(icon5)
         self.gardenBtn.setIconSize(QSize(24, 24))
 
         self.verticalLayout_3.addWidget(self.gardenBtn)
@@ -825,9 +637,9 @@ class Ui_MainWindow(object):
         self.settingsBtn.setObjectName(u"settingsBtn")
         self.settingsBtn.setFont(font2)
         self.settingsBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon7 = QIcon()
-        icon7.addFile(u":/icons/icons/settings.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.settingsBtn.setIcon(icon7)
+        icon6 = QIcon()
+        icon6.addFile(u":/icons/icons/settings.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.settingsBtn.setIcon(icon6)
         self.settingsBtn.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_4.addWidget(self.settingsBtn)
@@ -845,7 +657,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainPages.setCurrentIndex(2)
+        self.mainPages.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -870,22 +682,6 @@ class Ui_MainWindow(object):
         self.livingTemperatureLbl.setText(QCoreApplication.translate("MainWindow", u"30\u00baC", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"Humedad", None))
         self.livingHumidityLbl.setText(QCoreApplication.translate("MainWindow", u"50%", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Luces", None))
-        self.officeLightsBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
-        self.label_10.setText(QCoreApplication.translate("MainWindow", u"Persianas", None))
-        self.officeBlindDownBtn.setText("")
-        self.officeBlindUpBtn.setText("")
-        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Aire Acondicionado", None))
-        self.officeAirBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
-        self.label_12.setText(QCoreApplication.translate("MainWindow", u" Velocidad", None))
-        self.officeAirSpeed.setItemText(0, QCoreApplication.translate("MainWindow", u"Baja", None))
-        self.officeAirSpeed.setItemText(1, QCoreApplication.translate("MainWindow", u"Media", None))
-        self.officeAirSpeed.setItemText(2, QCoreApplication.translate("MainWindow", u"Alta", None))
-
-        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Temperatura", None))
-        self.officeTemperatureLbl.setText(QCoreApplication.translate("MainWindow", u"30\u00baC", None))
-        self.label_19.setText(QCoreApplication.translate("MainWindow", u"Humedad", None))
-        self.officeHumidityLbl.setText(QCoreApplication.translate("MainWindow", u"50%", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Riego Autom\u00e1tico", None))
         self.irrigationBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Hora de inicio: ", None))
@@ -915,10 +711,6 @@ class Ui_MainWindow(object):
         self.livingroomBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Show Livingroom", None))
 #endif // QT_CONFIG(tooltip)
         self.livingroomBtn.setText(QCoreApplication.translate("MainWindow", u"Sal\u00f3n", None))
-#if QT_CONFIG(tooltip)
-        self.officeBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Show Office", None))
-#endif // QT_CONFIG(tooltip)
-        self.officeBtn.setText(QCoreApplication.translate("MainWindow", u"Oficina", None))
 #if QT_CONFIG(tooltip)
         self.gardenBtn.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Show Jard\u00edn</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)

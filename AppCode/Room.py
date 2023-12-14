@@ -8,6 +8,7 @@ class Room():
         self.irrigation = irrigation
         self.humidTemp = humidTemp
         self.window = window
+        self.setupUi()
 
     def handleLights(self):
         if not self.window.serial.isOpen() and not self.window.uisingWifi:
@@ -83,6 +84,45 @@ class Room():
         self.humidTemp["humidity"] = humidity
         self.humidTemp["temperatureLabel"].setText(str(temperature) + "°C")
         self.humidTemp["humidityLabel"].setText(str(humidity) + "%")
+
+    def setupUi(self):
+        print(self.air)
+        if self.lights is not None:
+            if self.lights["status"] == "on":
+                self.lights["btn"].setChecked(True)
+                self.lights["btn"].setIcon(QtGui.QIcon(":/icons/icons/toggle-right.svg"))
+                self.lights["btn"].setText("On")
+            else:
+                self.lights["btn"].setChecked(False)
+                self.lights["btn"].setIcon(QtGui.QIcon(":/icons/icons/toggle-left.svg"))
+                self.lights["btn"].setText("Off")
+
+        if self.air is not None:
+            if self.air["status"] == "on":
+                self.air["btn"].setChecked(True)
+                self.air["btn"].setIcon(QtGui.QIcon(":/icons/icons/toggle-right.svg"))
+                self.air["btn"].setText("On")
+            else:
+                self.air["btn"].setChecked(False)
+                self.air["btn"].setIcon(QtGui.QIcon(":/icons/icons/toggle-left.svg"))
+                self.air["btn"].setText("Off")
+            self.air["speedSelector"].setCurrentText(self.air["speedStatus"].capitalize())
+
+        if self.irrigation is not None:
+            if self.irrigation["status"] == "on":
+                self.irrigation["btn"].setChecked(True)
+                self.irrigation["btn"].setIcon(QtGui.QIcon(":/icons/icons/toggle-right.svg"))
+                self.irrigation["btn"].setText("On")
+            else:
+                self.irrigation["btn"].setChecked(False)
+                self.irrigation["btn"].setIcon(QtGui.QIcon(":/icons/icons/toggle-left.svg"))
+                self.irrigation["btn"].setText("Off")
+            self.irrigation["startTimeSelector"].setTime(self.irrigation["startTime"])
+            self.irrigation["endTimeSelector"].setTime(self.irrigation["endTime"])
+        
+        if self.humidTemp is not None:
+            self.humidTemp["temperatureLabel"].setText(str(self.humidTemp["temperature"]) + "°C")
+            self.humidTemp["humidityLabel"].setText(str(self.humidTemp["humidity"]) + "%")
 
     def getData(self):
         return {

@@ -23,13 +23,13 @@ Room::Room(String name, int lightPin, int blindsPin, int airEnable1Pin, int airE
     _airEnable1Pin = airEnable1Pin;
     _airEnable2Pin = airEnable2Pin;
     _airSpeedPin = airSpeedPin;
-    _airSpeed = 105;
     _temperaturePin = temperaturePin;
     _dht = new DHT(_temperaturePin, DHT11);
 
     initializeLight();
     initializeBlinds();
     initializeAir();
+    initializeTemperatureSensor();
 }
 
 Room::Room(String name, int irrigationPin) {
@@ -42,14 +42,81 @@ Room::Room(String name, int irrigationPin) {
     _name = name;
     _hasIrrigation = true;
     _irrigationPin = irrigationPin;
-    _irrigationStatus = false;
     _dht = nullptr;
     initializeIrrigation();
 }
 
+// Getters
 String Room::getName() {
     return _name;
 }
+
+String Room::getLightStatus() {
+    return _lightStatus;
+}
+
+String Room::getBlindsStatus() {
+    return _blindsStatus;
+}
+
+String Room::getAirStatus() {
+    return _airStatus;
+}
+
+String Room::getAirSpeedStatus() {
+    return _airSpeedStatus;
+}
+
+String Room::getIrrigationStatus() {
+    return _irrigationStatus;
+}
+
+String Room::getIrrigationStartTime() {
+    int hour = std::get<0>(_irrigationStartTime);
+    int minute = std::get<1>(_irrigationStartTime);
+    if (hour < 10) {
+        if (minute < 10) {
+            return "0" + String(hour) + ":0" + String(minute);
+        }
+        return "0" + String(hour) + ":" + String(minute);
+    }
+    return String(hour) + ":" + String(minute);
+}
+
+String Room::getIrrigationEndTime() {
+    int hour = std::get<0>(_irrigationEndTime);
+    int minute = std::get<1>(_irrigationEndTime);
+    if (hour < 10) {
+        if (minute < 10) {
+            return "0" + String(hour) + ":0" + String(minute);
+        }
+        return "0" + String(hour) + ":" + String(minute);
+    }
+    return String(hour) + ":" + String(minute);
+}
+
+// TODO: Comprobar si funciona el sensor de temperatura
+void Room::initializeTemperatureSensor() {
+    _dht->begin();
+}
+
+float Room::getTemperature() {
+    float t = _dht->readTemperature();
+    Serial.println(t);
+    if (isnan(t)) {
+        return -999;
+    }
+    return t;
+}
+
+float Room::getHumidity() {
+    float h = _dht->readHumidity();
+    if (isnan(h)) {
+        return -999;
+    }
+    return h;
+}
+
 
 // Flags para saber si el cuarto tiene ciertos dispositivos
 bool Room::hasLight() {
@@ -73,27 +140,28 @@ bool Room::hasTemperatureSensor() {
 }
 
 void Room::initializeLight() {
-    pinMode(_lightPin, OUTPUT);    // Configurar el pin del LED como salida
-    digitalWrite(_lightPin, LOW); // Apagar el LED al inicio
+    pinMode(_lightPin, OUTPUT); 
+    _lightStatus = "off";   
+    setLightStatus(_lightStatus); 
 }
 
 void Room::setLightStatus(String status) {
     if (!hasLight()) return;
+    _lightStatus = status;
     if (status == "on") digitalWrite(_lightPin, HIGH);
     else if (status == "off") digitalWrite(_lightPin, LOW);
 }
 
 void Room::initializeBlinds() {
     _blindsServo.attach(_blindsPin, 500, 2500);
-    _blindsServo.write(0);
+    _blindsStatus = "down";
+    setBlindsStatus(_blindsStatus);
 }
 
 void Room::setBlindsStatus(String status) {
     if (!hasBlinds()) return;
-    if (status == "up") {
-        _blindsServo.write(179);
-
-    }
+    _blindsStatus = status;
+    if (status == "up") _blindsServo.write(179);
     else if (status == "down") _blindsServo.write(0);
 }
 
@@ -101,24 +169,28 @@ void Room::initializeAir() {
     pinMode(_airEnable1Pin, OUTPUT);
     pinMode(_airEnable2Pin, OUTPUT);
     pinMode(_airSpeedPin, OUTPUT);
-    analogWrite(_airSpeedPin, _airSpeed);
-    setAirStatus("off");
+    _airStatus = "off";
+    _airSpeedStatus = "baja";
+    setAirStatus(_airStatus);
+    setAirSpeed(_airSpeedStatus);
 }
 
 void Room::setAirStatus(String status) {
     if (!hasAir()) return;
+    _airStatus = status;
     if (status == "on") {
         digitalWrite(_airEnable1Pin, HIGH);
         digitalWrite(_airEnable2Pin, LOW);
     }
-    else if (status == "off") 
+    else if (status == "off")
         digitalWrite(_airEnable1Pin, LOW);
         digitalWrite(_airEnable2Pin, LOW);
 }
 
 void Room::setAirSpeed(String speed) {
     if (!hasAir()) return;
-    if (speed == "baja") _airSpeed = 105;
+    _airSpeedStatus = speed;
+    if (speed == "baja") _airSpeed = 85;
     else if (speed == "media") _airSpeed = 170;
     else if (speed == "alta") _airSpeed = 255;
     analogWrite(_airSpeedPin, _airSpeed);
@@ -126,13 +198,15 @@ void Room::setAirSpeed(String speed) {
 
 void Room::initializeIrrigation() {
     pinMode(_irrigationPin, OUTPUT);
-    digitalWrite(_irrigationPin, LOW);
+    _irrigationStatus = "off";
+    setIrrigationStatus(_irrigationStatus);
 }
 
 void Room::setIrrigationStatus(String status) {
     if (!hasIrrigation()) return;
-    if (status == "on") _irrigationStatus = true;
-    else if (status == "off") _irrigationStatus = false;
+    _irrigationStatus = status;
+    if (status == "on") _irrigationEnabled = true;
+    else if (status == "off") _irrigationEnabled = false;
 }
 
 void Room::setIrrigationStartTime(int hour, int minute) {
@@ -147,7 +221,7 @@ void Room::setIrrigationEndTime(int hour, int minute) {
 
 void Room::irrigate(int currentHour, int currentMinute) {
     if (!hasIrrigation()) return;
-    if (_irrigationStatus) {
+    if (_irrigationEnabled) {
         int startHour = std::get<0>(_irrigationStartTime);
         int startMinute = std::get<1>(_irrigationStartTime);
         int endHour = std::get<0>(_irrigationEndTime);
@@ -156,7 +230,6 @@ void Room::irrigate(int currentHour, int currentMinute) {
         bool isWithinTimeRange = (currentHour > startHour || (currentHour == startHour && currentMinute >= startMinute)) &&
                 (currentHour < endHour || (currentHour == endHour && currentMinute < endMinute));
 
-        // TODO: Test todas las posibilidades
         if (endHour > startHour || (endHour == startHour && endMinute > startMinute)) {
             digitalWrite(_irrigationPin, isWithinTimeRange ? HIGH : LOW);
         }
@@ -171,27 +244,4 @@ void Room::irrigate(int currentHour, int currentMinute) {
     else {
         digitalWrite(_irrigationPin, LOW);
     }
-}
-
-// TODO: Comprobar si funciona el sensor de temperatura
-void Room::initializeTemperatureSensor() {
-    _dht->begin();
-}
-
-float Room::getTemperature() {
-    float t = _dht->readTemperature();
-    // Comprueba si la lectura ha fallado y, en caso afirmativo, devuelve un valor de error
-    if (isnan(t)) {
-        return -999;
-    }
-    return t;
-}
-
-float Room::getHumidity() {
-    float h = _dht->readHumidity();
-    // Comprueba si la lectura ha fallado y, en caso afirmativo, devuelve un valor de error
-    if (isnan(h)) {
-        return -999;
-    }
-    return h;
 }

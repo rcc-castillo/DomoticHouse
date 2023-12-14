@@ -19,19 +19,25 @@ private:
 
     // Luces
     int _lightPin;
+    String _lightStatus;
 
     // Persianas
     int _blindsPin;
     Servo _blindsServo;
+    String _blindsStatus;
+
     // Aire acondicionado
     int _airEnable1Pin; // Pin para controlar encendido y apagado del motor
     int _airEnable2Pin; // Pin para controlar encendido y apagado del motor
     int _airSpeedPin;  // Pin para controlar la velocidad del motor
     int _airSpeed;
+    String _airStatus;
+    String _airSpeedStatus;
 
     // Riego
     int _irrigationPin;
-    bool _irrigationStatus;
+    bool _irrigationEnabled;
+    String _irrigationStatus;
     std::tuple<int, int> _irrigationStartTime;
     std::tuple<int, int> _irrigationEndTime;
 
@@ -49,7 +55,17 @@ public:
     Room();
     Room(String name, int lightPin, int blindsPin, int airEnable1Pin, int airEnable2Pin, int airSpeedPin, int temperaturePin);
     Room(String name, int irrigationPin);
+
     String getName();
+    String getLightStatus();
+    String getBlindsStatus();
+    String getAirStatus();
+    String getAirSpeedStatus();
+    String getIrrigationStatus();
+    String getIrrigationStartTime();
+    String getIrrigationEndTime();
+    float getTemperature(); 
+    float getHumidity();
 
     bool hasLight();
     bool hasBlinds();
@@ -65,8 +81,6 @@ public:
     void setIrrigationStartTime(int hour, int minute);
     void setIrrigationEndTime(int hour, int minute);
     void irrigate(int hour, int minute);
-    float getTemperature(); 
-    float getHumidity();
 };
 
 #endif
