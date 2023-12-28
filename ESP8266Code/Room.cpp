@@ -220,6 +220,7 @@ void Room::setIrrigationEndTime(int hour, int minute) {
 }
 
 void Room::irrigate(int currentHour, int currentMinute) {
+    // TODO: Rompe con fin < inicio
     if (!hasIrrigation()) return;
     if (_irrigationEnabled) {
         int startHour = std::get<0>(_irrigationStartTime);

@@ -1,7 +1,7 @@
 ########################################################################
 ## IMPORTS
 ########################################################################
-import sys, json, requests
+import sys, json
 from PySide2.QtWidgets import *
 from PySide2 import QtCore, QtGui
 from PySide2.QtSerialPort import QSerialPort, QSerialPortInfo
@@ -10,9 +10,10 @@ from PySide2.QtSerialPort import QSerialPort, QSerialPortInfo
 # IMPORT GUI FILE AND ROOM CLASS
 from ui_DomoticApp import *
 from Room import *
+from Wifi import *
 ########################################################################
 
-SERVER_URL = 'http://192.168.252.249/'
+SERVER_URL = 'http://192.168.34.249/'
 
 ########################################################################
 ## MAIN WINDOW CLASS
@@ -24,6 +25,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.timer = QtCore.QTimer()
+        self.wifi = Wifi(SERVER_URL)
 
         #Utils variables for window functions
         self.buttonGroupPages = { 
@@ -33,10 +35,10 @@ class MainWindow(QMainWindow):
         self.menuCollapsedWidth = 55
         self.menuExpandedWidth = 155
         self.uisingWifi = False
-
         self.roomUIElements = {
             "livingRoom": {
                 "lights": {"btn": self.ui.livingLightsBtn},
+                "blinds": {"upBtn": self.ui.livingBlindUpBtn, "downBtn": self.ui.livingBlindDownBtn},
                 "air": {"btn": self.ui.livingAirBtn, "speedSelector": self.ui.livingAirSpeed},
                 "humidTemp": {"humidityLabel": self.ui.livingHumidityLbl, "temperatureLabel": self.ui.livingTemperatureLbl}
             },
@@ -49,12 +51,11 @@ class MainWindow(QMainWindow):
         self.configureUI()
         self.initSerial()
         self.timer.start(1000)
-        self.timer.timeout.connect(self.wifiRead)
+        self.timer.timeout.connect(self.getData)
 
-        #Init rooms
+        #Init roomss
+        self.getRooms()
         self.initRooms()
-        self.initLivingRoom()
-        self.initGarden()
 
         self.show() 
 
@@ -76,28 +77,15 @@ class MainWindow(QMainWindow):
         self.ui.livingAirBtn.setCheckable(True)
         self.ui.irrigationBtn.setCheckable(True)
 
-    def initRooms(self):
-        url = SERVER_URL + "getRooms"
-        response = requests.get(url)
-        if response.status_code != 200: 
-            return f"Failed to get rooms from server. Status code: {response.status_code}"
-        data = json.loads(response.text)
-        self.merge_dicts(data, self.roomUIElements)
+    def getRooms(self):
+        data = self.wifi.get("getRooms")
+        if data is None: return
 
         self.rooms = {}
         for roomName, roomData in data.items():
-            lights = roomData.get("lights")
-            blinds = roomData.get("blinds")
-            air = roomData.get("air")
-            irrigation = roomData.get("irrigation")
-            humidTemp = roomData.get("humidTemp")
-
-            if irrigation is not None:
-                print(irrigation)
-                irrigation["startTime"] = QTime.fromString(irrigation["startTime"], 'hh:mm')
-                irrigation["endTime"] = QTime.fromString(irrigation["endTime"], 'hh:mm')
-
-            self.rooms[roomName] = Room(name=roomName, lights=lights, blinds=blinds, air=air, irrigation=irrigation, humidTemp=humidTemp, window=self)
+            self.rooms[roomName] = Room(name=roomName, window=self, **roomData)
+            for element in roomData:
+                self.updateUi(roomName, element, self.rooms[roomName].getElement(element))
         
     def initSerial(self):
         self.ui.disconnectBtn.hide()
@@ -107,41 +95,51 @@ class MainWindow(QMainWindow):
         self.ui.disconnectBtn.clicked.connect(lambda: self.serialDisconnect())
         self.serial.readyRead.connect(self.serialRead)
     
-    def initLivingRoom(self):
-        self.livingRoom = self.rooms["livingRoom"]
-        #Set room lights buttons functions
-        self.ui.livingLightsBtn.clicked.connect(
-            lambda: self.livingRoom.handleLights())
+    def initRooms(self):
+        for roomName in self.rooms:
+            roomUI = self.roomUIElements[roomName]
+            handlers = {
+                "blinds": self.connectBlindsButtons,
+                "lights": self.connectLightsButton,
+                "air": self.connectAirButtons,
+                "irrigation": self.connectIrrigationButtons
+            }
+            for element, ui in roomUI.items():
+                if element in handlers:
+                    handlers[element](ui, roomName)
 
-        #Set room blinds buttons functions
-        self.ui.livingBlindUpBtn.clicked.connect(
-            lambda: self.livingRoom.handleBlinds("up"))
-        self.ui.livingBlindDownBtn.clicked.connect(
-            lambda: self.livingRoom.handleBlinds("down"))
+    def connectBlindsButtons(self, ui, roomName):
+            btnUp = ui["upBtn"]
+            btnUp.clicked.connect(lambda: self.handleRoom(roomName, "blinds"))
+            
+            btnDown = ui["downBtn"]
+            btnDown.clicked.connect(lambda: self.handleRoom(roomName, "blinds"))
+
+    def connectLightsButton(self, ui, roomName):
+        btn = ui["btn"]
+        btn.clicked.connect(lambda: 
+            self.handleRoom(roomName, "lights"))
+
+    def connectAirButtons(self, ui, roomName):
+        btn = ui["btn"]
+        btn.clicked.connect(lambda: self.handleRoom(roomName, "air"))
+
+        speedSelector = ui["speedSelector"]
+        speedSelector.currentTextChanged.connect(lambda: 
+            self.handleRoom(roomName, "airSpeed", speedSelector))
+
+    def connectIrrigationButtons(self, ui, roomName):
+        btn = ui["btn"]
+        btn.clicked.connect(lambda: self.handleRoom(roomName, "irrigation"))
+
+        startTimeSelector = ui["startTimeSelector"]
+        startTimeSelector.editingFinished.connect(lambda: self.handleRoom(roomName, "irrigationStartTime", startTimeSelector))
         
-        #Set room air conditioner buttons functions
-        self.ui.livingAirBtn.clicked.connect(
-            lambda: self.livingRoom.handleAir())
-        
-        #Set air conditioner speed
-        self.ui.livingAirSpeed.currentTextChanged.connect(
-            lambda: self.livingRoom.handleAirSpeed())
+        endTimeSelector = ui["endTimeSelector"]
+        endTimeSelector.editingFinished.connect(lambda: self.handleRoom(roomName, "irrigationEndTime", endTimeSelector))
     
-    def initGarden(self):
-        self.garden = self.rooms["garden"]
-        self.ui.irrigationBtn.clicked.connect(
-            lambda: self.garden.handleIrrigation())
-        
-        # Irrigation start time
-        self.ui.irrigationStartTime.editingFinished.connect(
-            lambda: self.garden.handleIrrigationStartTime())
-        
-                # Irrigation start time
-        self.ui.irrigationEndTime.editingFinished.connect(
-            lambda: self.garden.handleIrrigationEndTime())
-        
     ########################################################################
-    ## Functions refred to GUI functions
+    ## Functions refred to GUI functionality
     ########################################################################
     def toggleMenu(self):
         """
@@ -231,8 +229,7 @@ class MainWindow(QMainWindow):
         line = self.serial.readLine().data().decode().strip()
         print(line)
         if line.startswith('{') and line.endswith('}'):
-            data = json.loads(line)
-            self.updateUI(data)
+            self.updateHumidityTemperature(json.loads(line))
         else:
             print(line)       
         
@@ -246,34 +243,24 @@ class MainWindow(QMainWindow):
         if self.serial.isOpen():
             self.serial.write(json_data.encode())
         elif self.uisingWifi:
-            self.wifiSend(json_data)
+            self.wifi.post("sendData", json_data)
         else:
             print("No hay conexión")
 
-    def wifiSend(self, data):
+    def getData(self):
         """
-        Sends the data to the wifi
+        Reads the data from server
         """
-        url = SERVER_URL + "sendData"
-        headers = {'Content-Type': 'application/json; charset=UTF-8'}
-        response = requests.post(url, headers=headers, data=data)
-        print(response.status_code)
-        print(response.text)
-
-    def wifiRead(self):
-        """
-        Reads the data from the wifi
-        """
-        if not self.uisingWifi: return
-        url = SERVER_URL + "getData"
-        response = requests.get(url)
-        if response.status_code == 200:
-            data = response.json()
-            self.updateUI(data)
+        if self.serial.isOpen():
+            self.serialRead()
+        elif self.uisingWifi:
+            data = self.wifi.get("getData")
+            if data is None: return
+            self.updateHumidityTemperature(data)
         else:
-            print(f"Failed to get data from server. Status code: {response.status_code}")
-    
-    def updateUI(self, data):
+            print("No hay conexión")
+
+    def updateHumidityTemperature(self, data):
         """
         Updates the UI with the data from the wifi or serial port
         """
@@ -282,14 +269,75 @@ class MainWindow(QMainWindow):
             temperature = data[room]["temperature"]
             humidity = data[room]["humidity"]
             self.rooms[room].handleHumidTemp(temperature, humidity)
+            self.updateUi(room, "humidTemp", {"temperature": temperature, "humidity": humidity})
 
-    def merge_dicts(self, d1, d2):
-        for key in d2:
-            if key in d1 and isinstance(d1[key], dict) and isinstance(d2[key], dict):
-                self.merge_dicts(d1[key], d2[key])
-            else:
-                d1[key] = d2[key]
+    def determineState(self, room, element, data):
+        if element in ["lights", "air", "irrigation"] and data is None:
+            return "on" if room.getElement(element)["state"] == "off" else "off"
+        if element == "blinds" and data is None:
+            return "up" if room.getElement(element)["state"] == "down" else "down"
+        if element == "airSpeed":
+            return data.currentText()
+        if element in ["irrigationStartTime", "irrigationEndTime"]:
+            return data.time().toString('HH:mm')
+        
+    def handleRoom(self, roomName, element, data=None):
+        if not self.serial.isOpen() and not self.uisingWifi:
+            return
+        room = self.rooms[roomName]
+        handlers = {
+            "lights": room.handleLights,
+            "blinds": room.handleBlinds,
+            "air": room.handleAir,
+            "airSpeed": room.handleAirSpeed,
+            "irrigation": room.handleIrrigation,
+            "irrigationStartTime": room.handleIrrigationStartTime,
+            "irrigationEndTime": room.handleIrrigationEndTime
+        }
 
+        state = self.determineState(room, element, data)
+
+        if element in handlers:
+            handlers[element](state)
+        
+        self.updateUi(roomName, element, room.getElement(element))
+        self.sendData({roomName: {element: state.lower()}})
+
+    def updateUi(self, roomName, element, roomData):
+        roomUI = self.roomUIElements[roomName]
+        if roomData is None:
+            return
+        if element in ["lights", "air", "irrigation"]:
+            icon_path = ":/icons/icons/toggle-right.svg" if roomData["state"] == "on" else ":/icons/icons/toggle-left.svg"
+            roomUI[element]["btn"].setChecked(True)
+            roomUI[element]["btn"].setIcon(QtGui.QIcon(icon_path))
+            roomUI[element]["btn"].setText(roomData["state"].capitalize())
+        
+        if element == "blinds":
+            if roomData["state"] == "up":
+                roomUI[element]["upBtn"].hide()
+                roomUI[element]["downBtn"].show()
+
+            elif roomData["state"] == "down":
+                roomUI[element]["downBtn"].hide()
+                roomUI[element]["upBtn"].show()
+        
+        if element == "air":
+            roomUI[element]["speedSelector"].setCurrentText(roomData["speed"].capitalize())
+
+        if element == "irrigation":
+            startTime = QtCore.QTime.fromString(roomData["startTime"], 'HH:mm')
+            endTime = QtCore.QTime.fromString(roomData["endTime"], 'HH:mm')
+            roomUI[element]["startTimeSelector"].setTime(startTime)
+            roomUI[element]["endTimeSelector"].setTime(endTime)
+
+        if element == "humidTemp":
+            temperature = roomData["temperature"]
+            humidity = roomData["humidity"]
+            roomUI[element]["temperatureLabel"].setText(str(temperature) + "°C")
+            roomUI[element]["humidityLabel"].setText(str(humidity) + "%")
+    
+        
 ########################################################################
 ## EXECUTE APP
 ########################################################################

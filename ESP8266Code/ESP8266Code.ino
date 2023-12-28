@@ -12,13 +12,6 @@ ESP8266WebServer server(80);
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 5000);
 
-
-IPAddress local_IP(192, 168, 118, 249);
-// Set your Gateway IP address
-IPAddress gateway(192, 168, 118, 1);
-
-IPAddress subnet(255, 255, 0, 0);
-
 std::map<String, Room> roomMap;
 
 void setupRooms() {
@@ -28,10 +21,6 @@ void setupRooms() {
 }
 
 void setupWifi() {
-    // Configures static IP address 
-    // if (!WiFi.config(local_IP, gateway, subnet))
-    //     Serial.println("STA Failed to configure");
-
     WiFi.begin(ssid, password);
 
     // Espera hasta que la conexión WiFi se establezca
@@ -83,42 +72,42 @@ void handleRoomData(JsonObject &data, String roomName) {
     Room &room = roomMap[roomName];
     String roomElement = data[roomName].as<JsonObject>().begin()->key().c_str();
 
-    String status = data[roomName][roomElement].as<String>();
+    String state = data[roomName][roomElement].as<String>();
     String text = "";
 
     if (roomElement == "lights") {
-        room.setLightStatus(status);
-        text = "Luces " + status;
+        room.setLightStatus(state);
+        text = "Luces " + state;
     }
     else if (roomElement == "blinds") {
-        room.setBlindsStatus(status);
-        text = "Persianas " + status;
+        room.setBlindsStatus(state);
+        text = "Persianas " + state;
     }
-    else if (roomElement == "airState") {
-        room.setAirStatus(status);
-        text = "Aire acondicionado " + status;
+    else if (roomElement == "air") {
+        room.setAirStatus(state);
+        text = "Aire acondicionado " + state;
     }
     else if (roomElement == "airSpeed") {
-        room.setAirSpeed(status);
-        text = "Velocidad del aire acondicionado " + status;
+        room.setAirSpeed(state);
+        text = "Velocidad del aire acondicionado " + state;
     }
-    else if (roomElement == "irrigationState") {
-        room.setIrrigationStatus(status);
-        text = "Riego " + status;
+    else if (roomElement == "irrigation") {
+        room.setIrrigationStatus(state);
+        text = "Riego " + state;
     }
     else if (roomElement == "irrigationStartTime") {
-        int delimiterPos = status.indexOf(':');
-        int hours = status.substring(0, delimiterPos).toInt();
-        int minutes = status.substring(delimiterPos + 1).toInt();
+        int delimiterPos = state.indexOf(':');
+        int hours = state.substring(0, delimiterPos).toInt();
+        int minutes = state.substring(delimiterPos + 1).toInt();
         room.setIrrigationStartTime(hours, minutes);
-        text = "Hora de inicio de riego " + status;
+        text = "Hora de inicio de riego " + state;
     }
     else if (roomElement == "irrigationEndTime") {
-        int delimiterPos = status.indexOf(':');
-        int hours = status.substring(0, delimiterPos).toInt();
-        int minutes = status.substring(delimiterPos + 1).toInt();
+        int delimiterPos = state.indexOf(':');
+        int hours = state.substring(0, delimiterPos).toInt();
+        int minutes = state.substring(delimiterPos + 1).toInt();
         room.setIrrigationEndTime(hours, minutes);
-        text = "Hora de fin de riego " + status;
+        text = "Hora de fin de riego " + state;
     }
     else {
         text = "Elemento no encontrado: " + roomElement;
@@ -154,19 +143,19 @@ String getRooms() {
         JsonObject roomObject = roomsJson.createNestedObject(room.getName());
 
         if (room.hasLight()) {
-            roomObject.createNestedObject("lights")["status"] = room.getLightStatus();
+            roomObject.createNestedObject("lights")["state"] = room.getLightStatus();
         }
         if (room.hasBlinds()) {
-            roomObject["blinds"] = room.getBlindsStatus();
+            roomObject.createNestedObject("blinds")["state"] = room.getBlindsStatus();
         }
         if (room.hasAir()) {
             JsonObject airObject = roomObject.createNestedObject("air");
-            airObject["status"] = room.getAirStatus();
-            airObject["speedStatus"] = room.getAirSpeedStatus();
+            airObject["state"] = room.getAirStatus();
+            airObject["speed"] = room.getAirSpeedStatus();
         }
         if (room.hasIrrigation()) {
             JsonObject irrigationObject = roomObject.createNestedObject("irrigation");
-            irrigationObject["status"] = room.getIrrigationStatus();
+            irrigationObject["state"] = room.getIrrigationStatus();
             irrigationObject["startTime"] = room.getIrrigationStartTime();
             irrigationObject["endTime"] = room.getIrrigationEndTime();
         }
@@ -186,12 +175,9 @@ String getHumidityAndTemperature() {
     for (auto &roomPair : roomMap) {
         Room &room = roomPair.second;
         if (!room.hasTemperatureSensor()) continue;
-        float temperature = room.getTemperature();
-        float humidity = room.getHumidity();
-        String roomName = room.getName();
-        JsonObject nestedObject = jsonDocument.createNestedObject(roomName);
-        nestedObject["temperature"] = temperature;
-        nestedObject["humidity"] = humidity;
+        JsonObject nestedObject = jsonDocument.createNestedObject(room.getName());
+        nestedObject["temperature"] = room.getTemperature();
+        nestedObject["humidity"] = room.getHumidity();
     }
     String jsonResponse;
     serializeJson(jsonDocument, jsonResponse);
