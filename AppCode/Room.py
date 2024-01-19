@@ -1,12 +1,11 @@
 class Room():
-    def __init__(self, name, window, lights=None, blinds=None, air=None, humidTemp=None,irrigation=None):
+    def __init__(self, name, lights=None, blinds=None, air=None, humidtemp=None,irrigation=None):
         self.name = name
         self.lights = lights
         self.blinds = blinds
         self.air = air
         self.irrigation = irrigation
-        self.humidTemp = humidTemp
-        self.window = window
+        self.humidtemp = humidtemp
 
     def handleLights(self, state):
         self.lights["state"] = state
@@ -30,9 +29,11 @@ class Room():
     def handleIrrigationEndTime(self, time):
         self.irrigation["endTime"] = time
 
-    def handleHumidTemp(self, temperature, humidity):
-        self.humidTemp["temperature"] = temperature
-        self.humidTemp["humidity"] = humidity
+    def handleHumidTemp(self, data):
+        self.humidtemp = data
 
     def getElement(self, element):
-        return getattr(self, element, None)
+        return getattr(self, element.lower(), None)
+    
+    def getHandler(self, element):
+        return getattr(self, f"handle{element}", None)

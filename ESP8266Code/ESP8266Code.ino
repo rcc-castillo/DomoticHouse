@@ -37,12 +37,22 @@ void setupWifi() {
 void setupServer() {
     server.on("/", []()
         { server.send(200, "text/plain", "Conection established"); });
+
     server.onNotFound([]()
         { server.send(404, "text/plain", "404: Not found"); });
-    server.on("/sendData", []() {
-        String source = server.arg("plain");
-        handleRoom(source);
-    });
+
+    server.on("/sendLights", []() 
+        { handleLights(server.arg("plain"), server.arg("roomName")); });
+
+    server.on("/sendBlinds", []() 
+        { handleBlinds(server.arg("plain"), server.arg("roomName")); });
+
+    server.on("/sendAir", []() 
+        { handleAir(server.arg("plain"), server.arg("roomName"), server.arg("element")); });
+
+    server.on("/sendIrrigation", []() 
+        { handleAir(server.arg("plain"), server.arg("roomName"), server.arg("element")); });
+
     server.on("/getData", []()
         { server.send(200, "text/plain", getHumidityAndTemperature()); });
     
@@ -68,72 +78,124 @@ void setup() {
     timeClient.begin();
 }
 
-void handleRoomData(JsonObject &data, String roomName) {
+void handleSerial() {
+    String data = Serial.readStringUntil('\n');
+    Serial.println(data);
+    if (data == "getRooms"){
+        Serial.println(getRooms());
+        return;
+    }
+    
+    if (data == "getData") {
+        Serial.println(getHumidityAndTemperature());
+        return;
+    }
+
+    String roomName = data.substring(0, data.indexOf(','));
+    data.remove(0, data.indexOf(',') + 1);
+
+    String element = data.substring(0, data.indexOf(','));
+    data.remove(0, data.indexOf(',') + 1);
+
+    const String json = data;
+    if (element == "Lights") {
+        handleLights(json, roomName);
+    }
+    else if (element == "Blinds") {
+        handleBlinds(json, roomName);
+    }
+    else if (element.startsWith("Air")) {
+        handleAir(json, roomName, element);
+    }
+    else if (element.startsWith("Irrigation")) {
+        handleIrrigation(json, roomName, element);
+    }
+}
+
+JsonObject getData(const String &source) {
+    JsonObject data;
+    if (readJsonFromSource(source, data)) {
+        return data;
+    }
+    else {
+        return JsonObject();
+    }
+}
+
+void handleLights(const String &source, String roomName) {
     Room &room = roomMap[roomName];
-    String roomElement = data[roomName].as<JsonObject>().begin()->key().c_str();
+    JsonObject data = getData(source);
+    if (data.isNull()) {
+        server.send(400, "text/plain", "Error al analizar JSON");
+        return;
+    }
+    String state = data[roomName]["Lights"].as<String>();
+    room.setLightStatus(state);
+    String text = "Luces " + state;
+    server.send(200, "text/plain", roomName + ": " + text);
+}
 
-    String state = data[roomName][roomElement].as<String>();
+void handleBlinds(const String &source, String roomName) {
+    Room &room = roomMap[roomName];
+    JsonObject data = getData(source);
+    if (data.isNull()) {
+        server.send(400, "text/plain", "Error al analizar JSON");
+        return;
+    }
+    String state = data[roomName]["Blinds"].as<String>();
+    room.setBlindsStatus(state);
+    String text = "Persianas " + state;
+    server.send(200, "text/plain", roomName + ": " + text);
+}
+
+void handleAir(const String &source, String roomName, String element) {
+    Room &room = roomMap[roomName];
+    JsonObject data = getData(source);
+    if (data.isNull()) {
+        server.send(400, "text/plain", "Error al analizar JSON");
+        return;
+    }
+    String state = data[roomName][element].as<String>();
     String text = "";
-
-    if (roomElement == "lights") {
-        room.setLightStatus(state);
-        text = "Luces " + state;
-    }
-    else if (roomElement == "blinds") {
-        room.setBlindsStatus(state);
-        text = "Persianas " + state;
-    }
-    else if (roomElement == "air") {
+    if (element == "Air") {
         room.setAirStatus(state);
         text = "Aire acondicionado " + state;
     }
-    else if (roomElement == "airSpeed") {
+    else if (element == "AirSpeed") {
         room.setAirSpeed(state);
         text = "Velocidad del aire acondicionado " + state;
     }
-    else if (roomElement == "irrigation") {
+    server.send(200, "text/plain", roomName + ": " + text);
+}
+
+void handleIrrigation(const String &source, String roomName, String element) {
+    Room &room = roomMap[roomName];
+    JsonObject data = getData(source);
+    if (data.isNull()) {
+        server.send(400, "text/plain", "Error al analizar JSON");
+        return;
+    }
+    String state = data[roomName][element].as<String>();
+    String text = "";
+    if (element == "Irrigation") {
         room.setIrrigationStatus(state);
         text = "Riego " + state;
     }
-    else if (roomElement == "irrigationStartTime") {
+    else if (element == "IrrigationStartTime") {
         int delimiterPos = state.indexOf(':');
         int hours = state.substring(0, delimiterPos).toInt();
         int minutes = state.substring(delimiterPos + 1).toInt();
         room.setIrrigationStartTime(hours, minutes);
         text = "Hora de inicio de riego " + state;
     }
-    else if (roomElement == "irrigationEndTime") {
+    else if (element == "IrrigationEndTime") {
         int delimiterPos = state.indexOf(':');
         int hours = state.substring(0, delimiterPos).toInt();
         int minutes = state.substring(delimiterPos + 1).toInt();
         room.setIrrigationEndTime(hours, minutes);
         text = "Hora de fin de riego " + state;
     }
-    else {
-        text = "Elemento no encontrado: " + roomElement;
-        Serial.println(roomName + ": " + text);
-        server.send(404, "text/plain", roomName + ": " + text);
-        return;
-    }
-
-    if (Serial) Serial.println(text);
     server.send(200, "text/plain", roomName + ": " + text);
-}
-
-void handleRoom(String &source) {
-    JsonObject data;
-    if (readJsonFromSource(source, data)) {
-        String roomName = data.begin()->key().c_str();
-        if (roomMap.count(roomName) == 0) {
-            Serial.println("Room not found: " + roomName);
-            server.send(404, "text/plain", "Room not found: " + roomName);
-            return;
-        }
-        handleRoomData(data, roomName);
-    }
-    else {
-        server.send(400, "text/plain", "Error al analizar JSON");
-    }
 }
 
 String getRooms() {
@@ -160,7 +222,7 @@ String getRooms() {
             irrigationObject["endTime"] = room.getIrrigationEndTime();
         }
         if (room.hasTemperatureSensor()) {
-            JsonObject temperatureObject = roomObject.createNestedObject("humidTemp");
+            JsonObject temperatureObject = roomObject.createNestedObject("humidtemp");
             temperatureObject["temperature"] = room.getTemperature();
             temperatureObject["humidity"] = room.getHumidity();
         }
@@ -184,27 +246,20 @@ String getHumidityAndTemperature() {
     return jsonResponse;
 }
 
-void sendData() {
-    if (Serial) Serial.println(getHumidityAndTemperature());
-}
-
 void loop() { 
     // Actualiza la hora
     timeClient.update();
+
     // Recorre el roomMap obteniendo la referencia al par <key, value>, Second se refiere al value
     for (auto &roomPair : roomMap) {
         Room &room = roomPair.second;
-        room.irrigate(timeClient.getHours(), timeClient.getMinutes());
+        if (room.hasIrrigation()) room.irrigate(timeClient.getHours(), timeClient.getMinutes());
     }
 
     // Leer datos desde el puerto serie
     if (Serial.available() > 0) {
-        String source = Serial.readStringUntil('\n');
-        handleRoom(source);
+        handleSerial();
     }
     // No hay datos en el puerto serie, intenta desde el servidor web
-    else {
-        server.handleClient();
-    }
-    sendData();
+    else server.handleClient();
 }

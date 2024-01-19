@@ -1,12 +1,11 @@
 #include "ReadJson.h"
 
-bool readJsonFromSource(String &source, JsonObject &data)
+bool readJsonFromSource(const String &source, JsonObject &data)
 {
     // Create a JSON buffer and parse the data into it
     const size_t bufferSize = 600;
     StaticJsonDocument<bufferSize> jsonDoc;
     char jsonStr[bufferSize];
-
     source.toCharArray(jsonStr, bufferSize);
 
     DeserializationError error = deserializeJson(jsonDoc, jsonStr);

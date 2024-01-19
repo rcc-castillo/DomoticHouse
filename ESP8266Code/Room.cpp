@@ -52,7 +52,9 @@ String Room::getName() {
 }
 
 String Room::getLightStatus() {
-    return _lightStatus;
+    // TODO: Uncomment this when the light is connected to the ESP8266
+    return "on";
+    // return _lightStatus;
 }
 
 String Room::getBlindsStatus() {
@@ -95,26 +97,24 @@ String Room::getIrrigationEndTime() {
     return String(hour) + ":" + String(minute);
 }
 
-// TODO: Comprobar si funciona el sensor de temperatura
 void Room::initializeTemperatureSensor() {
     _dht->begin();
 }
 
 float Room::getTemperature() {
-    float t = _dht->readTemperature();
-    Serial.println(t);
-    if (isnan(t)) {
+    float temperature = _dht->readTemperature();
+    if (isnan(temperature)) {
         return -999;
     }
-    return t;
+    return temperature;
 }
 
 float Room::getHumidity() {
-    float h = _dht->readHumidity();
-    if (isnan(h)) {
+    float humidity = _dht->readHumidity();
+    if (isnan(humidity)) {
         return -999;
     }
-    return h;
+    return humidity;
 }
 
 
@@ -220,8 +220,6 @@ void Room::setIrrigationEndTime(int hour, int minute) {
 }
 
 void Room::irrigate(int currentHour, int currentMinute) {
-    // TODO: Rompe con fin < inicio
-    if (!hasIrrigation()) return;
     if (_irrigationEnabled) {
         int startHour = std::get<0>(_irrigationStartTime);
         int startMinute = std::get<1>(_irrigationStartTime);

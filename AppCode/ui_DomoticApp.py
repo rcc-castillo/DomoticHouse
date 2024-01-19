@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'DomoticAppmsUoMp.ui'
+## Form generated from reading UI file 'DomoticAppXtdyhV.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -145,25 +145,25 @@ class Ui_MainWindow(object):
         self.frame_11.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_6 = QHBoxLayout(self.frame_11)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.livingBlindDownBtn = QPushButton(self.frame_11)
-        self.livingBlindDownBtn.setObjectName(u"livingBlindDownBtn")
-        self.livingBlindDownBtn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.livingRoomBlindsDownBtn = QPushButton(self.frame_11)
+        self.livingRoomBlindsDownBtn.setObjectName(u"livingRoomBlindsDownBtn")
+        self.livingRoomBlindsDownBtn.setCursor(QCursor(Qt.PointingHandCursor))
         icon = QIcon()
         icon.addFile(u":/icons/icons/chevrons-down.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.livingBlindDownBtn.setIcon(icon)
-        self.livingBlindDownBtn.setIconSize(QSize(24, 24))
+        self.livingRoomBlindsDownBtn.setIcon(icon)
+        self.livingRoomBlindsDownBtn.setIconSize(QSize(24, 24))
 
-        self.horizontalLayout_6.addWidget(self.livingBlindDownBtn)
+        self.horizontalLayout_6.addWidget(self.livingRoomBlindsDownBtn)
 
-        self.livingBlindUpBtn = QPushButton(self.frame_11)
-        self.livingBlindUpBtn.setObjectName(u"livingBlindUpBtn")
-        self.livingBlindUpBtn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.livingRoomBlindsUpBtn = QPushButton(self.frame_11)
+        self.livingRoomBlindsUpBtn.setObjectName(u"livingRoomBlindsUpBtn")
+        self.livingRoomBlindsUpBtn.setCursor(QCursor(Qt.PointingHandCursor))
         icon1 = QIcon()
         icon1.addFile(u":/icons/icons/chevrons-up.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.livingBlindUpBtn.setIcon(icon1)
-        self.livingBlindUpBtn.setIconSize(QSize(24, 24))
+        self.livingRoomBlindsUpBtn.setIcon(icon1)
+        self.livingRoomBlindsUpBtn.setIconSize(QSize(24, 24))
 
-        self.horizontalLayout_6.addWidget(self.livingBlindUpBtn)
+        self.horizontalLayout_6.addWidget(self.livingRoomBlindsUpBtn)
 
 
         self.verticalLayout_15.addWidget(self.frame_11)
@@ -181,20 +181,20 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_11.addWidget(self.label_2, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
-        self.livingLightsBtn = QPushButton(self.livingLights)
-        self.livingLightsBtn.setObjectName(u"livingLightsBtn")
-        sizePolicy1.setHeightForWidth(self.livingLightsBtn.sizePolicy().hasHeightForWidth())
-        self.livingLightsBtn.setSizePolicy(sizePolicy1)
+        self.livingRoomLightsBtn = QPushButton(self.livingLights)
+        self.livingRoomLightsBtn.setObjectName(u"livingRoomLightsBtn")
+        sizePolicy1.setHeightForWidth(self.livingRoomLightsBtn.sizePolicy().hasHeightForWidth())
+        self.livingRoomLightsBtn.setSizePolicy(sizePolicy1)
         font1 = QFont()
         font1.setPointSize(10)
-        self.livingLightsBtn.setFont(font1)
-        self.livingLightsBtn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.livingRoomLightsBtn.setFont(font1)
+        self.livingRoomLightsBtn.setCursor(QCursor(Qt.PointingHandCursor))
         icon2 = QIcon()
         icon2.addFile(u":/icons/icons/toggle-left.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.livingLightsBtn.setIcon(icon2)
-        self.livingLightsBtn.setIconSize(QSize(24, 24))
+        self.livingRoomLightsBtn.setIcon(icon2)
+        self.livingRoomLightsBtn.setIconSize(QSize(24, 24))
 
-        self.verticalLayout_11.addWidget(self.livingLightsBtn)
+        self.verticalLayout_11.addWidget(self.livingRoomLightsBtn)
 
 
         self.livingWidgets.addWidget(self.livingLights, 0, 0, 1, 1)
@@ -215,14 +215,14 @@ class Ui_MainWindow(object):
         self.livingAirOptions.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_15 = QHBoxLayout(self.livingAirOptions)
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
-        self.livingAirBtn = QPushButton(self.livingAirOptions)
-        self.livingAirBtn.setObjectName(u"livingAirBtn")
-        self.livingAirBtn.setFont(font1)
-        self.livingAirBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.livingAirBtn.setIcon(icon2)
-        self.livingAirBtn.setIconSize(QSize(24, 24))
+        self.livingRoomAirBtn = QPushButton(self.livingAirOptions)
+        self.livingRoomAirBtn.setObjectName(u"livingRoomAirBtn")
+        self.livingRoomAirBtn.setFont(font1)
+        self.livingRoomAirBtn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.livingRoomAirBtn.setIcon(icon2)
+        self.livingRoomAirBtn.setIconSize(QSize(24, 24))
 
-        self.horizontalLayout_15.addWidget(self.livingAirBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.horizontalLayout_15.addWidget(self.livingRoomAirBtn, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.label_16 = QLabel(self.livingAirOptions)
         self.label_16.setObjectName(u"label_16")
@@ -230,15 +230,15 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_15.addWidget(self.label_16, 0, Qt.AlignRight|Qt.AlignVCenter)
 
-        self.livingAirSpeed = QComboBox(self.livingAirOptions)
-        self.livingAirSpeed.addItem("")
-        self.livingAirSpeed.addItem("")
-        self.livingAirSpeed.addItem("")
-        self.livingAirSpeed.setObjectName(u"livingAirSpeed")
-        self.livingAirSpeed.setFont(font1)
-        self.livingAirSpeed.setEditable(False)
+        self.livingRoomAirSpeed = QComboBox(self.livingAirOptions)
+        self.livingRoomAirSpeed.addItem("")
+        self.livingRoomAirSpeed.addItem("")
+        self.livingRoomAirSpeed.addItem("")
+        self.livingRoomAirSpeed.setObjectName(u"livingRoomAirSpeed")
+        self.livingRoomAirSpeed.setFont(font1)
+        self.livingRoomAirSpeed.setEditable(False)
 
-        self.horizontalLayout_15.addWidget(self.livingAirSpeed, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+        self.horizontalLayout_15.addWidget(self.livingRoomAirSpeed, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
         self.verticalLayout_16.addWidget(self.livingAirOptions)
@@ -262,11 +262,11 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_11.addWidget(self.label_18, 0, Qt.AlignHCenter)
 
-        self.livingTemperatureLbl = QLabel(self.livingTemp)
-        self.livingTemperatureLbl.setObjectName(u"livingTemperatureLbl")
-        self.livingTemperatureLbl.setFont(font1)
+        self.livingRoomHumidtempTemperatureLbl = QLabel(self.livingTemp)
+        self.livingRoomHumidtempTemperatureLbl.setObjectName(u"livingRoomHumidtempTemperatureLbl")
+        self.livingRoomHumidtempTemperatureLbl.setFont(font1)
 
-        self.horizontalLayout_11.addWidget(self.livingTemperatureLbl, 0, Qt.AlignHCenter)
+        self.horizontalLayout_11.addWidget(self.livingRoomHumidtempTemperatureLbl, 0, Qt.AlignHCenter)
 
 
         self.verticalLayout_12.addWidget(self.livingTemp)
@@ -283,11 +283,11 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_10.addWidget(self.label_17, 0, Qt.AlignHCenter)
 
-        self.livingHumidityLbl = QLabel(self.livingHumid)
-        self.livingHumidityLbl.setObjectName(u"livingHumidityLbl")
-        self.livingHumidityLbl.setFont(font1)
+        self.livingRoomHumidtempHumidityLbl = QLabel(self.livingHumid)
+        self.livingRoomHumidtempHumidityLbl.setObjectName(u"livingRoomHumidtempHumidityLbl")
+        self.livingRoomHumidtempHumidityLbl.setFont(font1)
 
-        self.horizontalLayout_10.addWidget(self.livingHumidityLbl, 0, Qt.AlignHCenter)
+        self.horizontalLayout_10.addWidget(self.livingRoomHumidtempHumidityLbl, 0, Qt.AlignHCenter)
 
 
         self.verticalLayout_12.addWidget(self.livingHumid)
@@ -330,16 +330,16 @@ class Ui_MainWindow(object):
         self.irrigationOptions.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_8 = QHBoxLayout(self.irrigationOptions)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
-        self.irrigationBtn = QPushButton(self.irrigationOptions)
-        self.irrigationBtn.setObjectName(u"irrigationBtn")
-        sizePolicy1.setHeightForWidth(self.irrigationBtn.sizePolicy().hasHeightForWidth())
-        self.irrigationBtn.setSizePolicy(sizePolicy1)
-        self.irrigationBtn.setFont(font1)
-        self.irrigationBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.irrigationBtn.setIcon(icon2)
-        self.irrigationBtn.setIconSize(QSize(24, 24))
+        self.gardenIrrigationBtn = QPushButton(self.irrigationOptions)
+        self.gardenIrrigationBtn.setObjectName(u"gardenIrrigationBtn")
+        sizePolicy1.setHeightForWidth(self.gardenIrrigationBtn.sizePolicy().hasHeightForWidth())
+        self.gardenIrrigationBtn.setSizePolicy(sizePolicy1)
+        self.gardenIrrigationBtn.setFont(font1)
+        self.gardenIrrigationBtn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.gardenIrrigationBtn.setIcon(icon2)
+        self.gardenIrrigationBtn.setIconSize(QSize(24, 24))
 
-        self.horizontalLayout_8.addWidget(self.irrigationBtn)
+        self.horizontalLayout_8.addWidget(self.gardenIrrigationBtn)
 
         self.irrigationSelectors = QFrame(self.irrigationOptions)
         self.irrigationSelectors.setObjectName(u"irrigationSelectors")
@@ -359,11 +359,11 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_17.addWidget(self.label_8)
 
-        self.irrigationStartTime = QTimeEdit(self.frame_5)
-        self.irrigationStartTime.setObjectName(u"irrigationStartTime")
-        self.irrigationStartTime.setFont(font1)
+        self.gardenIrrigationStartTime = QTimeEdit(self.frame_5)
+        self.gardenIrrigationStartTime.setObjectName(u"gardenIrrigationStartTime")
+        self.gardenIrrigationStartTime.setFont(font1)
 
-        self.horizontalLayout_17.addWidget(self.irrigationStartTime)
+        self.horizontalLayout_17.addWidget(self.gardenIrrigationStartTime)
 
 
         self.verticalLayout_19.addWidget(self.frame_5)
@@ -380,11 +380,11 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_18.addWidget(self.label_9)
 
-        self.irrigationEndTime = QTimeEdit(self.frame_6)
-        self.irrigationEndTime.setObjectName(u"irrigationEndTime")
-        self.irrigationEndTime.setFont(font1)
+        self.gardenIrrigationEndTime = QTimeEdit(self.frame_6)
+        self.gardenIrrigationEndTime.setObjectName(u"gardenIrrigationEndTime")
+        self.gardenIrrigationEndTime.setFont(font1)
 
-        self.horizontalLayout_18.addWidget(self.irrigationEndTime)
+        self.horizontalLayout_18.addWidget(self.gardenIrrigationEndTime)
 
 
         self.verticalLayout_19.addWidget(self.frame_6)
@@ -657,7 +657,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainPages.setCurrentIndex(1)
+        self.mainPages.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -667,27 +667,27 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.logo.setText("")
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Persianas", None))
-        self.livingBlindDownBtn.setText("")
-        self.livingBlindUpBtn.setText("")
+        self.livingRoomBlindsDownBtn.setText("")
+        self.livingRoomBlindsUpBtn.setText("")
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Luces", None))
-        self.livingLightsBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
+        self.livingRoomLightsBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Aire Acondicionado", None))
-        self.livingAirBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
+        self.livingRoomAirBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u" Velocidad", None))
-        self.livingAirSpeed.setItemText(0, QCoreApplication.translate("MainWindow", u"Baja", None))
-        self.livingAirSpeed.setItemText(1, QCoreApplication.translate("MainWindow", u"Media", None))
-        self.livingAirSpeed.setItemText(2, QCoreApplication.translate("MainWindow", u"Alta", None))
+        self.livingRoomAirSpeed.setItemText(0, QCoreApplication.translate("MainWindow", u"Baja", None))
+        self.livingRoomAirSpeed.setItemText(1, QCoreApplication.translate("MainWindow", u"Media", None))
+        self.livingRoomAirSpeed.setItemText(2, QCoreApplication.translate("MainWindow", u"Alta", None))
 
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"Temperatura", None))
-        self.livingTemperatureLbl.setText(QCoreApplication.translate("MainWindow", u"30\u00baC", None))
+        self.livingRoomHumidtempTemperatureLbl.setText(QCoreApplication.translate("MainWindow", u"30\u00baC", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"Humedad", None))
-        self.livingHumidityLbl.setText(QCoreApplication.translate("MainWindow", u"50%", None))
+        self.livingRoomHumidtempHumidityLbl.setText(QCoreApplication.translate("MainWindow", u"50%", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Riego Autom\u00e1tico", None))
-        self.irrigationBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
+        self.gardenIrrigationBtn.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Hora de inicio: ", None))
-        self.irrigationStartTime.setDisplayFormat(QCoreApplication.translate("MainWindow", u"HH:mm", None))
+        self.gardenIrrigationStartTime.setDisplayFormat(QCoreApplication.translate("MainWindow", u"HH:mm", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Hora de apagado: ", None))
-        self.irrigationEndTime.setDisplayFormat(QCoreApplication.translate("MainWindow", u"HH:mm", None))
+        self.gardenIrrigationEndTime.setDisplayFormat(QCoreApplication.translate("MainWindow", u"HH:mm", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Serial Port", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Baudrate", None))
         self.baudrates_list.setItemText(0, QCoreApplication.translate("MainWindow", u"1200", None))

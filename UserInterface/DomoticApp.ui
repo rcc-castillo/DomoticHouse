@@ -167,7 +167,7 @@ QComboBox QAbstractItemView{
           <string notr="true"/>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="livingroomPage">
           <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -216,7 +216,7 @@ QComboBox QAbstractItemView{
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_6">
                    <item>
-                    <widget class="QPushButton" name="livingBlindDownBtn">
+                    <widget class="QPushButton" name="livingRoomBlindsDownBtn">
                      <property name="cursor">
                       <cursorShape>PointingHandCursor</cursorShape>
                      </property>
@@ -236,7 +236,7 @@ QComboBox QAbstractItemView{
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="livingBlindUpBtn">
+                    <widget class="QPushButton" name="livingRoomBlindsUpBtn">
                      <property name="cursor">
                       <cursorShape>PointingHandCursor</cursorShape>
                      </property>
@@ -279,7 +279,7 @@ QComboBox QAbstractItemView{
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="livingLightsBtn">
+                 <widget class="QPushButton" name="livingRoomLightsBtn">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -339,7 +339,7 @@ QComboBox QAbstractItemView{
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_15">
                    <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-                    <widget class="QPushButton" name="livingAirBtn">
+                    <widget class="QPushButton" name="livingRoomAirBtn">
                      <property name="font">
                       <font>
                        <pointsize>10</pointsize>
@@ -376,7 +376,7 @@ QComboBox QAbstractItemView{
                     </widget>
                    </item>
                    <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-                    <widget class="QComboBox" name="livingAirSpeed">
+                    <widget class="QComboBox" name="livingRoomAirSpeed">
                      <property name="font">
                       <font>
                        <pointsize>10</pointsize>
@@ -435,7 +435,7 @@ QComboBox QAbstractItemView{
                     </widget>
                    </item>
                    <item alignment="Qt::AlignHCenter">
-                    <widget class="QLabel" name="livingTemperatureLbl">
+                    <widget class="QLabel" name="livingRoomHumidtempTemperatureLbl">
                      <property name="font">
                       <font>
                        <pointsize>10</pointsize>
@@ -473,7 +473,7 @@ QComboBox QAbstractItemView{
                     </widget>
                    </item>
                    <item alignment="Qt::AlignHCenter">
-                    <widget class="QLabel" name="livingHumidityLbl">
+                    <widget class="QLabel" name="livingRoomHumidtempHumidityLbl">
                      <property name="font">
                       <font>
                        <pointsize>10</pointsize>
@@ -554,7 +554,7 @@ QComboBox QAbstractItemView{
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_8">
                    <item>
-                    <widget class="QPushButton" name="irrigationBtn">
+                    <widget class="QPushButton" name="gardenIrrigationBtn">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -615,7 +615,7 @@ QComboBox QAbstractItemView{
                           </widget>
                          </item>
                          <item>
-                          <widget class="QTimeEdit" name="irrigationStartTime">
+                          <widget class="QTimeEdit" name="gardenIrrigationStartTime">
                            <property name="font">
                             <font>
                              <pointsize>10</pointsize>
@@ -651,7 +651,7 @@ QComboBox QAbstractItemView{
                           </widget>
                          </item>
                          <item>
-                          <widget class="QTimeEdit" name="irrigationEndTime">
+                          <widget class="QTimeEdit" name="gardenIrrigationEndTime">
                            <property name="font">
                             <font>
                              <pointsize>10</pointsize>

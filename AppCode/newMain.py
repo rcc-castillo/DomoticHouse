@@ -12,6 +12,7 @@ from ui_DomoticApp import Ui_MainWindow
 from Room import Room
 from Wifi import Wifi
 from SerialConnection import SerialConnection
+from RoomUi import RoomUi
 ########################################################################
 
 SERVER_URL = 'http://192.168.35.249/'
@@ -132,7 +133,9 @@ class MainWindow(QMainWindow):
         self.updateRooms(data)
         # self.serial.clear()
         # self.dataTimer.start(100)
-        self.initRoomButtons()
+        for roomName in self.rooms:
+            room = self.rooms[roomName]["roomObject"]
+            
     
     def getData(self):
         if self.wifi.connected:
@@ -147,50 +150,20 @@ class MainWindow(QMainWindow):
     def updateRooms(self, data):
         for roomName, roomData in data.items():
             room = Room(name=roomName, **roomData)
-            self.rooms[roomName] = room
+            roomUi = RoomUi(room, self.ui)
+            self.rooms[roomName] = {"roomObject": room, "roomUi": roomUi}
             for element in roomData:
-                self.updateUi(roomName, element, room.getElement(element))
+                roomUi.updateRoomUi(element.capitalize())
         
     def updateHumidityTemperature(self, data):
         for roomName in data:
-            room = self.rooms[roomName]
+            room = self.rooms[roomName]["roomObject"]
+            roomUi = self.rooms[roomName]["roomUi"]
             room.handleHumidTemp(data[roomName])
-            self.updateUi(roomName, "Humidtemp", room.getElement("humidtemp"))
-    
-    def updateUi(self, roomName, element, roomData):
-        if element in ["Lights", "Air", "Irrigation"]:
-            iconPath = ":/icons/icons/toggle-right.svg" if roomData["state"] == "on" else ":/icons/icons/toggle-left.svg"
-            check = True if roomData["state"] == "on" else False
-            self.getUiElement(roomName, element, "Btn").setChecked(check)
-            self.getUiElement(roomName, element, "Btn").setIcon(QIcon(iconPath))
-            self.getUiElement(roomName, element, "Btn").setText(roomData["state"].capitalize())
-        
-        if element == "Blinds":
-            if roomData["state"] == "up":
-                self.getUiElement(roomName, element, "UpBtn").hide()
-                self.getUiElement(roomName, element, "DownBtn").show()
-
-            elif roomData["state"] == "down":
-                self.getUiElement(roomName, element, "DownBtn").hide()
-                self.getUiElement(roomName, element, "UpBtn").show()
-        
-        if element == "Air":
-            self.getUiElement(roomName, element, "Speed").setCurrentText(roomData["speed"].capitalize())
-
-        if element == "Irrigation":
-            startTime = QTime.fromString(roomData["startTime"], 'HH:mm')
-            endTime = QTime.fromString(roomData["endTime"], 'HH:mm')
-            self.getUiElement(roomName, element, "StartTime").setTime(startTime)
-            self.getUiElement(roomName, element, "EndTime").setTime(endTime)
-
-        if element == "Humidtemp":
-            temperature = round(roomData["temperature"], 2)
-            humidity = roomData["humidity"]
-            self.getUiElement(roomName, element, "TemperatureLbl").setText(str(temperature) + "°C")
-            self.getUiElement(roomName, element, "HumidityLbl").setText(str(humidity) + "%")
+            roomUi.updateRoomUi("Humidtemp")
     
     def getUiElement(self, roomName, roomElement, uiElement):
-        return self.ui.__getattribute__(f"{roomName}{roomElement.capitalize()}{uiElement}")
+        return getattr(self.ui, f"{roomName}{roomElement.capitalize()}{uiElement}")
     
     def initButton(self, roomName, roomElement, uiElement):
         uiElement.clicked.connect(lambda: self.handleRoomElement(roomName, roomElement, uiElement))
@@ -203,7 +176,7 @@ class MainWindow(QMainWindow):
     
     def initRoomButtons(self):
         for roomName in self.rooms:
-            room = self.rooms[roomName]
+            room = self.rooms[roomName]["roomObject"]
             if room.getElement("lights") is not None:
                 element = "Lights"
                 uiElement = self.getUiElement(roomName, element, "Btn")
@@ -237,21 +210,21 @@ class MainWindow(QMainWindow):
                 self.initTimeEdit(roomName, f"{element}EndTime", uiElement)
 
     def handleRoomElement(self, roomName, element, uiElement):
-        room = self.rooms[roomName]
+        room = self.rooms[roomName]["roomObject"]
+        roomUi = self.rooms[roomName]["roomUi"]
+
         roomElement = room.getElement(element)
         if element in ["Lights", "Air", "Irrigation"]:
             data = "on" if roomElement["state"] == "off" else "off"
         if element == "Blinds":
             data = "up" if roomElement["state"] == "down" else "down"
         if "Speed" in element:
-            roomElement = room.getElement("Air")
             data = uiElement.currentText().lower()
         if "Time" in element:
-            roomElement = room.getElement("Irrigation")
             data = uiElement.time().toString("HH:mm")
 
         room.getHandler(element)(data)
-        self.updateUi(roomName, element, roomElement)
+        roomUi.updateRoomUi(element)
         self.sendData(roomName, element, data)
     
     def sendData(self, roomName, element, data):
