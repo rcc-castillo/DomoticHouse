@@ -52,9 +52,7 @@ String Room::getName() {
 }
 
 String Room::getLightStatus() {
-    // TODO: Uncomment this when the light is connected to the ESP8266
-    return "on";
-    // return _lightStatus;
+    return _lightStatus;
 }
 
 String Room::getBlindsStatus() {
