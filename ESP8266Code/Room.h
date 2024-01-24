@@ -5,17 +5,20 @@
 #include <Servo.h>
 #include "DHT.h"
 #include <ctime>
+#include <map>
 
 class Room {
 private:
     String _name;
 
     // Flags para saber si el cuarto tiene ciertos dispositivos
-    bool _hasLight = false;
-    bool _hasBlinds = false;
-    bool _hasAir = false;
-    bool _hasIrrigation = false;
-    bool _hasTemperatureSensor = false;
+    std::map<String, bool> _devices = {
+        {"Lights", false},
+        {"Blinds", false},
+        {"Air", false},
+        {"Irrigation", false},
+        {"TemperatureSensor", false}
+    };
 
     // Luces
     int _lightPin;
@@ -67,11 +70,7 @@ public:
     float getTemperature(); 
     float getHumidity();
 
-    bool hasLight();
-    bool hasBlinds();
-    bool hasAir();
-    bool hasIrrigation();
-    bool hasTemperatureSensor();
+    bool hasDevice(String deviceName);
 
     void setLightStatus(String status);
     void setBlindsStatus(String status);

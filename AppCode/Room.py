@@ -7,20 +7,20 @@ class Room():
         self.irrigation = irrigation
         self.humidtemp = humidtemp
 
-    def handleLights(self, state):
+    def handleLightsState(self, state):
         self.lights["state"] = state
     
-    def handleBlinds(self, direction):
+    def handleBlindsState(self, direction):
         if self.blinds == direction: return
         self.blinds["state"] = direction
     
-    def handleAir(self, state):
+    def handleAirState(self, state):
         self.air["state"] = state
 
     def handleAirSpeed(self, speed):
         self.air["speed"] = speed
     
-    def handleIrrigation(self, state):
+    def handleIrrigationState(self, state):
         self.irrigation["state"] = state
 
     def handleIrrigationStartTime(self, time):
@@ -32,8 +32,8 @@ class Room():
     def handleHumidTemp(self, data):
         self.humidtemp = data
 
-    def getElement(self, element):
-        return getattr(self, element.lower(), None)
+    def getDevice(self, deviceName):
+        return getattr(self, deviceName.lower(), None)
     
-    def getHandler(self, element):
-        return getattr(self, f"handle{element}", None)
+    def getHandler(self, deviceName, deviceElement):
+        return getattr(self, f"handle{deviceName}{deviceElement}", None)

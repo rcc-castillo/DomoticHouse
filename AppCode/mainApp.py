@@ -9,24 +9,11 @@ from PySide2.QtCore import QTimer, QPropertyAnimation, QTime
 ########################################################################
 # IMPORT GUI FILE AND ROOM CLASS
 from ui_DomoticApp import Ui_MainWindow
-from Room import Room
 from Wifi import Wifi
 from SerialConnection import SerialConnection
-from RoomUi import RoomUi
+from RoomController import RoomController
+from CommunicationController import CommunicationController
 ########################################################################
-
-SERVER_URL = 'http://192.168.35.249/'
-ENDPOINTS = {
-    "getData": "getData",
-    "getRooms": "getRooms",
-    "Lights": "sendLights",
-    "Blinds": "sendBlinds",
-    "Air": "sendAir",
-    "AirSpeed": "sendAir",
-    "Irrigation": "sendIrrigation",
-    "IrrigationStartTime": "sendIrrigation",
-    "IrrigationEndTime": "sendIrrigation"
-}
 
 ########################################################################
 ## MAIN WINDOW CLASS
@@ -37,19 +24,16 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.rooms = {}
-
         self.initUI()
-
-        self.wifi = Wifi(SERVER_URL)
-        self.serial = SerialConnection()
+        self.communicationController = CommunicationController()
+        self.roomController = RoomController(self.ui, self.communicationController)
 
         self.dataTimer = QTimer() 
-        self.dataTimer.timeout.connect(self.getData)
+        self.dataTimer.timeout.connect(self.updateHumidityTemperature)
 
         self.roomsTimer = QTimer()
-        self.roomsTimer.start(100)
-        self.roomsTimer.timeout.connect(self.getRooms)
+        self.roomsTimer.start(200)
+        self.roomsTimer.timeout.connect(self.updateRooms)
 
         self.show()
     
@@ -57,9 +41,10 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Domotic App")
         self.setWindowIcon(QIcon(":/icons/icons/window-icon.ico"))
         self.changePage("settings")
+        self.ui.footerContainer.hide()
         
         #Set connection method button function
-        self.ui.setConectionMethod.clicked.connect(self.changeConnectionMethod)
+        self.ui.setConectionMethod.clicked.connect(self.togleConectionMethod)
         
         #Set left menu buttons functions
         self.ui.menuBtn.clicked.connect(self.toggleMenu)
@@ -91,151 +76,59 @@ class MainWindow(QMainWindow):
         self.animation.start()
 
     def changePage(self, pageName):
-        self.ui.mainPages.setCurrentWidget(self.getUiElement(pageName, "", "Page"))
+        pageUi = getattr(self.ui, f"{pageName}Page")
+        self.ui.mainPages.setCurrentWidget(pageUi)
         for button in ["livingroom", "garden", "settings"]:
             style = u"background-color: #52a5e0;" if button == pageName else u"background-color: transparent;"
-            self.getUiElement(button, "", "Btn").setStyleSheet(style)
+            buttonUi = getattr(self.ui, f"{button}Btn")
+            buttonUi.setStyleSheet(style)
     
     def updatePorts(self):
         self.ui.serial_ports_list.clear()
-        self.ui.serial_ports_list.addItems(self.serial.getPorts())
+        self.ui.serial_ports_list.addItems(self.communicationController.getSerialPorts())
         self.ui.baudrates_list.setCurrentText("9600")
     
     def serialConnect(self):
-        self.serial.open(self.ui.serial_ports_list.currentText(), 9600)
-        if not self.serial.connected: return
+        self.communicationController.serialConnect(self.ui.serial_ports_list.currentText(), 9600)
+        if not self.communicationController.serialIsConnected: return
         self.ui.connectBtn.hide()
         self.ui.disconnectBtn.show()
     
     def serialDisconnect(self):
-        self.serial.close()
+        self.communicationController.serialDisconnect()
         self.ui.connectBtn.show()
         self.ui.disconnectBtn.hide()
     
-    def changeConnectionMethod(self):
-        if self.wifi.connected:
-            self.serialDisconnect()
-            self.ui.setConectionMethod.setText("Cambiar a Serial")
-        else:
+    def togleConectionMethod(self):
+        self.communicationController.toggleConnectionMethod()
+        self.ui.serialPortConection.setVisible(not self.communicationController.wifiIsConnected())
+        if not self.communicationController.wifiIsConnected():
             self.ui.setConectionMethod.setText("Cambiar a Wifi")
-        self.wifi.connected = not self.wifi.connected
-        self.ui.serialPortConection.setVisible(not self.wifi.connected)
+        elif not self.communicationController.serialIsConnected():
+            self.ui.setConectionMethod.setText("Cambiar a Serial")
     
-    def getRooms(self):
-        if self.wifi.connected:
-            data = self.wifi.get(ENDPOINTS["getRooms"])
-        elif self.serial.connected:
-            data = self.serial.get("getRooms")
-        else: return
-        
-        if data is None: return print("No se pudo obtener la habitación")
+    def updateRooms(self):
+        data = self.communicationController.getRooms()
+        if data is None: return
+        self.roomController.updateRooms(data)
         self.roomsTimer.stop()
-        self.updateRooms(data)
-        # self.serial.clear()
-        # self.dataTimer.start(100)
-        self.initRoomButtons()
-            
-    
-    def getData(self):
-        if self.wifi.connected:
-            data = self.wifi.get(ENDPOINTS["getData"])
-        elif self.serial.connected:
-            data = self.serial.get("getData")
-        else: return
+        self.notification("Habitaciones actualizadas")
+        self.roomController.initRoomButtons()
+        if self.communicationController.serialIsConnected():
+            self.communicationController.serialClear()
+        # FIXME: self.dataTimer.start(1000)
+
+    def updateHumidityTemperature(self):
+        data = self.communicationController.getData()
+        if data is None: return
+        self.roomController.updateHumidityTemperature(data)
         
-        if data is None: return print("No se pudo obtener la data")
-        self.updateHumidityTemperature(data)
-
-    def updateRooms(self, data):
-        for roomName, roomData in data.items():
-            room = Room(name=roomName, **roomData)
-            roomUi = RoomUi(room, self.ui)
-            self.rooms[roomName] = {"roomObject": room, "roomUi": roomUi}
-            for element in roomData:
-                roomUi.updateRoomUi(element.capitalize())
-        
-    def updateHumidityTemperature(self, data):
-        for roomName in data:
-            room = self.rooms[roomName]["roomObject"]
-            roomUi = self.rooms[roomName]["roomUi"]
-            room.handleHumidTemp(data[roomName])
-            roomUi.updateRoomUi("Humidtemp")
+    def notification(self, message):
+        self.ui.notification.setText(message)
+        self.ui.footerContainer.show()
+        QTimer.singleShot(3000, lambda: self.ui.footerContainer.hide())
     
-    def getUiElement(self, roomName, roomElement, uiElement):
-        return getattr(self.ui, f"{roomName}{roomElement.capitalize()}{uiElement}")
     
-    def initButton(self, roomName, roomElement, uiElement):
-        uiElement.clicked.connect(lambda: self.handleRoomElement(roomName, roomElement, uiElement))
-    
-    def initComboBox(self, roomName, roomElement, uiElement):
-        uiElement.currentTextChanged.connect(lambda: self.handleRoomElement(roomName, roomElement, uiElement))
-    
-    def initTimeEdit(self, roomName, roomElement, uiElement):
-        uiElement.timeChanged.connect(lambda: self.handleRoomElement(roomName, roomElement, uiElement))
-    
-    def initRoomButtons(self):
-        for roomName in self.rooms:
-            room = self.rooms[roomName]["roomObject"]
-            if room.getElement("lights") is not None:
-                element = "Lights"
-                uiElement = self.getUiElement(roomName, element, "Btn")
-                self.initButton(roomName, element, uiElement)
-                
-            if room.getElement("blinds") is not None:
-                element = "Blinds"
-                uiElement = self.getUiElement(roomName, element, "UpBtn")
-                self.initButton(roomName, element, uiElement)
-
-                uiElement = self.getUiElement(roomName, element, "DownBtn")
-                self.initButton(roomName, element, uiElement)
-                
-            if room.getElement("air") is not None:
-                element = "Air"
-                uiElement = self.getUiElement(roomName, element, "Btn")
-                self.initButton(roomName, element, uiElement)
-
-                uiElement = self.getUiElement(roomName, element, "Speed")
-                self.initComboBox(roomName, f"{element}Speed", uiElement)
-
-            if room.getElement("irrigation") is not None:
-                element = "Irrigation"
-                uiElement = self.getUiElement(roomName, element, "Btn")
-                self.initButton(roomName, element, uiElement)
-
-                uiElement = self.getUiElement(roomName, element, "StartTime")
-                self.initTimeEdit(roomName, f"{element}StartTime", uiElement)
-
-                uiElement = self.getUiElement(roomName, element, "EndTime")
-                self.initTimeEdit(roomName, f"{element}EndTime", uiElement)
-
-    def handleRoomElement(self, roomName, element, uiElement):
-        room = self.rooms[roomName]["roomObject"]
-        roomUi = self.rooms[roomName]["roomUi"]
-
-        roomElement = room.getElement(element)
-        if element in ["Lights", "Air", "Irrigation"]:
-            data = "on" if roomElement["state"] == "off" else "off"
-        if element == "Blinds":
-            data = "up" if roomElement["state"] == "down" else "down"
-        if "Speed" in element:
-            data = uiElement.currentText().lower()
-        if "Time" in element:
-            data = uiElement.time().toString("HH:mm")
-
-        room.getHandler(element)(data)
-        roomUi.updateRoomUi(element)
-        self.sendData(roomName, element, data)
-    
-    def sendData(self, roomName, element, data):
-        print(f"Sending {element} {data} to {roomName}")
-        json_data = json.dumps({roomName: {element: data.lower()}})
-        if self.wifi.connected:
-            self.wifi.post(f"{ENDPOINTS[element]}?roomName={roomName}&element={element}", json_data)
-        elif self.serial.connected:
-            self.serial.write(f"{roomName},{element},{json_data}".encode())
-        else:print("No hay conexión")
-
-
 ########################################################################
 ## EXECUTE APP
 ########################################################################
@@ -243,6 +136,3 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     sys.exit(app.exec_())
-########################################################################
-## END===>
-########################################################################  

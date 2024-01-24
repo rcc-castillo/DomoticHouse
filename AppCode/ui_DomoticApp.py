@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'DomoticAppXtdyhV.ui'
+## Form generated from reading UI file 'DomoticApprhjEOB.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -18,7 +18,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(610, 472)
+        MainWindow.resize(700, 483)
         MainWindow.setMinimumSize(QSize(365, 0))
         MainWindow.setMaximumSize(QSize(700, 16777215))
         MainWindow.setStyleSheet(u"*{\n"
@@ -52,9 +52,19 @@ class Ui_MainWindow(object):
 "	border-width: 2.5px;\n"
 "	border-color: #2a3b47;\n"
 "}\n"
+"\n"
+"#footerContainer{\n"
+"	background-color: #212e36;\n"
+"	border-radius: 10px;\n"
+"	border-style: solid;\n"
+"	border-width: 1px;\n"
+"	border-color: #2a3b47;\n"
+"}\n"
+"\n"
 "#settingsPage QPushButton{\n"
 "	background-color: #52a5e0;\n"
-"	border-radius: 15px;\n"
+"	border-radius: 15px;"
+                        "\n"
 "	padding: 5px 20px;\n"
 "}\n"
 "\n"
@@ -536,17 +546,16 @@ class Ui_MainWindow(object):
 
         self.footerContainer = QWidget(self.mainBodyContainer)
         self.footerContainer.setObjectName(u"footerContainer")
-        self.footerContainer.setMaximumSize(QSize(16777215, 38))
-        self.horizontalLayout_9 = QHBoxLayout(self.footerContainer)
-        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
-        self.horizontalLayout_9.setContentsMargins(-1, -1, 0, 0)
-        self.label_6 = QLabel(self.footerContainer)
-        self.label_6.setObjectName(u"label_6")
+        self.verticalLayout_6 = QVBoxLayout(self.footerContainer)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.notification = QLabel(self.footerContainer)
+        self.notification.setObjectName(u"notification")
+        self.notification.setFont(font1)
 
-        self.horizontalLayout_9.addWidget(self.label_6, 0, Qt.AlignLeft)
+        self.verticalLayout_6.addWidget(self.notification, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
 
-        self.verticalLayout_4.addWidget(self.footerContainer)
+        self.verticalLayout_4.addWidget(self.footerContainer, 0, Qt.AlignVCenter)
 
 
         self.gridLayout.addWidget(self.mainBodyContainer, 0, 1, 1, 1)
@@ -702,7 +711,7 @@ class Ui_MainWindow(object):
         self.connectBtn.setText(QCoreApplication.translate("MainWindow", u"Conectar ", None))
         self.disconnectBtn.setText(QCoreApplication.translate("MainWindow", u"Desconectar", None))
         self.setConectionMethod.setText(QCoreApplication.translate("MainWindow", u"Cambiar a Wifi", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Version 1.0", None))
+        self.notification.setText("")
 #if QT_CONFIG(tooltip)
         self.menuBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Menu", None))
 #endif // QT_CONFIG(tooltip)

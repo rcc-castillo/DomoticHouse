@@ -14,10 +14,10 @@ Room::Room(String name, int lightPin, int blindsPin, int airEnable1Pin, int airE
      */
 
     _name = name;
-    _hasLight = true;
-    _hasBlinds = true;
-    _hasAir = true;
-    _hasTemperatureSensor = true;
+    _devices["Lights"] = true;
+    _devices["Blinds"] = true;
+    _devices["Air"] = true;
+    _devices["TemperatureSensor"] = true;
     _lightPin = lightPin;
     _blindsPin = blindsPin;
     _airEnable1Pin = airEnable1Pin;
@@ -32,18 +32,19 @@ Room::Room(String name, int lightPin, int blindsPin, int airEnable1Pin, int airE
     initializeTemperatureSensor();
 }
 
-Room::Room(String name, int irrigationPin) {
-    /**
-     * @brief Constructor for the Room class when has irrigation.
-     *
-     * @param name The name of the room.
-     * @param irrigationPin The pin number for the irrigation control.
-     */
-    _name = name;
-    _hasIrrigation = true;
-    _irrigationPin = irrigationPin;
-    _dht = nullptr;
-    initializeIrrigation();
+Room::Room(String name, int irrigationPin)
+{
+  /**
+   * @brief Constructor for the Room class when has irrigation.
+   *
+   * @param name The name of the room.
+   * @param irrigationPin The pin number for the irrigation control.
+   */
+  _name = name;
+  _devices["Irrigation"] = true;
+  _irrigationPin = irrigationPin;
+  _dht = nullptr;
+  initializeIrrigation();
 }
 
 // Getters
@@ -115,26 +116,8 @@ float Room::getHumidity() {
     return humidity;
 }
 
-
-// Flags para saber si el cuarto tiene ciertos dispositivos
-bool Room::hasLight() {
-    return _hasLight;
-}
-
-bool Room::hasBlinds() {
-    return _hasBlinds;
-}
-
-bool Room::hasAir() {
-    return _hasAir;
-}
-
-bool Room::hasIrrigation() {
-    return _hasIrrigation;
-}
-
-bool Room::hasTemperatureSensor() {
-    return _hasTemperatureSensor;
+bool Room::hasDevice(String deviceName) {
+    return _devices[deviceName];
 }
 
 void Room::initializeLight() {
@@ -144,7 +127,7 @@ void Room::initializeLight() {
 }
 
 void Room::setLightStatus(String status) {
-    if (!hasLight()) return;
+    if (!hasDevice("Lights")) return;
     _lightStatus = status;
     if (status == "on") digitalWrite(_lightPin, HIGH);
     else if (status == "off") digitalWrite(_lightPin, LOW);
@@ -157,7 +140,7 @@ void Room::initializeBlinds() {
 }
 
 void Room::setBlindsStatus(String status) {
-    if (!hasBlinds()) return;
+    if (!hasDevice("Blinds")) return;
     _blindsStatus = status;
     if (status == "up") _blindsServo.write(179);
     else if (status == "down") _blindsServo.write(0);
@@ -174,7 +157,7 @@ void Room::initializeAir() {
 }
 
 void Room::setAirStatus(String status) {
-    if (!hasAir()) return;
+    if (!hasDevice("Air")) return;
     _airStatus = status;
     if (status == "on") {
         digitalWrite(_airEnable1Pin, HIGH);
@@ -186,7 +169,7 @@ void Room::setAirStatus(String status) {
 }
 
 void Room::setAirSpeed(String speed) {
-    if (!hasAir()) return;
+    if (!hasDevice("Air")) return; 
     _airSpeedStatus = speed;
     if (speed == "baja") _airSpeed = 85;
     else if (speed == "media") _airSpeed = 170;
@@ -201,19 +184,19 @@ void Room::initializeIrrigation() {
 }
 
 void Room::setIrrigationStatus(String status) {
-    if (!hasIrrigation()) return;
+    if (!hasDevice("Irrigation")) return;
     _irrigationStatus = status;
     if (status == "on") _irrigationEnabled = true;
     else if (status == "off") _irrigationEnabled = false;
 }
 
 void Room::setIrrigationStartTime(int hour, int minute) {
-    if (!hasIrrigation()) return;
+    if (!hasDevice("Irrigation")) return;
     _irrigationStartTime = std::make_tuple(hour, minute);
 }
 
 void Room::setIrrigationEndTime(int hour, int minute) {
-    if (!hasIrrigation()) return;
+    if (!hasDevice("Irrigation")) return;
     _irrigationEndTime = std::make_tuple(hour, minute);
 }
 

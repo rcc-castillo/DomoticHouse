@@ -38,3 +38,12 @@ class Wifi:
         else:
             print(f"[ERROR] {response.status_code}:  {response.text}")
             return None
+    
+    def connect(self):
+        self.connected = True
+    
+    def disconnect(self):
+        self.connected = False
+
+    def isConnected(self):
+        return self.connected
