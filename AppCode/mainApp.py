@@ -13,6 +13,7 @@ from Wifi import Wifi
 from SerialConnection import SerialConnection
 from RoomController import RoomController
 from CommunicationController import CommunicationController
+from RoomUiController import RoomUiController
 ########################################################################
 
 ########################################################################
@@ -26,7 +27,8 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.initUI()
         self.communicationController = CommunicationController()
-        self.roomController = RoomController(self.ui, self.communicationController)
+        self.roomUiController = RoomUiController(self.ui)
+        self.roomController = RoomController(self.roomUiController, self.communicationController)
 
         self.dataTimer = QTimer() 
         self.dataTimer.timeout.connect(self.updateHumidityTemperature)
@@ -116,7 +118,7 @@ class MainWindow(QMainWindow):
         self.roomController.initRoomButtons()
         if self.communicationController.serialIsConnected():
             self.communicationController.serialClear()
-        # FIXME: self.dataTimer.start(1000)
+        self.dataTimer.start(1000)
 
     def updateHumidityTemperature(self):
         data = self.communicationController.getData()

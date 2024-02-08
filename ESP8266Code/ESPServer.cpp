@@ -16,21 +16,21 @@ void ESPServer::setupServer() {
         { server.send(200, "text/plain", roomController.getRooms()); });
 
     server.on("/sendLights", [this]()
-        { handleRoom("/sendLights"); });
+        { handleRequest("/sendLights"); });
 
     server.on("/sendBlinds", [this]()
-        { handleRoom("/sendBlinds"); });
+        { handleRequest("/sendBlinds"); });
 
     server.on("/sendAir", [this]()
-        { handleRoom("/sendAir"); });
+        { handleRequest("/sendAir"); });
 
     server.on("/sendIrrigation", [this]()
-        { handleRoom("/sendIrrigation"); });
+        { handleRequest("/sendIrrigation"); });
 
     server.begin();
 }
 
-void ESPServer::handleRoom(const String &path) {
+void ESPServer::handleRequest(const String &path) {
         String source = server.arg("plain");
         String roomName = server.arg("roomName");
         String deviceName = server.arg("deviceName");

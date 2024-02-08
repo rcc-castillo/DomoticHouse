@@ -2,7 +2,7 @@ import json
 from Wifi import Wifi
 from SerialConnection import SerialConnection
 
-SERVER_URL = 'http://192.168.221.249/'
+SERVER_URL = 'http://192.168.195.249/'
 
 class CommunicationController:
     def __init__(self):

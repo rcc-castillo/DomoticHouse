@@ -9,7 +9,7 @@ Lights::Lights(int pin, const String &name) : Device(pin, name) {
 void Lights::init() {
     pinMode(_pin, OUTPUT);
     _lightsState = "off";
-    set("", _lightsState);
+    set("State", _lightsState);
 }
 
 String Lights::get(const String &deviceElement) {

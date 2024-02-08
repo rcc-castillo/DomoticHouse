@@ -33,8 +33,6 @@ float DHTSensor::getHumidity() {
     return humidity;
 }
 
-void DHTSensor::set(const String &deviceElement, const String &data) {
-    return;
-}
+void DHTSensor::set(const String &deviceElement, const String &data) {}
 
 void DHTSensor::handleProgrammedCommand(const String &command, int currentHour, int currentMinute) {}

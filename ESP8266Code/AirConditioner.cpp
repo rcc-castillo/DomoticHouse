@@ -1,6 +1,6 @@
 #include "AirConditioner.h"
 
-AirConditioner::AirConditioner(int enablePin1, int enablePin2, int speedPin, const String &name) : Device(enablePin1, "AirConditioner") {
+AirConditioner::AirConditioner(int enablePin1, int enablePin2, int speedPin, const String &name) : Device(enablePin1, name) {
     _enablePin1 = enablePin1;
     _enablePin2 = enablePin2;
     _speedPin = speedPin;
@@ -15,7 +15,7 @@ void AirConditioner::init() {
     _airState = "off";
     _airSpeedState = "baja";
     _airSpeed = 0;
-    set("", _airState);
+    set("State", _airState);
     set("Speed", _airSpeedState);
 }
 

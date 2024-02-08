@@ -9,7 +9,7 @@ Blinds::Blinds(int pin, const String &name) : Device(pin, "Blinds") {
 void Blinds::init() {
     _blindsServo.attach(_pin, 500, 2500);
     _blindsState = "down";
-    set("", _blindsState);
+    set("State", _blindsState);
 }
 
 String Blinds::get(const String &deviceElement) {

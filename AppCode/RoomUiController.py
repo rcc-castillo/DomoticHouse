@@ -1,11 +1,10 @@
 from PySide2.QtGui import QIcon 
 from PySide2.QtCore import QTime
-class RoomUi:
-    def __init__(self, room, ui):
-        self.room = room
+class RoomUiController:
+    def __init__(self, ui):
         self.ui = ui
     
-    def updateRoomUi(self, deviceName):
+    def updateRoomUi(self, roomName, deviceName, deviceData):
         updators = {
             "Lights": self.updateLights,
             "Blinds": self.updateBlinds,
@@ -13,7 +12,7 @@ class RoomUi:
             "Irrigation": self.updateIrrigation,
             "Humidtemp": self.updateHumidTemp
         }
-        updators[deviceName](self.room.name, self.room.getDevice(deviceName))
+        updators[deviceName](roomName, deviceData)
     
     def getUiElement(self, roomName, roomDevice, uiElement):
         attributeName = f"{roomName}{roomDevice.capitalize()}{uiElement}"

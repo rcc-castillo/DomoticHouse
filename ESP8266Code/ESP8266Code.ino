@@ -1,23 +1,46 @@
-#include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
 #include <WiFiUdp.h>
 #include <NTPClient.h>
 #include <map>
-#include "Room.h"
-#include "ReadJson.h"
 #include "WifiCredentials.h"
+#include "ESPServer.h"
+#include "RoomController.h"
+#include "Room.h"
+#include "Device.h"
+#include "Lights.h"
+#include "Blinds.h"
+#include "AirConditioner.h"
+#include "Irrigation.h"
+#include "DHTSensor.h"
 
-ESP8266WebServer server(80);
+
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 5000);
 
-std::map<String, Room> roomMap;
+RoomController roomController;
+ESPServer server(roomController);
 
 void setupRooms() {
-    // Configura los datos para el salon
-    roomMap["livingRoom"] = Room("livingRoom", 16, 12, 5, 4, 0, 13);
-    roomMap["garden"] = Room("garden", 14);
+    Device* lights = new Lights(16, "LivingRoomLights");
+    Device* blinds = new Blinds(12, "LivingRoomBlinds");
+    Device* airConditioner = new AirConditioner(5, 4, 0, "LivingRoomAirConditioner");
+    Device* tempHumidSensor = new DHTSensor(13, "LivingRoomTempHumidSensor");
+    std::map<String, Device*> livingRoomDevices = {
+        {"Lights", lights},
+        {"Blinds", blinds},
+        {"Air", airConditioner},
+        {"DHT11Sensor", tempHumidSensor}
+    };
+
+    Device* irrigation = new Irrigation(14, "GardenIrrigation");
+    std::map<String, Device*> gardenDevices = {
+        {"Irrigation", irrigation}
+    };
+
+    Room* livingRoom = new Room("livingRoom", livingRoomDevices);
+    roomController.addRoom(livingRoom->getName(), *livingRoom);
+    Room* garden = new Room("garden", gardenDevices);
+    roomController.addRoom(garden->getName(), *garden);
 }
 
 void setupWifi() {
@@ -34,232 +57,44 @@ void setupWifi() {
     Serial.println(WiFi.localIP());
 }
 
-void setupServer() {
-    server.on("/", []()
-        { server.send(200, "text/plain", "Conection established"); });
 
-    server.onNotFound([]()
-        { server.send(404, "text/plain", "404: Not found"); });
-
-    server.on("/sendLights", []() 
-        { handleLights(server.arg("plain"), server.arg("roomName")); });
-
-    server.on("/sendBlinds", []() 
-        { handleBlinds(server.arg("plain"), server.arg("roomName")); });
-
-    server.on("/sendAir", []() 
-        { handleAir(server.arg("plain"), server.arg("roomName"), server.arg("element")); });
-
-    server.on("/sendIrrigation", []() 
-        { handleIrrigation(server.arg("plain"), server.arg("roomName"), server.arg("element")); });
-
-    server.on("/getData", []()
-        { server.send(200, "text/plain", getHumidityAndTemperature()); });
-    
-    server.on("/getRooms", []()
-        { server.send(200, "text/plain", getRooms()); });
-    server.begin();
+void handleSerial() {
+    String message = Serial.readStringUntil('\n');
+    if (message.equals("getRooms")) {
+        Serial.println(roomController.getRooms());
+    }
+    else if (message.equals("getData")) {
+        Serial.println(roomController.getHumidityAndTemperature());
+    }
+    else {
+        String roomName = message.substring(0, message.indexOf(','));
+        message.remove(0, message.indexOf(',') + 1);
+        String deviceName = message.substring(0, message.indexOf(','));
+        message.remove(0, message.indexOf(',') + 1);
+        String deviceElement = message.substring(0, message.indexOf(','));
+        message.remove(0, message.indexOf(',') + 1);
+        String source = message;
+        Serial.println(roomController.handleDevice(source, roomName, deviceName, deviceElement));
+    }
 }
 
 void setup() {
-    // Inicializa la comunicación serial
     Serial.begin(9600);
-
-    // Inicializa los cuartos
-    setupRooms();
-
-    // Inicializa la conexión WiFi
     setupWifi();
-
-    // Inicializa el servidor web
-    setupServer();
-
-    // Inicializa el cliente NTP
+    setupRooms();
+    server.setupServer();
     timeClient.begin();
-}
-
-void handleSerial() {
-    String data = Serial.readStringUntil('\n');
-    Serial.println(data);
-    if (data == "getRooms"){
-        Serial.println(getRooms());
-        return;
-    }
-    
-    if (data == "getData") {
-        Serial.println(getHumidityAndTemperature());
-        return;
-    }
-
-    String roomName = data.substring(0, data.indexOf(','));
-    data.remove(0, data.indexOf(',') + 1);
-
-    String element = data.substring(0, data.indexOf(','));
-    data.remove(0, data.indexOf(',') + 1);
-
-    const String json = data;
-    if (element == "Lights") {
-        handleLights(json, roomName);
-    }
-    else if (element == "Blinds") {
-        handleBlinds(json, roomName);
-    }
-    else if (element.startsWith("Air")) {
-        handleAir(json, roomName, element);
-    }
-    else if (element.startsWith("Irrigation")) {
-        handleIrrigation(json, roomName, element);
-    }
-}
-
-JsonObject getData(const String &source) {
-    JsonObject data;
-    if (readJsonFromSource(source, data)) {
-        return data;
-    }
-    else {
-        return JsonObject();
-    }
-}
-
-void handleLights(const String &source, String roomName) {
-    Room &room = roomMap[roomName];
-    JsonObject data = getData(source);
-    if (data.isNull()) {
-        server.send(400, "text/plain", "Error al analizar JSON");
-        return;
-    }
-    String state = data[roomName]["Lights"].as<String>();
-    room.setLightStatus(state);
-    String text = "Luces " + state;
-    server.send(200, "text/plain", roomName + ": " + text);
-}
-
-void handleBlinds(const String &source, String roomName) {
-    Room &room = roomMap[roomName];
-    JsonObject data = getData(source);
-    if (data.isNull()) {
-        server.send(400, "text/plain", "Error al analizar JSON");
-        return;
-    }
-    String state = data[roomName]["Blinds"].as<String>();
-    room.setBlindsStatus(state);
-    String text = "Persianas " + state;
-    server.send(200, "text/plain", roomName + ": " + text);
-}
-
-void handleAir(const String &source, String roomName, String element) {
-    Room &room = roomMap[roomName];
-    JsonObject data = getData(source);
-    if (data.isNull()) {
-        server.send(400, "text/plain", "Error al analizar JSON");
-        return;
-    }
-    String state = data[roomName][element].as<String>();
-    String text = "";
-    if (element == "Air") {
-        room.setAirStatus(state);
-        text = "Aire acondicionado " + state;
-    }
-    else if (element == "AirSpeed") {
-        room.setAirSpeed(state);
-        text = "Velocidad del aire acondicionado " + state;
-    }
-    server.send(200, "text/plain", roomName + ": " + text);
-}
-
-void handleIrrigation(const String &source, String roomName, String element) {
-    Room &room = roomMap[roomName];
-    JsonObject data = getData(source);
-    if (data.isNull()) {
-        server.send(400, "text/plain", "Error al analizar JSON");
-        return;
-    }
-    String state = data[roomName][element].as<String>();
-    String text = "";
-    if (element == "Irrigation") {
-        room.setIrrigationStatus(state);
-        text = "Riego " + state;
-    }
-    else if (element == "IrrigationStartTime") {
-        int delimiterPos = state.indexOf(':');
-        int hours = state.substring(0, delimiterPos).toInt();
-        int minutes = state.substring(delimiterPos + 1).toInt();
-        room.setIrrigationStartTime(hours, minutes);
-        text = "Hora de inicio de riego " + state;
-    }
-    else if (element == "IrrigationEndTime") {
-        int delimiterPos = state.indexOf(':');
-        int hours = state.substring(0, delimiterPos).toInt();
-        int minutes = state.substring(delimiterPos + 1).toInt();
-        room.setIrrigationEndTime(hours, minutes);
-        text = "Hora de fin de riego " + state;
-    }
-    server.send(200, "text/plain", roomName + ": " + text);
-}
-
-String getRooms() {
-    DynamicJsonDocument roomsJson(800);
-    for (auto &roomPair : roomMap) {
-        Room &room = roomPair.second;
-        JsonObject roomObject = roomsJson.createNestedObject(room.getName());
-
-        if (room.hasDevice("Lights")) {
-            roomObject.createNestedObject("lights")["state"] = room.getLightStatus();
-        }
-        if (room.hasDevice("Blinds")) {
-            roomObject.createNestedObject("blinds")["state"] = room.getBlindsStatus();
-        }
-        if (room.hasDevice("Air")) {
-            JsonObject airObject = roomObject.createNestedObject("air");
-            airObject["state"] = room.getAirStatus();
-            airObject["speed"] = room.getAirSpeedStatus();
-        }
-        if (room.hasDevice("Irrigation")) {
-            JsonObject irrigationObject = roomObject.createNestedObject("irrigation");
-            irrigationObject["state"] = room.getIrrigationStatus();
-            irrigationObject["startTime"] = room.getIrrigationStartTime();
-            irrigationObject["endTime"] = room.getIrrigationEndTime();
-        }
-        if (room.hasDevice("TemperatureSensor")) {
-            JsonObject temperatureObject = roomObject.createNestedObject("humidtemp");
-            temperatureObject["temperature"] = room.getTemperature();
-            temperatureObject["humidity"] = room.getHumidity();
-        }
-    }
-    String jsonResponse;
-    serializeJson(roomsJson, jsonResponse);
-    return jsonResponse;
-}
-
-String getHumidityAndTemperature() {
-    StaticJsonDocument<200> jsonDocument;
-    for (auto &roomPair : roomMap) {
-        Room &room = roomPair.second;
-        if (!room.hasDevice("TemperatureSensor")) continue;
-        JsonObject nestedObject = jsonDocument.createNestedObject(room.getName());
-        nestedObject["temperature"] = room.getTemperature();
-        nestedObject["humidity"] = room.getHumidity();
-    }
-    String jsonResponse;
-    serializeJson(jsonDocument, jsonResponse);
-    return jsonResponse;
 }
 
 void loop() { 
     // Actualiza la hora
     timeClient.update();
 
-    // Recorre el roomMap obteniendo la referencia al par <key, value>, Second se refiere al value
-    for (auto &roomPair : roomMap) {
-        Room &room = roomPair.second;
-        if (room.hasDevice("Irrigation")) room.irrigate(timeClient.getHours(), timeClient.getMinutes());
-    }
+    // Riega en las habitaciones con sistema de irrigacion si es la hora
+    roomController.handleProgrammedCommand("Irrigate", timeClient.getHours(), timeClient.getMinutes());
 
     // Leer datos desde el puerto serie
-    if (Serial.available() > 0) {
-        handleSerial();
-    }
+    if (Serial.available()) handleSerial();
     // No hay datos en el puerto serie, intenta desde el servidor web
     else server.handleClient();
 }

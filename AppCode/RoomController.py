@@ -1,25 +1,23 @@
 from Room import Room
-from RoomUi import RoomUi
 class RoomController:
-    def __init__(self, ui, communicationController):
+    def __init__(self, uiController, communicationController):
         self.rooms = {}
-        self.ui = ui
+        self.uiController = uiController
         self.communicationController = communicationController
 
     def updateRooms(self, data):
         for roomName, roomData in data.items():
             room = Room(name=roomName, **roomData)
-            roomUi = RoomUi(room, self.ui)
-            self.rooms[roomName] = {"roomObject": room, "roomUi": roomUi}
+            self.rooms[roomName] = room
             for deviceName in roomData:
-                roomUi.updateRoomUi(deviceName.capitalize())
+                deviceName = deviceName.capitalize()
+                self.uiController.updateRoomUi(roomName, deviceName, room.getDevice(deviceName))
     
     def updateHumidityTemperature(self, data):
         for roomName in data:
-            room = self.rooms[roomName]["roomObject"]
-            roomUi = self.rooms[roomName]["roomUi"]
+            room = self.rooms[roomName]
             room.handleHumidTemp(data[roomName])
-            roomUi.updateRoomUi("Humidtemp")
+            self.uiController.updateRoomUi(roomName, "Humidtemp", room.getDevice("Humidtemp"))
 
     def initButton(self, roomName, deviceName, deviceElement, uiElement):
         uiElement.clicked.connect(lambda: self.handleRoomDevice(roomName, deviceName, deviceElement, uiElement))
@@ -32,18 +30,17 @@ class RoomController:
 
     def initRoomButtons(self):
         for roomName in self.rooms:
-            room = self.rooms[roomName]["roomObject"]
-            roomUi = self.rooms[roomName]["roomUi"]
-            self.initRoomUiElements(roomName, room, roomUi)
+            room = self.rooms[roomName]
+            self.initRoomUiElements(roomName, room)
 
-    def initRoomUiElements(self, roomName, room, roomUi):
+    def initRoomUiElements(self, roomName, room):
         elements = [("Lights", "Btn"), ("Blinds", "UpBtn"), ("Blinds", "DownBtn"), 
                     ("Air", "Btn"), ("Air", "Speed"), ("Irrigation", "Btn"), 
                     ("Irrigation", "StartTime"), ("Irrigation", "EndTime")]
 
         for deviceName, uiType in elements:
             if room.getDevice(deviceName) is not None:
-                uiElement = roomUi.getUiElement(roomName, deviceName, uiType)
+                uiElement = self.uiController.getUiElement(roomName, deviceName, uiType)
                 if uiType in ["Btn", "UpBtn", "DownBtn"]:
                     deviceElement = "State"
                     self.initButton(roomName, deviceName, deviceElement, uiElement)
@@ -57,11 +54,10 @@ class RoomController:
     def handleRoomDevice(self, roomName, deviceName, deviceElement, uiElement):
         if not self.communicationController.wifiIsConnected() and not self.communicationController.serialIsConnected():
             return
-        room = self.rooms[roomName]["roomObject"]
-        roomUi = self.rooms[roomName]["roomUi"]
+        room = self.rooms[roomName]
         data = self.getDeviceData(room, deviceName, deviceElement, uiElement)
         room.getHandler(deviceName, deviceElement)(data)
-        roomUi.updateRoomUi(deviceName.capitalize())
+        self.uiController.updateRoomUi(roomName, deviceName.capitalize(), room.getDevice(deviceName.capitalize()))
         self.communicationController.sendData(roomName, deviceName, deviceElement, data)
 
     def getDeviceData(self, room, deviceName, deviceElement, uiElement):

@@ -15,7 +15,7 @@ private:
 public:
     ESPServer(RoomController &roomController);
     void setupServer();
-    void handleRoom(const String &path);
+    void handleRequest(const String &path);
     void handleClient();
     void send(int statusCode, const String &message);
 };

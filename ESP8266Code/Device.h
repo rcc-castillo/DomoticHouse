@@ -13,7 +13,7 @@ class Device {
         virtual String get(const String& data) = 0;
         virtual void set(const String &deviceElement, const String &data) = 0;
         virtual void init() = 0;
-        String getName() { return _name; };
+        String getName();
         virtual void handleProgrammedCommand(const String &command, int currentHour, int currentMinute) = 0;
 };
 
