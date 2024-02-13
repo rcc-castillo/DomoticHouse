@@ -12,7 +12,7 @@ class Wifi:
         except requests.exceptions.Timeout:
             print("Timeout occurred")
             return
-
+        
         if response.status_code == 200:
             print(f"{response.status_code}:  {response.text}")
         else:

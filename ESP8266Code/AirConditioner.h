@@ -6,9 +6,9 @@
 
 class AirConditioner : public Device{
     private:
-        int _enablePin1; // Pin para controlar encendido y apagado del motor
-        int _enablePin2; // Pin para controlar encendido y apagado del motor
-        int _speedPin;  // Pin para controlar la velocidad del motor
+        int _enablePin1;
+        int _enablePin2;
+        int _speedPin;
         int _airSpeed;
         String _airState;
         String _airSpeedState;
